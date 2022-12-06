@@ -1,0 +1,131 @@
+
+*{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#background {
+  background-image: url("./assets/background.jpg");
+}
+#idTitle {
+  font-weight: bold;
+  padding: 25px;
+  font-size: larger;
+  background-color: rgb(17, 188, 255);
+  color: white;
+}
+
+#idButton {
+  color: white;
+  font-weight: bold;
+  background-color: rgb(17, 188, 255);
+  border-radius: 30px;
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 35px;
+
+  &:hover {
+    background-color: rgb(13, 158, 215);
+  }
+}
+#idHover {
+  color: #000;
+  display: inline-block;
+  position: relative;
+  transition: color 0.4s;
+  z-index: 1;
+  padding: 10px;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: #fbbf24;
+    border-radius: 30px;
+    transform-origin: 0 0;
+    transform: scaleX(0);
+    transition: 0.4s;
+    padding: 15px;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: #fff;
+
+    &:before {
+      transform: scaleX(1);
+    }
+  }
+}
+
+//search
+#idBoxSearchLive {
+  position: relative;
+}
+#idBoxDataSearch {
+  display: flex;
+  margin-bottom: 10px;
+  background-color: white;
+  z-index: 10;
+  padding: 2px;
+  border-radius: 30px;
+  font-size: 15px;
+  :hover {
+    font-weight: bold;
+    transform: scale(1.05);
+  }
+}
+
+[data-open="true"] {
+  border-left: 2px solid #facc15;
+  border-right: 2px solid #facc15;
+  border-bottom: 4px solid #facc15;
+  border-radius: 30px;
+  padding: 15px;
+  display: block;
+  transition: all ease-out;
+  position: absolute;
+  color: black;
+  background-color: white;
+  width: 100%;
+  top: 100%;
+  z-index: 10;
+}
+
+
+[data-open="false"] {
+  display: none;
+}
+
+#imgAppbarMobile{
+  width: 45%; 
+  height: 50%; 
+
+  margin-right: 1rem;
+  border-radius: 10px;
+
+}
+
+[data-open-mobile="true"] {
+  border-radius: 30px;
+  padding: 15px;
+  display: block;
+  transition: all ease-out;
+  position: absolute;
+  color: black;
+  background-color: white;
+  width: 100%;
+  z-index: 10;
+}
+
+[data-open-mobile="false"] {
+  display: none;
+}
+
+//carousel
+#imgCarousel {
+  width: 100vw;
+  height: 80vh;
+  object-fit: fill;
+}
