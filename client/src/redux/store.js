@@ -6,10 +6,12 @@ import { combineReducers } from "redux";
 import { persistStore } from "redux-persist";
 import departSlice from './depart/departSlice';
 import formSlice from './form/formSlice';
+import serviceSile from './service/serviceSlice';
 
 const rootReducer = combineReducers({
     departSlice,
-    formSlice
+    formSlice,
+    serviceSile
     
 });
 

@@ -140,7 +140,7 @@ export default function ListForm() {
           <Typography sx={{fontWeight:"bold",padding:1,backgroundColor:"#47B5FF",marginBottom:1,color:"white"}}
            align="center" variant="h6">CHI TIẾT ĐƠN ĐĂNG KÝ</Typography>
           <Grid container >
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{borderRight:"1px solid #47B5FF",padding:2}}>
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #47B5FF",padding:2,borderRadius:2}}>
               <Stack spacing={2} sx={{ paddingY: 2 }}>
                 <Typography>Họ tên: <b>{formDetail?.name}</b></Typography>
                 <Typography>SĐT: <b>{formDetail?.phone}</b></Typography>
@@ -148,7 +148,7 @@ export default function ListForm() {
                 <Typography>Nội dung tư vấn: <b>{formDetail?.note}</b></Typography>
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{borderLeft:"1px solid #47B5FF",padding:2}}>
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #47B5FF",padding:2,borderRadius:2}}>
               <Stack spacing={2} sx={{ paddingY: 2 }}>
                 <Typography><b>{departDetail?.name}</b></Typography>
                 <Typography><b>{departDetail?.type}</b></Typography>

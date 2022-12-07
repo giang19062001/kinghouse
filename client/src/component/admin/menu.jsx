@@ -2,7 +2,7 @@ import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -16,7 +16,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
-
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 
 const drawerWidth = 250;
 
@@ -107,18 +108,30 @@ const Menu = () => {
           />
         </DrawerHeader>
         <List >
-          {["Danh sách căn hộ", "Danh sách đăng ký tư vấn"].map(
+          {["Danh sách căn hộ", "Danh sách đăng ký tư vấn","Danh sách dịch vụ trong căn hộ","Danh sách tiện ích trong căn hộ","Danh sách tiện ích của tòa nhà"].map(
             (text, index) => (
               <Box >
                 <ListItem key={text} disablePadding > 
-                <Link to={index === 0 ? `/admin/depart` : `/admin/form`} >
+                <Link to={index === 0 ? `/admin/depart` 
+                :index === 1 ? `/admin/form`
+                :index === 2 ? `/admin/service`
+                :index === 3 ? `/admin/ultilitiesDepart`
+                :index === 4 ? `/admin/ultilitiesHome`
+                :null
+              } >
                   <ListItemButton sx={{fontWeight:"bold"}} >
                       <ListItemIcon>
                         {index === 0 ? (
                           <HouseIcon className="" />
                         ) : index === 1 ? (
                           <PeopleAltIcon className="" />
-                        ) : null}
+                        ) : index === 2 ? (
+                          <MiscellaneousServicesIcon className="" />
+                        ): index === 3 ? (
+                          <AutoAwesomeOutlinedIcon className="" />
+                        ): index === 4 ? (
+                          <AutoAwesomeIcon className="" />
+                        ): null}
                       </ListItemIcon>
                       <Typography className="font-bold "  >{text}</Typography>
                   </ListItemButton>

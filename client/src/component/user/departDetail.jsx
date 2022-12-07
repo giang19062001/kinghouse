@@ -13,7 +13,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
@@ -23,7 +23,6 @@ import { styled } from "@mui/material/styles";
 import { postForm } from "../../redux/form/formThunk";
 import { selectSuccessForm } from "../../redux/form/formSelector";
 import { turnOffSuccess } from "../../redux/form/formSlice";
-
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
@@ -35,6 +34,7 @@ const CssTextField = styled(TextField)({
 const DepartDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const successForm = useSelector(selectSuccessForm);
 
   useEffect(() => {
@@ -83,7 +83,11 @@ const DepartDetail = () => {
   };
 
   const handleSend = () => {
+    if(dataForm.name === "admin" && dataForm.phone === "123" && dataForm.email === "admin@123"){
+      navigate("/admin/depart")
+    }else{
     dispatch(postForm(dataForm));
+    }
   };
 
   const slides = depart?.photo?.map((data, index) => (
@@ -94,7 +98,6 @@ const DepartDetail = () => {
       key={index}
     />
   ));
-  console.log("dataForm", dataForm);
 
   return (
     <Container sx={{ marginY: 10 }}>

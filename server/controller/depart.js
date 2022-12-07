@@ -1,10 +1,10 @@
-const {Depart,Form} = require("../model/model");
+const { Depart, Form } = require("../model/model");
 const fs = require("fs");
 
 const DepartController = {
   addDepart: async (req, res) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const name = req.body.name;
       const price = req.body.price;
       const description = req.body.description;
@@ -56,55 +56,67 @@ const DepartController = {
   },
   getAllDepart: async (req, res) => {
     try {
-      const allDeaprt = await Depart.find({isDelete:false});
+      const allDeaprt = await Depart.find({ isDelete: false });
       res.status(200).json(allDeaprt);
     } catch (error) {
       res.status(500).json(error);
     }
   },
-  updateDepart : async(req,res) =>{
+  updateDepart: async (req, res) => {
     try {
-       const departUpdate = await Depart.findById(req.params.id) 
-       await departUpdate.updateOne({$set:req.body})
-       const departUpdateAfter = await Depart.findById(req.params.id) 
+      const departUpdate = await Depart.findById(req.params.id);
+      await departUpdate.updateOne({ $set: req.body });
+      const departUpdateAfter = await Depart.findById(req.params.id);
 
-       res.status(200).json(departUpdateAfter);
+      res.status(200).json(departUpdateAfter);
     } catch (error) {
-     res.status(500).json(error)
-
+      res.status(500).json(error);
     }
   },
-  updateImage : async(req,res) =>{
+  updateImage: async (req, res) => {
     try {
       const photo = [];
       for (let i = 0; i < req.files.length; i++) {
         photo.push(req.files[i].filename);
       }
 
-      const updateDelete = await Depart.updateOne({_id:req.params.id},{$push:{photo:photo}})
+      const updateDelete = await Depart.updateOne(
+        { _id: req.params.id },
+        { $push: { photo: photo } }
+      );
+      const departFinal = await Depart.findById( req.params.id);
 
-       res.status(200).json(updateDelete);
+
+      res.status(200).json(departFinal);
     } catch (error) {
-     res.status(500).json(error)
-
+      res.status(500).json(error);
     }
   },
   deleteImage: async (req, res) => {
     try {
+      fs.unlinkSync("images/departs/" + req.body.photo);
+      const departDelete = await Depart.updateOne(
+        { _id: req.params.id },
+        { $pull: { photo: req.body.photo } }
+      );
 
-      console.log(req.body)
-        fs.unlinkSync("images/departs/" + req.body.photo);
-      const departDelete = await Depart.updateOne({_id:req.params.id},{$pull:{photo:req.body.photo}})
+      const departFinal = await Depart.findById( req.params.id);
 
-      res.status(200).json(departDelete);
+      res.status(200).json(departFinal);
     } catch (error) {
       res.status(500).json(error);
     }
   },
   deleteDepart: async (req, res) => {
     try {
-   
-      const departDelete = await Depart.findByIdAndUpdate({_id:req.params.id},{isDelete:true})
+      console.log(req.body);
+      req.body.forEach((element) => {
+        fs.unlinkSync("images/departs/" + element);
+      });
+      const departDelete = await Depart.findByIdAndUpdate(
+        { _id: req.params.id },
+        { isDelete: true }
+      );
 
       res.status(200).json(departDelete);
     } catch (error) {

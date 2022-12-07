@@ -87,22 +87,6 @@ import { useEffect } from "react";
             setDepartUpdate(res.payload)
           })
     },[dispatch, params.id])
-  
-    // const handlePhoto = (event) => {
-    //   const files = event.target.files;
-    //   console.log(files);
-    //   const photo = [];
-  
-    //   for (let i = 0; i < files.length; i++) {
-    //     photo.push(files[i]);
-    //   }
-  
-    //   console.log(photo);
-    //   setDepartUpdate((preState) => ({
-    //     ...preState,
-    //     photo: photo,
-    //   }));
-    // };
 
 
   
@@ -172,22 +156,16 @@ import { useEffect } from "react";
     const handleDeleteImage = (image) =>{
       const data = {_id:departUpdate._id,photo:image}
       dispatch(deleteImage(data))
-      .then(()=>{
-        dispatch(fetchDepartDetail(params.id))
-          .then((res)=>{
+      .then((res)=>{
             setDepartUpdate(res.payload)
-          })
       })
     }
     const handleupdateImage = (event) =>{
       const data = {_id:departUpdate._id,photo:event.target.files}
       dispatch(updateImage(data))
-      .then(()=>{
-        dispatch(fetchDepartDetail(params.id))
-          .then((res)=>{
-            setDepartUpdate(res.payload)
-          })
-      })
+      .then((res)=>{
+        setDepartUpdate(res.payload)
+  })
     }
 
 

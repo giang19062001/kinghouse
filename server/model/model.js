@@ -98,7 +98,25 @@ const formSchema = new mongoose.Schema({
   },
 },{timestamps:true});
 
+const serviceSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    require:true,
+  },
+  photo:{
+    type: String,
+    require:true,
+  },
+  isDelete:{
+    type:Boolean,
+    default:false
+    
+  }
+})
+
 let Depart = mongoose.model("Depart", departSchema);
 let Form = mongoose.model("Form", formSchema);
+let Service = mongoose.model("Service", serviceSchema);
 
-module.exports = { Depart, Form };
+
+module.exports = { Depart, Form, Service };

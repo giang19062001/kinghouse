@@ -42,8 +42,8 @@ export default function ListDepart() {
 
   const listDepart = useSelector(selectListDepart);
   
-  const handleDelete = (id) =>{
-    dispatch(deleteDepart(id))
+  const handleDelete = (data) =>{
+    dispatch(deleteDepart(data))
     .then(()=>{
       navigate(0)
     })
@@ -118,7 +118,7 @@ export default function ListDepart() {
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <Button className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                  onClick={()=>handleDelete(row?._id)}
+                  onClick={()=>handleDelete({id:row?._id,photo:row?.photo})}
                   >
                     Xóa
                   </Button>
