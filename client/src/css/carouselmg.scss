@@ -1,0 +1,61 @@
+
+  .react-stacked-center-carousel {
+    // padding: 0px 0px 0px 0px;
+  }
+  
+  .twitch-card {
+    box-sizing: content-box;
+
+    transition: all 300ms ease;
+    cursor: pointer;
+    width: 100%;
+    height: 65vmin;
+    position: relative;
+    background-color: #ffffff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 0 4px rgba(0, 0, 0, 0.05);
+    border-radius: 30px;
+    
+  }
+  
+  .twitch-card:hover {
+    transform: scale(1.05);
+    cursor: auto;
+  }
+  
+  .react-stacked-center-carousel-slide-0 .twitch-card {
+    cursor: grabbing;
+
+  }
+  
+  .react-stacked-center-carousel-slide-0 .twitch-card:hover {
+    transform: none;
+  }
+  
+  .fill {
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .twitch-card .card-overlay {
+    user-select: none;
+    position: absolute;
+    background-color: #00000099;
+    transition: all 300ms ease;
+    
+  }
+  
+  .twitch-card:hover .card-overlay {
+    background-color: #0000002d;
+  }
+  
+  .react-stacked-center-carousel-slide-0 .card-overlay {
+    background-color: #0000002d;
+}
+  
+  .twitch-card .cover-image {
+    border-radius: 30px;
+    object-fit: fill;
+  }
+  
+

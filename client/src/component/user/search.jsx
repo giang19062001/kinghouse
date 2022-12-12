@@ -22,16 +22,18 @@ import PlaceIcon from "@mui/icons-material/Place";
 import { styled } from "@mui/material/styles";
 import {
   district,
-  service,
   type,
-  ultilitiesDepart,
-  ultilitiesHouse,
 } from "../../util/data";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { selectListDepart } from "../../redux/depart/departSelector";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { fetchServices } from "../../redux/service/serviceThunk";
+import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
+import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
+import { selectListServices } from "../../redux/service/serviceSelector";
+import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
+import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 const CssSelect = styled(Select)({
   borderRadius: "30px",
 });
@@ -56,6 +58,17 @@ const MenuProps = {
   },
 };
 const Search = () => {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchServices())
+    dispatch(fetchUlDeparts())
+    dispatch(fetchUlHomes())
+ },[])
+
+ const service = useSelector(selectListServices)
+ const ultilitiesDepart = useSelector(selectListUlDeparts)
+ const ultilitiesHouse = useSelector(selectListUlHomes)
 
   const listDepart = useSelector(selectListDepart)
   const [dataSearch,setDataSearch] = React.useState()
@@ -205,9 +218,9 @@ const Search = () => {
               MenuProps={MenuProps}
             >
               {ultilitiesDepart.map((data) => (
-                <MenuItem key={data} value={data}>
-                  <Checkbox checked={value_ultilities_Depart.indexOf(data) > -1} />
-                  <ListItemText primary={data} />
+                <MenuItem key={data?.name} value={data?.name}>
+                  <Checkbox checked={value_ultilities_Depart.indexOf(data?.name) > -1} />
+                  <ListItemText primary={data?.name} />
                 </MenuItem>
               ))}
             </CssSelect>
@@ -225,9 +238,9 @@ const Search = () => {
               MenuProps={MenuProps}
             >
               {ultilitiesHouse.map((data) => (
-                <MenuItem key={data} value={data}>
-                  <Checkbox checked={value_ultilities_Home.indexOf(data) > -1} />
-                  <ListItemText primary={data} />
+                <MenuItem key={data?.name} value={data?.name}>
+                  <Checkbox checked={value_ultilities_Home.indexOf(data?.name) > -1} />
+                  <ListItemText primary={data?.name} />
                 </MenuItem>
               ))}
             </CssSelect>
@@ -277,25 +290,25 @@ const Search = () => {
               md={3}
               lg={3}
               xl={3}
-              className="ease-in duration-75 hover:shadow hover:shadow-slate-500 pb-5 hover:scale-105 rounded-lg "
+              className="ease-in duration-75 hover:shadow hover:shadow-slate-500 pb-1  rounded-lg "
             >
               <Link to={`/depart/` + data?._id}>
                 <Avatar
                   variant="square"
-                  className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded mx-auto mb-2"
-                  src={process.env.REACT_APP_API_URL + "/" + data?.photo?.[0]}
+                  className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2"
+                  src={process.env.REACT_APP_API_URL + "/departs/" + data?.photo?.[0]}
                 />
-                <Typography  className="font-bold text-md">
+                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-md">
                   {data?.name}
                 </Typography>
-                <Typography className="font-bold text-sky-500 mt-2 text-sm">
+                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-sky-500 mt-2 text-sm">
                   <PlaceIcon className="w-5"></PlaceIcon>
                   {data?.districtHouse}
                 </Typography>
-                <Typography className="text-green-600 font-bold text-md">
+                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="text-green-600 font-bold text-md">
                   {data?.type}
                 </Typography>
-                <Typography className="text-red-500 font-bold mt-2 text-sm">
+                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="text-red-500 font-bold mt-2 text-sm">
                   {data?.price} VNĐ
                 </Typography>
                 {/* <Typography className="text-neutral-900 font-bold text-sm">

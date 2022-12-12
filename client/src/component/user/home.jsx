@@ -45,20 +45,20 @@ const Home = () => {
               <Link to={`/depart/` + data?._id}>
                 <Avatar
                   variant="square"
-                  className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded mx-auto mb-2"
+                  className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2"
                   src={process.env.REACT_APP_API_URL + "/departs/" + data?.photo?.[0]}
                 />
-                <Typography  className="font-bold text-md">
+                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-md">
                   {data?.name}
                 </Typography>
-                <Typography className="font-bold text-sky-500 mt-2 text-sm">
+                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-sky-500 mt-2 text-sm">
                   <PlaceIcon className="w-5"></PlaceIcon>
                   {data?.districtHouse}
                 </Typography>
-                <Typography className="text-green-600 font-bold text-md">
+                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="text-green-600 font-bold text-md">
                   {data?.type}
                 </Typography>
-                <Typography className="text-red-500 font-bold mt-2 text-sm">
+                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}} className="text-red-500 font-bold mt-2 text-sm">
                   {data?.price} VNĐ
                 </Typography>
               </Link>

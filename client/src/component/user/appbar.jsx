@@ -16,8 +16,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Link } from "react-router-dom";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { TextField } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
 import { selectListDepart } from "../../redux/depart/departSelector";
+import { fetchDeparts } from "../../redux/depart/departThunk";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -72,7 +73,13 @@ const Appbar = () => {
   const [valueSearch, setValueSearch] = React.useState("");
   const [dataSearch, setDataSearch] = React.useState();
   const listDepart = useSelector(selectListDepart);
+  const dispatch = useDispatch();
 
+  
+  React.useEffect(() => {
+    dispatch(fetchDeparts());
+  }, [dispatch]);
+  
   const handleChangeValueSearch = (e) => {
     setValueSearch(e.target.value);
   };
@@ -93,7 +100,6 @@ const Appbar = () => {
     }
   }, [handleFindSearch, valueSearch]);
 
-  console.log(valueSearch);
   return (
     <Box>
       <AppBar position="static" className="bg-slate-50 ">

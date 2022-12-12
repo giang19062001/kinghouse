@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { fetchServices,postService } from "./serviceThunk";
+import { fetchServices,postService,deleteService } from "./serviceThunk";
 
 const initialState = {
     services: [],
@@ -17,11 +17,11 @@ export const serviceSlice = createSlice({
          state.isLoading = false;
          state.services = action.payload
       })
-     builder.addMatcher(isAnyOf(fetchServices.pending,postService.pending),(state,action)=>{
+     builder.addMatcher(isAnyOf(fetchServices.pending,postService.pending,deleteService.pending),(state,action)=>{
         state.isLoading = true;
      })
 
-     builder.addMatcher(isAnyOf(fetchServices.rejected,postService.rejected),(state,action)=>{
+     builder.addMatcher(isAnyOf(fetchServices.rejected,postService.rejected,deleteService.rejected),(state,action)=>{
         state.isLoading = false;
         state.error = action.payload
      })

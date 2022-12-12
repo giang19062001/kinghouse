@@ -47,6 +47,7 @@ const DepartController = {
         ultilitiesDepart,
         ultilitiesHouse,
       };
+      console.log(newDepartData)
       const newDepart = new Depart(newDepartData);
       const saveDepart = await newDepart.save();
       res.status(200).json(saveDepart);

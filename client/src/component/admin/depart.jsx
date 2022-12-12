@@ -19,18 +19,21 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postDepart } from "../../redux/depart/departThunk";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   district,
-  service,
   status,
   type,
-  ultilitiesDepart,
-  ultilitiesHouse,
 } from "../../util/data";
+import { fetchServices } from "../../redux/service/serviceThunk";
+import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
+import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
+import { selectListServices } from "../../redux/service/serviceSelector";
+import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
+import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -61,6 +64,37 @@ const CssInputLabel = styled(InputLabel)({
 
 const Depart = () => {
   const [file, setFile] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+     dispatch(fetchServices())
+     dispatch(fetchUlDeparts())
+     dispatch(fetchUlHomes())
+  },[])
+
+  const service = useSelector(selectListServices)
+  const ultilitiesDepart = useSelector(selectListUlDeparts)
+  const ultilitiesHouse = useSelector(selectListUlHomes)
+
+  const [departPost, setDepartPost] = useState({
+    name: "",
+    price: "",
+    description: "",
+    width: "",
+    length: "",
+    status: "",
+    service: [],
+    ultilitiesDepart: [],
+    electricMoney: "",
+    waterMoney: "",
+    photo: [],
+    nameHouse: "",
+    descriptionHouse: "",
+    districtHouse: "",
+    addressHouse: "",
+    ultilitiesHouse: [],
+  });
 
   function uploadSingleFile(e) {
     handlePhoto(e.target.files);
@@ -70,7 +104,6 @@ const Depart = () => {
     console.log("ImagesArray", ImagesArray);
     setFile([...file, ...ImagesArray]);
   }
-  console.log("filefile", file);
 
   function deleteFile(indexDelete) {
     console.log("indexDelete", indexDelete);
@@ -97,27 +130,6 @@ const Depart = () => {
     }));
   };
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [departPost, setDepartPost] = useState({
-    name: "",
-    price: "",
-    description: "",
-    width: "",
-    length: "",
-    status: "",
-    service: [],
-    ultilitiesDepart: [],
-    electricMoney: "",
-    waterMoney: "",
-    photo: [],
-    nameHouse: "",
-    descriptionHouse: "",
-    districtHouse: "",
-    addressHouse: "",
-    ultilitiesHouse: [],
-  });
 
   const handleChangeCheckbox = (event) => {
     console.log(event.target.checked, event.target.value, [event.target.name]);
@@ -308,9 +320,9 @@ const Depart = () => {
                     <FormControlLabel
                       control={<Checkbox />}
                       name="service"
-                      label={data}
+                      label={data?.name}
                       onChange={handleChangeCheckbox}
-                      value={data}
+                      value={data?.name}
                     />
                   ))}
                 </FormGroup>
@@ -374,9 +386,9 @@ const Depart = () => {
                     <FormControlLabel
                       control={<Checkbox />}
                       name="ultilitiesDepart"
-                      label={data}
+                      label={data?.name}
                       onChange={handleChangeCheckbox}
-                      value={data}
+                      value={data?.name}
                     />
                   ))}
                 </FormGroup>
@@ -386,9 +398,9 @@ const Depart = () => {
                     <FormControlLabel
                       control={<Checkbox />}
                       name="ultilitiesHouse"
-                      label={data}
+                      label={data?.name}
                       onChange={handleChangeCheckbox}
-                      value={data}
+                      value={data?.name}
                     />
                   ))}
                 </FormGroup>

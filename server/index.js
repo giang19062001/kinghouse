@@ -23,11 +23,16 @@ app.use(express.static('images')); //anh cho fontend
 const departRouter = require("./router/depart")
 const formRouter = require("./router/form")
 const serviceRouter = require("./router/service")
+const ulDepartRouter = require("./router/ulDepart")
+const ulHomeRouter = require("./router/ulHome")
+
 //use router
 
 app.use("/api/depart",departRouter)
 app.use("/api/form",formRouter)
 app.use("/api/service",serviceRouter)
+app.use("/api/ulDepart",ulDepartRouter)
+app.use("/api/ulHome",ulHomeRouter)
 
 
 app.listen(process.env.PORT,() =>{

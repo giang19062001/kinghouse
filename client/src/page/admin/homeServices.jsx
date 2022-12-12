@@ -1,12 +1,12 @@
-import ServiceController from "../../component/admin/services"
 import Menu from "../../component/admin/menu"
+import ServicesComponent from "../../component/admin/services"
 
 
 const HomeService = () =>{
     return (
         <div>
     <Menu></Menu>
-    <ServiceController></ServiceController>
+    <ServicesComponent></ServicesComponent>
        </div>
     )
 }

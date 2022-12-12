@@ -16,19 +16,23 @@ import {
   } from "@mui/material";
   import { styled } from "@mui/material/styles";
   import { useState } from "react";
-  import { useDispatch } from "react-redux";
+  import { useDispatch,useSelector } from "react-redux";
   import { useNavigate } from "react-router-dom";
   import { deleteImage, fetchDepartDetail, updateDepart, updateImage } from "../../redux/depart/departThunk";
   import {
     district,
-    service,
     status,
     type,
-    ultilitiesDepart,
-    ultilitiesHouse,
+
   } from "../../util/data";
   import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { fetchServices } from "../../redux/service/serviceThunk";
+import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
+import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
+import { selectListServices } from "../../redux/service/serviceSelector";
+import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
+import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 
   const CssTextField = styled(TextField)({
     "& .MuiOutlinedInput-root": {
@@ -58,6 +62,15 @@ import { useEffect } from "react";
   });
   const DepartUpdate = () => {
   
+    const service = useSelector(selectListServices)
+    const ultilitiesDepart = useSelector(selectListUlDeparts)
+    const ultilitiesHouse = useSelector(selectListUlHomes)
+  
+    useEffect(()=>{
+       dispatch(fetchServices())
+       dispatch(fetchUlDeparts())
+       dispatch(fetchUlHomes())
+    },[])
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams();
@@ -170,6 +183,7 @@ import { useEffect } from "react";
 
 
   console.log(departUpdate)
+  console.log("service",service)
     return (
       <Container sx={{marginTop:20}}>
         <Box >
@@ -292,22 +306,22 @@ import { useEffect } from "react";
                 />
                 <label>Những dịch vụ đã bao gồm giá thuê: </label>
                 <FormGroup className="flex flex-row flex-wrap">
-                  {service.map((data, index) => (
-                       departUpdate.service.includes(data) ?(
+                  {service?.map((data, index) => (
+                       departUpdate.service.includes(data?.name) ?(
                           <FormControlLabel
                           control={<Checkbox defaultChecked  />}
                           name="service"
-                          label={data}
+                          label={data?.name}
                           onChange={handleChangeCheckbox}
-                          value={data}
+                          value={data?.name}
                         />
                         ):(
                             <FormControlLabel
                             control={<Checkbox   />}
                             name="service"
-                            label={data}
+                            label={data?.name}
                             onChange={handleChangeCheckbox}
-                            value={data}
+                            value={data?.name}
                           />                          
                         )
                     ))}
@@ -373,44 +387,44 @@ import { useEffect } from "react";
   
                 <label>Tiện ích bên trong căn hộ: </label>
                 <FormGroup className="flex flex-row flex-wrap">
-                  {ultilitiesDepart.map((data, index) => (
-                       departUpdate.ultilitiesDepart.includes(data) ?(
+                  {ultilitiesDepart?.map((data, index) => (
+                       departUpdate.ultilitiesDepart.includes(data?.name) ?(
                           <FormControlLabel
                           control={<Checkbox defaultChecked  />}
                           name="ultilitiesDepart"
-                          label={data}
+                          label={data?.name}
                           onChange={handleChangeCheckbox}
-                          value={data}
+                          value={data?.name}
                         />
                         ):(
                             <FormControlLabel
                             control={<Checkbox   />}
                             name="ultilitiesDepart"
-                            label={data}
+                            label={data?.name}
                             onChange={handleChangeCheckbox}
-                            value={data}
+                            value={data?.name}
                           />                          
                         )
                     ))}
                 </FormGroup>
                 <label>Tiện ích bên khu vực tòa nhà sở hữu căn hộ: </label>
                 <FormGroup className="flex flex-row flex-wrap">
-                  {ultilitiesHouse.map((data, index) => (
-                       departUpdate.ultilitiesHouse.includes(data) ?(
+                  {ultilitiesHouse?.map((data, index) => (
+                       departUpdate.ultilitiesHouse.includes(data?.name) ?(
                           <FormControlLabel
                           control={<Checkbox defaultChecked  />}
                           name="ultilitiesHouse"
-                          label={data}
+                          label={data?.name}
                           onChange={handleChangeCheckbox}
-                          value={data}
+                          value={data?.name}
                         />
                         ):(
                             <FormControlLabel
                             control={<Checkbox   />}
                             name="ultilitiesHouse"
-                            label={data}
+                            label={data?.name}
                             onChange={handleChangeCheckbox}
-                            value={data}
+                            value={data?.name}
                           />                          
                         )
                     ))}

@@ -7,11 +7,15 @@ import { persistStore } from "redux-persist";
 import departSlice from './depart/departSlice';
 import formSlice from './form/formSlice';
 import serviceSile from './service/serviceSlice';
-
+import ulDepartSlice from './ultilitiesDepart/ulDepartSlice';
+import  ulHomeSlice  from './ultilitiesHome/ulHomeSlice';
 const rootReducer = combineReducers({
     departSlice,
     formSlice,
-    serviceSile
+    serviceSile,
+    ulDepartSlice,
+    ulHomeSlice
+    
     
 });
 

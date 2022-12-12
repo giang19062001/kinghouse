@@ -59,14 +59,14 @@ const ServicesComponent = () => {
   const handleDelete = (data) => {
     dispatch(deleteService(data))
     .then(()=>{
-      navigate(0)
+      // navigate(0)
     })
   };
   
 
   return (
-    <Container sx={{ marginTop: 20 }}>
-      <Paper>
+    <Container sx={{ marginY: 20 }}>
+      <Paper className="mb-6" elevation={2}>
         <Stack className="p-6">
           <Typography align="center" className="font-bold text-lg pb-6">
             THÊM DỊCH VỤ
@@ -98,11 +98,11 @@ const ServicesComponent = () => {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
-            <TableRow className="bg-sky-400">
-              <TableCell align="center" className="font-bold">
+            <TableRow className="bg-sky-400 ">
+              <TableCell align="center" className="font-bold text-slate-50">
                ICON
               </TableCell>
-              <TableCell align="center" className="font-bold">
+              <TableCell align="center" className="font-bold text-slate-50">
                 TÊN DỊCH VỤ
               </TableCell>
               
@@ -132,7 +132,7 @@ const ServicesComponent = () => {
                 <TableCell align="center">
                   <Button
                     className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                    onClick={()=>handleDelete({id:row?._id,photo:row?.photo})}
+                    onClick={()=>handleDelete({id:row?._id,name:row?.name,photo:row?.photo})}
                   >
                     Xóa
                   </Button>
