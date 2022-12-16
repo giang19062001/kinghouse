@@ -34,32 +34,26 @@ import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 
-  const CssTextField = styled(TextField)({
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderRadius: "30px",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#facc15      ",
-      },
+const CssTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderRadius: "30px",
     },
-    "& label.Mui-focused": {
-      color: "#facc15",
-    },
-  });
-  
-  const CssSelect = styled(Select)({
-    borderRadius: "30px",
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#facc15 ",
-    },
-  });
-  
-  const CssInputLabel = styled(InputLabel)({
-    "&.Mui-focused": {
-      color: "#facc15",
-    },
-  });
+
+  },
+
+});
+
+const CssSelect = styled(Select)({
+  borderRadius: "30px",
+
+});
+
+const CssInputLabel = styled(InputLabel)({
+  // "&.Mui-focused": {
+  //   color: "#facc15",
+  // },
+});
   const DepartUpdate = () => {
   
     const service = useSelector(selectListServices)
@@ -78,6 +72,7 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
     const [departUpdate, setDepartUpdate] = useState({
       name: "",
       price: "",
+      pricePromotion:"",
       description: "",
       width: "",
       length:"",
@@ -183,14 +178,12 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 
 
   console.log(departUpdate)
-  console.log("service",service)
     return (
-      <Container sx={{marginTop:20}}>
+      <Container sx={{marginY:20}}>
         <Box >
           <Paper elevation={6} className=" p-12">
-          <Typography className="text-2xl  font-bold mb-10  underline decoration-double decoration-sky-500" align="center">
-            CHỈNH SỬA CĂN HỘ
-          </Typography>
+          <p className="p"><span className="fancy">Chỉnh sửa căn hộ</span></p>
+
           {departUpdate === undefined?(
             <p>Loading...</p>
           ):(
@@ -206,17 +199,31 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
                   onChange={handleChange}
                 ></CssTextField>
                 <CssTextField
-                  type="number"
+                  type="text"
                   name="price"
+                  placeholder="VD: 15.000.000"
                   defaultValue={departUpdate.price}
                   label="Gía căn hộ"
                   fullWidth
                   onChange={handleChange}
                 ></CssTextField>
+                  {departUpdate.status === "Đang khuyến mãi" ? (
+                  <CssTextField
+                    type="text"
+                    name="pricePromotion"
+                    defaultValue={departUpdate?.pricePromotion}
+
+                    label="Gía khuyến mãi "
+                    placeholder="VD: 13.000.000"
+                    fullWidth
+                    onChange={handleChange}
+                  ></CssTextField>
+                ) : null}
                 <Stack direction="row">
                 <CssTextField
                   type="number"
                   name="width"
+                  placeholder="VD: 50"
                   defaultValue={departUpdate.width}
                   fullWidth
                   label="Chiều rộng (m2)"
@@ -225,6 +232,7 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
                   <CssTextField
                   type="number"
                   name="length"
+                  placeholder="VD: 50"
                   defaultValue={departUpdate.length}
                   fullWidth
                   label="Chiều dài (m2)"
@@ -233,16 +241,18 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
                 </Stack>
                 <Stack direction="row">
                 <CssTextField
-                  type="number"
+                  type="text"
                   name="electricMoney"
+                  placeholder="VD: 5.000"
                   defaultValue={departUpdate.electricMoney}
                   label="Tiền điện"
                   fullWidth
                   onChange={handleChange}
                 ></CssTextField>
                 <CssTextField
-                  type="number"
+                  type="text"
                   name="waterMoney"
+                  placeholder="VD: 100.000"
                   defaultValue={departUpdate.waterMoney}
                   label="Tiền nước"
                   fullWidth
@@ -284,17 +294,18 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
                 <label for="photo">
                   Ảnh mô tả căn hộ 
                 </label>
+                
                 <div className="flex flex-row flex-wrap">
-                {departUpdate.photo.map((dataImage,index)=>(
+                {departUpdate?.photo?.map((dataImage,index)=>(
                   <div className="relative" key={index}>
-                   <img className="w-56 object-contain p-1" alt="" src={process.env.REACT_APP_API_URL + "/departs/" + dataImage} />
+                   <img className="w-56 object-contain p-1" alt="" src={process.env.REACT_APP_API_URL + "/departs/" + dataImage.photo} />
                    <button 
-                   onClick={()=>handleDeleteImage(dataImage)}
+                   onClick={()=>handleDeleteImage(dataImage.photo)}
                    className="hover:scale-105 absolute font-bold right-0 top-0 text-slate-50 bg-red-500 rounded-lg py-1 px-3 text-xs">X</button>
                    </div>
                 ))}
                 </div>
-                <label for="photo" className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-sky-500 w-24 p-2">Thêm ảnh</label>
+                <label for="photo" className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-green-500 w-24 p-2">Thêm ảnh</label>
                 <input
                   style={{ display: "none" }}
                   type="file"
@@ -434,7 +445,7 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
           </Grid>
           )}
           <Button
-            className="bg-sky-500 text-slate-50 font-bold hover:scale-105 mt-12 "
+            className="bg-green-500 text-slate-50 font-bold hover:scale-105 mt-12 "
             sx={{ display: "block", margin: "auto" }}
             onClick={hanldeUpdate}
           >

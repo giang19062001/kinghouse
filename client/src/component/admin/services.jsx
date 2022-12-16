@@ -68,10 +68,11 @@ const ServicesComponent = () => {
     <Container sx={{ marginY: 20 }}>
       <Paper className="mb-6" elevation={2}>
         <Stack className="p-6">
-          <Typography align="center" className="font-bold text-lg pb-6">
+
+          <Typography align="center" className="font-bold text-lg pb-6 font-sans  underline decoration-green-500">
             THÊM DỊCH VỤ
           </Typography>
-          <Box className="space-x-3 flex  items-center ">
+          <Box className="space-y-5 flex flex-col  items-center ">
             <TextField
               label="Tên dịch vụ"
               fullWidth
@@ -80,6 +81,7 @@ const ServicesComponent = () => {
               onChange={handleChange}
             ></TextField>
             <input
+            className="w-full"
               type="file"
               id="photo"
               name="photo"

@@ -29,20 +29,20 @@ const Footer = () => {
                   HOTLINE
                 </Typography>
                 <Typography className="bg-slate-50 rounded-full text-neutral-900 font-bold p-2">
-                &emsp;   <PhoneIcon></PhoneIcon> &emsp;0901.311.113
+                &emsp;   <PhoneIcon></PhoneIcon> &emsp;{process.env.REACT_APP_PHONE}
                 </Typography>
                 <Typography className="text-neutral-900 font-bold py-3">
                   EMAIL
                 </Typography>
                 <Typography className="bg-slate-50 rounded-full text-neutral-900 font-bold p-2">
-                 &emsp;  <EmailIcon></EmailIcon> &emsp; KingHouse@gmail.com
+                 &emsp;  <EmailIcon></EmailIcon> &emsp; {process.env.REACT_APP_EMAIL}
                 </Typography>
                 <Typography className="text-neutral-900 font-bold py-3">
                   ĐỊA CHỈ
                 </Typography>
                 <Typography align="center" className="bg-slate-50 rounded-full text-neutral-900  font-bold p-2 ">
                <PlaceIcon></PlaceIcon>
-                  &emsp;356 Tạ Quang Bữu
+                  &emsp;{process.env.REACT_APP_ADDRESS}
                 </Typography>
             </Grid>
             <Grid item md={4}>

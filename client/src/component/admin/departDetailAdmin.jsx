@@ -1,26 +1,11 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Divider,
-  Button,
-  Stack,
-  DialogContent,
-  Dialog,
-  TextField,
-} from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import EmailIcon from "@mui/icons-material/Email";
+import { Box, Container, Typography, Divider, Stack,Dialog,Skeleton } from "@mui/material";
+
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
-import { styled } from "@mui/material/styles";
-import { postForm } from "../../redux/form/formThunk";
-import { selectSuccessForm } from "../../redux/form/formSelector";
-import { turnOffSuccess } from "../../redux/form/formSlice";
+
 import { fetchServices } from "../../redux/service/serviceThunk";
 import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
 import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
@@ -31,14 +16,14 @@ import React from "react";
 import {
   StackedCarousel,
   ResponsiveContainer,
-  StackedCarouselSlideProps 
+  StackedCarouselSlideProps,
 } from "react-stacked-center-carousel";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import '../../css/carouselmg.scss'
+import "../../css/carouselmg.scss";
 
 const DepartDetailAdmin = () => {
-  window.scrollTo({ top: 5, behavior: "smooth" });
+  window.scrollTo({ top: 5, behavior: "auto" });
 
   const ref = React.useRef();
   useEffect(() => {
@@ -54,71 +39,91 @@ const DepartDetailAdmin = () => {
 
   const params = useParams();
   const dispatch = useDispatch();
-  const [data,setData] = useState()
+  const [data, setData] = useState();
 
   useEffect(() => {
     dispatch(fetchDepartDetail(params.id));
   }, [dispatch, params.id]);
 
-  useEffect(() => {
-    const arr = [] 
-    if (Object.keys(depart)?.length !== 0) {
-      depart.photo.forEach((element) => {
-        arr.push({ photo: element });
-      });
-      setData(arr)
-    }
-  }, [depart]);
-
 
   const templateIconSer = (data) => {
     const result = service.find((element) => element.name === data);
     return (
-      <div className="space-x-10  flex flex-col flex-wrap">
-        <img
-          className="w-12 mx-auto"
-          alt=""
-          src={process.env.REACT_APP_API_URL + "/services/" + result?.photo}
-        />
-        <Typography align="center"  className="mt-4 mb-10">{result?.name}</Typography>
+      <div className="flex flex-row flex-wrap">
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          sx={{marginX:2}}
+        >
+          <img
+            className="w-10 mx-auto"
+            alt=""
+            src={process.env.REACT_APP_API_URL + "/services/" + result?.photo}
+          />
+          <Typography align="center" className="mt-4 mb-10">
+            {result?.name}
+          </Typography>
+        </Stack>
       </div>
     );
   };
   const templateIconUlDepart = (data) => {
     const result = ultilitiesDepart.find((element) => element.name === data);
     return (
-      <div className="space-x-10 flex flex-col flex-wrap">
+      <div className=" flex flex-row flex-wrap">
+          <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          sx={{marginX:2}}
+        >
         <img
-          className="w-12 mx-auto"
+          className="w-10 mx-auto"
           alt=""
           src={process.env.REACT_APP_API_URL + "/ulDepart/" + result?.photo}
         />
-        <Typography align="center" className="mt-4 mb-10">{result?.name}</Typography>
+        <Typography align="center" className="mt-4 mb-10">
+          {result?.name}
+        </Typography>
+        </Stack>
       </div>
     );
   };
   const templateIconUlHouse = (data) => {
     const result = ultilitiesHouse.find((element) => element.name === data);
     return (
-      <div className="space-x-10 flex flex-col flex-wrap">
+      <div className="flex flex-row flex-wrap">
+          <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          sx={{marginX:2}}
+        >
         <img
-          className="w-12 mx-auto"
+          className="w-10 mx-auto"
           alt=""
           src={process.env.REACT_APP_API_URL + "/ulHome/" + result?.photo}
         />
-        <Typography align="center"  className="mt-4 mb-10">{result?.name}</Typography>
+        <Typography align="center" className="mt-4 mb-10">
+          {result?.name}
+        </Typography>
+        </Stack>
       </div>
     );
   };
 
   return (
-    <Container sx={{ marginY: 10 }}>
+    <Container sx={{ marginY: 20 }}>
       {Object.keys(depart)?.length === 0 ? (
         <p>Loading...</p>
       ) : (
         <Stack>
           <Box className="mb-2">
-          {data !== undefined ? (
+            {depart.photo.length !== 0 ? (
               <div
                 style={{
                   width: "100%",
@@ -129,17 +134,16 @@ const DepartDetailAdmin = () => {
                 <ResponsiveContainer
                   carouselRef={ref}
                   render={(parentWidth, carouselRef) => {
-              
                     let currentVisibleSlide = 5;
                     if (parentWidth <= 1440) currentVisibleSlide = 3;
-                    if (parentWidth <= 1080) currentVisibleSlide = 1;
+                    if (parentWidth <= 1080) currentVisibleSlide = 3;
                     return (
                       <StackedCarousel
                         ref={carouselRef}
                         slideComponent={Card}
-                        slideWidth={parentWidth < 800 ? parentWidth - 40 : 750}
+                        slideWidth={parentWidth < 800 ? parentWidth - 120 : 750}
                         carouselWidth={parentWidth}
-                        data={data && data}
+                        data={depart.photo}
                         currentVisibleSlide={currentVisibleSlide}
                         maxVisibleSlide={5}
                         customScales={[1, 0.85, 0.7, 0.55]}
@@ -178,7 +182,9 @@ const DepartDetailAdmin = () => {
                   ></ArrowCircleRightIcon>
                 </>
               </div>
-            ) : <p>Loading...</p>}
+            ) : (
+              <p>Loading...</p>
+            )}
           </Box>
           <Box className="pt-2">
             <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
@@ -190,10 +196,23 @@ const DepartDetailAdmin = () => {
             <Typography>
               Loại căn hộ: <b> {depart?.type}</b>
             </Typography>
-            <Typography>
+            {depart?.status === "Đang khuyến mãi"?(
+              <div>
+              <Typography>
+              Gía gốc:{" "}
+              <b className="text-red-500 line-through "> {depart?.price} VNĐ</b>
+              </Typography>
+               <Typography>
+               Gía Khuyến mãi:{" "}
+               <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
+               </Typography>
+               </div>
+            ):(
+              <Typography>
               Gía thuê căn hộ:{" "}
               <b className="text-red-500"> {depart?.price} VNĐ</b>
             </Typography>
+            )}
             <Typography>
               Diện tích (dài * rộng):{" "}
               <b>
@@ -258,39 +277,77 @@ const DepartDetailAdmin = () => {
 };
 
 export default DepartDetailAdmin;
+
+
 export const Card = React.memo(function (props) {
   const { data, dataIndex, isCenterSlide, swipeTo, slideIndex } = props;
-  const [loadDelay, setLoadDelay] = React.useState();
-  const [removeDelay, setRemoveDelay] = React.useState();
-  const [loaded, setLoaded] = React.useState(false);
-  React.useEffect(() => {
-    if (isCenterSlide) {
-      clearTimeout(removeDelay);
-      setLoadDelay(setTimeout(() => setLoaded(true), 1000));
-    } else {
-      clearTimeout(loadDelay);
-      if (loaded) setRemoveDelay(setTimeout(() => setLoaded(false), 1000));
-    }
-  }, [isCenterSlide]);
+  const { photo } = data[dataIndex] || {};
 
-  React.useEffect(() => () => {
-    clearTimeout(removeDelay);
-    clearTimeout(loadDelay);
+  const [imageDialog, setImageDialog] = useState({
+    open: false,
+    value: "",
   });
-
-  const { photo } = data[dataIndex];
-
-  return (
-    <div className='twitch-card' draggable={false}>
-        <div
-          className='card-overlay fill'
-          onClick={() => {
-            if (!isCenterSlide) swipeTo(slideIndex);
-          }}
-        />
+  const handleCloseImageDialog = () => {
+    setImageDialog({ open: false, value: "" });
+  };
+  return photo !== undefined ? (
+    <div>
+      <div className="twitch-card" draggable={false}>
+        <div className={`cover fill`}>
+          <div
+            className="card-overlay fill"
+            onClick={() => {
+              if (!isCenterSlide) {
+                swipeTo(slideIndex);
+              } else {
+                setImageDialog({ open: true, value: photo });
+              }
+            }}
+          />
+          <img
+            key={photo}
+            className="cover-image fill"
+            src={process.env.REACT_APP_API_URL + "/departs/" + photo}
+            alt=""
+          />
+        </div>
+      </div>
+      <Dialog
+        maxWidth={"lg"}
+        open={imageDialog.open}
+        onClose={handleCloseImageDialog}
+      >
         <img
-        className='cover-image fill' alt="" src={process.env.REACT_APP_API_URL + "/departs/" + photo} />
-   
+          key={photo}
+          src={process.env.REACT_APP_API_URL + "/departs/" + imageDialog.value}
+          alt=""
+          style={{ display: "block", margin: "auto" }}
+        ></img>
+      </Dialog>
+    </div>
+  ) : (
+    <div>
+      <div className="twitch-card" draggable={false}>
+        <div className={`cover fill`}>
+          <div
+            className="card-overlay fill"
+            onClick={() => {
+              if (!isCenterSlide) {
+                swipeTo(slideIndex);
+              }
+            }}
+          >
+            <Skeleton
+              animation="wave"
+              sx={{ bgcolor: "grey.300" }}
+              variant="rectangular"
+              width={700}
+              height="65vmin"
+              className="cover-image fill"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 });

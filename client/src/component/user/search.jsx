@@ -14,17 +14,16 @@ import {
   Button,
   Checkbox,
   ListItemText,
-  Grid,Avatar, Divider
+  Grid,
+  Avatar,
+  Divider,
 } from "@mui/material";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import PlaceIcon from "@mui/icons-material/Place";
 import { styled } from "@mui/material/styles";
-import {
-  district,
-  type,
-} from "../../util/data";
-import { useSelector,useDispatch } from "react-redux";
+import { district, type } from "../../util/data";
+import { useSelector, useDispatch } from "react-redux";
 import { selectListDepart } from "../../redux/depart/departSelector";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -34,6 +33,9 @@ import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
 import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
+import Pagination from "@mui/material/Pagination";
+import usePagination from "../../util/pagination";
+
 const CssSelect = styled(Select)({
   borderRadius: "30px",
 });
@@ -57,30 +59,43 @@ const MenuProps = {
     },
   },
 };
+
+const PER_PAGE = 8;
+
 const Search = () => {
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(fetchServices())
-    dispatch(fetchUlDeparts())
-    dispatch(fetchUlHomes())
- },[])
+  useEffect(() => {
+    dispatch(fetchServices());
+    dispatch(fetchUlDeparts());
+    dispatch(fetchUlHomes());
+  }, []);
 
- const service = useSelector(selectListServices)
- const ultilitiesDepart = useSelector(selectListUlDeparts)
- const ultilitiesHouse = useSelector(selectListUlHomes)
+  const service = useSelector(selectListServices);
+  const ultilitiesDepart = useSelector(selectListUlDeparts);
+  const ultilitiesHouse = useSelector(selectListUlHomes);
 
-  const listDepart = useSelector(selectListDepart)
-  const [dataSearch,setDataSearch] = React.useState()
-  const [valueDistrict,setValueDistrict] = React.useState()
-  const [valueType,setValueType] = React.useState()
+  const listDepart = useSelector(selectListDepart);
+  const [dataSearch, setDataSearch] = React.useState();
+  const [valueDistrict, setValueDistrict] = React.useState();
+  const [valueType, setValueType] = React.useState();
   const [valueArea, setValueArea] = React.useState({
-    length:0,
-    width:0
+    length: 0,
+    width: 0,
   });
   const [valuePrice, setValuePrice] = React.useState([0, 50000000]);
-  const [value_ultilities_Depart, set_value_ultilities_Depart] = React.useState([]);
+  const [value_ultilities_Depart, set_value_ultilities_Depart] = React.useState(
+    []
+  );
   const [value_ultilities_Home, set_value_ultilities_Home] = React.useState([]);
+
+  let [page, setPage] = useState(1);
+  const count = Math.ceil(dataSearch?.length / PER_PAGE);
+  const dataPagination = usePagination(dataSearch, PER_PAGE);
+  const handleChange = (e, p) => {
+    setPage(p);
+    dataPagination.jump(p);
+  };
 
   const handleChangePrice = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
@@ -118,43 +133,48 @@ const Search = () => {
     );
   };
 
-
-
-  const handleClickSearch = () =>{
-
+  const handleClickSearch = () => {
     setDataSearch(
-      listDepart.filter((
-    item => (
-    (parseInt(item.price) >=valuePrice[0] 
-    && parseInt(item.price) <= valuePrice[1])
+      listDepart.filter(
+        (item) =>
+          parseInt(item.price.split('.').join('')) >= valuePrice[0] &&
+          parseInt(item.price.split('.').join('')) <= valuePrice[1] &&
+          (valueDistrict !== undefined
+            ? item.districtHouse === valueDistrict
+            : item.districtHouse !== valueDistrict) &&
+          (valueType !== undefined
+            ? item.type === valueType
+            : item.type !== valueType) &&
+          (valueArea.length !== 0
+            ? item.length === valueArea.length
+            : item.length !== valueArea.length) &&
+          (valueArea.width !== 0
+            ? item.width === valueArea.width
+            : item.width !== valueArea.width) &&
+          (value_ultilities_Depart.length !== 0
+            ? item.ultilitiesDepart.some((element) =>
+                value_ultilities_Depart.includes(element)
+              )
+            : item.ultilitiesDepart !== value_ultilities_Depart) &&
+          (value_ultilities_Home.length !== 0
+            ? item.ultilitiesHouse.some((element) =>
+                value_ultilities_Home.includes(element)
+              )
+            : item.ultilitiesHouse !== value_ultilities_Home)
+      )
+    );
 
-    && (valueDistrict !== undefined 
-    ? item.districtHouse === valueDistrict
-    :  item.districtHouse !== valueDistrict)
-    
-    && (valueType !== undefined 
-    ? item.type === valueType
-    : item.type !== valueType)
+  };
+  const formatter = new Intl.NumberFormat("vi-VI", {
+    style: "currency",
+    currency: "VND",
+  });
 
-    &&(valueArea.length !== 0 || valueArea.width !== 0
-    ? item.length === valueArea.length && item.width === valueArea.width
-    : item.length !== valueArea.length && item.width !== valueArea.width )
-  
-    &&(value_ultilities_Depart.length !==0
-      ? item.ultilitiesDepart.some(element=> value_ultilities_Depart.includes(element))
-      :item.ultilitiesDepart !== value_ultilities_Depart)
-    
-      &&(value_ultilities_Home.length !==0
-        ? item.ultilitiesHouse.some(element=> value_ultilities_Home.includes(element))
-        :item.ultilitiesHouse !== value_ultilities_Home)
-
-    ))))
-
-    // console.log("dataSearch",dataSearch)
-
-
+  const handleClose = () => {
+    setDataSearch(undefined)
   }
 
+  console.log("dataSearch",dataSearch)
 
   return (
     <Container sx={{ marginY: 10 }}>
@@ -170,19 +190,20 @@ const Search = () => {
             max={50000000}
           />
           <Typography className="float-left">
-            Min: {valuePrice[0]} VNĐ
+            Min: {formatter.format(valuePrice[0])} 
+            
           </Typography>
           <Typography className="float-right">
-            Max: {valuePrice[1]} VNĐ
+            Max: {formatter.format(valuePrice[1])}
           </Typography>
         </Box>
-        <Stack direction={{ sm: "column", md: "row" }} spacing={2} >
+        <Stack direction={{ sm: "column", md: "row" }} spacing={2}>
           <FormControl fullWidth className="pb-3">
             <InputLabel>Khu vực</InputLabel>
             <CssSelect
               label="Khu vực"
               name="districtHouse"
-              onChange={(e)=>setValueDistrict(e.target.value)}
+              onChange={(e) => setValueDistrict(e.target.value)}
             >
               {district.map((data, index) => (
                 <MenuItem key={index} value={data}>
@@ -196,7 +217,7 @@ const Search = () => {
             <CssSelect
               label="Khu vực"
               name="type"
-              onChange={(e)=>setValueType(e.target.value)}
+              onChange={(e) => setValueType(e.target.value)}
             >
               {type.map((data, index) => (
                 <MenuItem key={index} value={data}>
@@ -219,7 +240,9 @@ const Search = () => {
             >
               {ultilitiesDepart.map((data) => (
                 <MenuItem key={data?.name} value={data?.name}>
-                  <Checkbox checked={value_ultilities_Depart.indexOf(data?.name) > -1} />
+                  <Checkbox
+                    checked={value_ultilities_Depart.indexOf(data?.name) > -1}
+                  />
                   <ListItemText primary={data?.name} />
                 </MenuItem>
               ))}
@@ -239,13 +262,14 @@ const Search = () => {
             >
               {ultilitiesHouse.map((data) => (
                 <MenuItem key={data?.name} value={data?.name}>
-                  <Checkbox checked={value_ultilities_Home.indexOf(data?.name) > -1} />
+                  <Checkbox
+                    checked={value_ultilities_Home.indexOf(data?.name) > -1}
+                  />
                   <ListItemText primary={data?.name} />
                 </MenuItem>
               ))}
             </CssSelect>
           </FormControl>
-
         </Stack>
         <Stack
           direction={{ sm: "column", md: "row" }}
@@ -255,73 +279,139 @@ const Search = () => {
           className="mt-6 space-y-6"
         >
           <label>Diện tích</label>
-          <CssTextField label="Chiều dài" type="number" name="length" 
-          defaultValue={0}
-          onChange={(e)=>setValueArea((preState)=> ({...preState,length:parseInt(e.target.value)}))}></CssTextField>
-          <CssTextField label="Chiều rộng" type="number" name="width"
-           defaultValue={0}
-          onChange={(e)=>setValueArea((preState)=> ({...preState,width:parseInt(e.target.value)}))}></CssTextField>
-         
+          <CssTextField
+            label="Chiều dài"
+            type="number"
+            name="length"
+            defaultValue={0}
+            onChange={(e) =>
+              setValueArea((preState) => ({
+                ...preState,
+                length: parseInt(e.target.value),
+              }))
+            }
+          ></CssTextField>
+          <CssTextField
+            label="Chiều rộng"
+            type="number"
+            name="width"
+            defaultValue={0}
+            onChange={(e) =>
+              setValueArea((preState) => ({
+                ...preState,
+                width: parseInt(e.target.value),
+              }))
+            }
+          ></CssTextField>
         </Stack>
+        <Stack 
+        direction={{ sm: "column", md: "row" }}
+        spacing={1}
+        justifyContent="center"
+        alignItems="center">
         <Button
-          sx={{ margin: "auto", display: "block" }}
           className="bg-sky-400 text-slate-50 hover:bg-sky-500 mt-6 w-32"
           onClick={handleClickSearch}
         >
           Áp dụng
         </Button>
-        {/*  */}
-        {dataSearch === undefined ?(
-           null
-        ):(
-       <Box className="mt-12">
-        <Divider/>
-        {dataSearch.length === 0 ?(
-          <Typography align="center" className="font-bold text-red-500 text-xl my-6">Không tìm thấy kết quả tìm kiếm</Typography>
-        ):(
-          <div>
-        <Typography align="center" className="font-bold text-xl my-6">DANH SÁCH KẾT QUẢ TÌM KIẾM</Typography>
-          <Grid container spacing={2}>
-          {dataSearch?.map((data, index) => (
-            <Grid
-              item
-              xs={6}
-              sm={4}
-              md={3}
-              lg={3}
-              xl={3}
-              className="ease-in duration-75 hover:shadow hover:shadow-slate-500 pb-1  rounded-lg "
+        {dataSearch !== undefined?(
+            <Button
+            className="bg-slate-400 text-slate-50 hover:bg-slate-500 mt-6 w-32"
+            onClick={handleClose}
             >
-              <Link to={`/depart/` + data?._id}>
-                <Avatar
-                  variant="square"
-                  className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2"
-                  src={process.env.REACT_APP_API_URL + "/departs/" + data?.photo?.[0]}
-                />
-                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-md">
-                  {data?.name}
+           Đóng
+            </Button>
+        ):null}
+        </Stack>
+        {/*  */}
+        {dataPagination?.currentData() === undefined ? null : (
+          <Box className="mt-12">
+            <Divider />
+            {dataPagination?.currentData()?.length === 0 ? (
+              <Typography
+                align="center"
+                className="font-bold text-red-500 text-xl my-6"
+              >
+                Không tìm thấy kết quả tìm kiếm
+              </Typography>
+            ) : (
+              <div>
+                <Typography align="center" className="font-bold text-xl my-6">
+                  DANH SÁCH KẾT QUẢ TÌM KIẾM
                 </Typography>
-                <Typography sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-sky-500 mt-2 text-sm">
-                  <PlaceIcon className="w-5"></PlaceIcon>
-                  {data?.districtHouse}
-                </Typography>
-                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="text-green-600 font-bold text-md">
-                  {data?.type}
-                </Typography>
-                <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="text-red-500 font-bold mt-2 text-sm">
-                  {data?.price} VNĐ
-                </Typography>
-                {/* <Typography className="text-neutral-900 font-bold text-sm">
-                Diện tích:  {data?.length} * {data?.width} (dài * rộng)
-                </Typography> */}
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
-        </div>)}
-       </Box>
+                <Grid container spacing={0}>
+                  {dataPagination?.currentData()?.map((data, index) => (
+                    <Grid
+                      item
+                      xs={6}
+                      sm={4}
+                      md={3}
+                      lg={3}
+                      xl={3}
+                      className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3  rounded-lg "
+                    >
+                      <Link to={`/depart/` + data?._id}>
+                        <Avatar
+                          variant="square"
+                          className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2 mx-auto"
+                          src={
+                            process.env.REACT_APP_API_URL +
+                            "/departs/" +
+                            data?.photo?.[0]
+                          }
+                        />
+                        <Typography
+                          sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
+                          className="font-bold text-md"
+                        >
+                          {data?.name}
+                        </Typography>
+                        <Typography
+                          sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
+                          className="font-bold text-sky-500 mt-2 text-sm"
+                        >
+                          <PlaceIcon className="w-5"></PlaceIcon>
+                          {data?.districtHouse}
+                        </Typography>
+                        <Typography
+                          sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
+                          className="text-green-600 font-bold text-md"
+                        >
+                          {data?.type}
+                        </Typography>
+                        <Typography
+                          sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
+                          className="text-red-500 font-bold mt-2 text-sm"
+                        >
+                          {data?.price} VNĐ
+                        </Typography>
+                        <Typography
+                          sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
+                          className="text-orange-500 font-bold mt-2 text-sm "
+                        >
+                          Diện tích: {data?.length} * {data?.width} (dài * rộng)
+                        </Typography>
+                      </Link>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            )}
+          </Box>
         )}
-      
+        <Stack className="flex justify-center items-center py-12">
+          {dataPagination?.currentData() === undefined ? null : (
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              variant="outlined"
+              color="primary"
+              onChange={handleChange}
+            />
+          )}
+        </Stack>
       </Paper>
     </Container>
   );

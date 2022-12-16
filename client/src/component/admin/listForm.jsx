@@ -69,14 +69,14 @@ export default function ListForm() {
 
   console.log(ListForm);
   return (
-    <Container sx={{ marginY: 10 }}>
-      <Typography align="center" className="font-bold text-2xl mb-6">
-        DANH SÁCH KHÁCH HÀNG ĐĂNG KÝ TƯ VẤN
-      </Typography>
+    <Container sx={{ marginY: 20 }}>
+  
+      <p className="p"><span className="fancy"> Danh sách đăng ký tư vấn</span></p>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
-            <TableRow className="bg-sky-400">
+            <TableRow className="bg-sky-500">
               <StyledTableCell align="center" className="font-bold">
                 Họ và tên
               </StyledTableCell>
@@ -97,35 +97,44 @@ export default function ListForm() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ListForm?.map((row, index) => (
-              <StyledTableRow key={index}>
-                <StyledTableCell align="center">
-                  <Typography className=" font-bold"> {row?.name}</Typography>
-                </StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                  className="text-red-500 font-bold"
-                >
-                  {row?.phone}
-                </StyledTableCell>
-                <StyledTableCell align="center">{row?.email}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {new Date(row?.createdAt).toLocaleString()}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    className="bg-sky-400 text-slate-50  hover:bg-sky-600   "
-                    onClick={() => {
-                      handleClickOpenDialog();
-                      dispatch(fetchFormDetail(row?._id));
-                      dispatch(fetchDepartDetail(row?.depart));
-                    }}
-                  >
-                    Xem chi tiết
-                  </Button>
+            {ListForm.length === 0 ?(
+                <StyledTableRow >
+                <StyledTableCell colSpan={4} align="center">
+                  <Typography className=" font-bold text-red-500"> Danh sách đăng ký tư vấn trống</Typography>
                 </StyledTableCell>
               </StyledTableRow>
-            ))}
+            ):(
+              ListForm?.map((row, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell align="center">
+                    <Typography className=" font-bold"> {row?.name}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="center"
+                    className="text-red-500 font-bold"
+                  >
+                    {row?.phone}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row?.email}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {new Date(row?.createdAt).toLocaleString()}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      className="bg-sky-500 text-slate-50  hover:bg-sky-700  "
+                      onClick={() => {
+                        handleClickOpenDialog();
+                        dispatch(fetchFormDetail(row?._id));
+                        dispatch(fetchDepartDetail(row?.depart));
+                      }}
+                    >
+                      Xem chi tiết
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))
+            )}
+            
           </TableBody>
         </Table>
       </TableContainer>
@@ -137,21 +146,25 @@ export default function ListForm() {
       >
         <Divider />
         <DialogContent> 
-          <Typography sx={{fontWeight:"bold",padding:1,backgroundColor:"#47B5FF",marginBottom:1,color:"white"}}
+          <Typography sx={{fontWeight:"bold",padding:1,backgroundColor:"#38bdf8",marginBottom:1,color:"white",borderRadius:10}}
            align="center" variant="h6">CHI TIẾT ĐƠN ĐĂNG KÝ</Typography>
           <Grid container >
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #47B5FF",padding:2,borderRadius:2}}>
-              <Stack spacing={2} sx={{ paddingY: 2 }}>
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #404040",padding:2,borderRadius:2}}>
+              <Stack spacing={2} sx={{ paddingY: 2 ,overflow:"auto"}}>
                 <Typography>Họ tên: <b>{formDetail?.name}</b></Typography>
                 <Typography>SĐT: <b>{formDetail?.phone}</b></Typography>
                 <Typography>Email: <b>{formDetail?.email}</b></Typography>
                 <Typography>Nội dung tư vấn: <b>{formDetail?.note}</b></Typography>
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #47B5FF",padding:2,borderRadius:2}}>
-              <Stack spacing={2} sx={{ paddingY: 2 }}>
-                <Typography><b>{departDetail?.name}</b></Typography>
-                <Typography><b>{departDetail?.type}</b></Typography>
+            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #404040",padding:2,borderRadius:2}}>
+              <Stack spacing={2} sx={{ paddingY: 2,overflow:"auto"}}>
+                <Typography sx={{color:"#38bdf8",cursor:"pointer"}}>
+                  <b>
+                 <a href={`/admin/depart/${departDetail._id}`} >{departDetail?.name}</a>
+                  </b>
+                  </Typography> 
+                <Typography>Loại căn hộ: <b>{departDetail?.type}</b></Typography>
                 <Typography>Gía thuê: <b>{departDetail?.price} VNĐ </b></Typography>
                 <Typography>Tiền điện: <b>{departDetail?.electricMoney}/kw </b></Typography>
                 <Typography>Tiền nước: <b>{departDetail?.waterMoney}/người </b></Typography>

@@ -2,10 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import HomeIcon from "@mui/icons-material/Home";
-import { Container, Divider, Typography, Badge } from "@mui/material";
+import { Container, Divider, Typography, Badge, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
-import StarIcon from "@mui/icons-material/Star";
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -19,6 +19,8 @@ import { TextField } from "@mui/material";
 import { useSelector ,useDispatch} from "react-redux";
 import { selectListDepart } from "../../redux/depart/departSelector";
 import { fetchDeparts } from "../../redux/depart/departThunk";
+import { Form } from "./form";
+import "../../css/appbarSearch.scss"
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -34,12 +36,7 @@ const CssTextField = styled(TextField)({
     "& fieldset": {
       borderRadius: "30px",
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#facc15      ",
-    },
-  },
-  "& label.Mui-focused": {
-    color: "#facc15    ",
+ 
   },
 });
 const CssTextFieldMobile = styled(TextField)({
@@ -73,6 +70,8 @@ const Appbar = () => {
   const [valueSearch, setValueSearch] = React.useState("");
   const [dataSearch, setDataSearch] = React.useState();
   const listDepart = useSelector(selectListDepart);
+  const [openDialogForm, setOpenDialogForm] = React.useState(false);
+
   const dispatch = useDispatch();
 
   
@@ -99,6 +98,16 @@ const Appbar = () => {
       setOpenBoxSearch(true);
     }
   }, [handleFindSearch, valueSearch]);
+
+
+  const handleClickOpenDialogForm = () => {
+    setOpenDialogForm(true);
+  };
+
+  const handleCloseDialogForm = () => {
+    setOpenDialogForm(false);
+  };
+
 
   return (
     <Box>
@@ -180,9 +189,12 @@ const Appbar = () => {
                 mr: 1,
               }}
             >
-              <Link to="/">
-                <Typography id="idHover">GIỚI THIỆU VỀ KING HOUSE</Typography>
-              </Link>
+              
+              <Button  onClick={() => {
+                  handleClickOpenDialogForm();
+                }}>
+                <Typography id="idHover">ĐĂNG KÝ TƯ VẤN</Typography>
+              </Button>
             </Box>
             <Box
               sx={{
@@ -260,7 +272,7 @@ const Appbar = () => {
           <Divider />
 
           <ListItem disablePadding>
-            <Box to="/">
+            <Box>
               <ListItemButton
                 onClick={() => {
                   setOpenSearchMobile(true);
@@ -276,19 +288,21 @@ const Appbar = () => {
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <Box to="/">
-              <ListItemButton>
+            <Box>
+              <ListItemButton onClick={() => {
+                  handleClickOpenDialogForm();
+                }}>
                 <Typography
                   sx={{ fontSize: 15, padding: 1, fontFamily: "revert" }}
                 >
-                  <StarIcon></StarIcon> &ensp; VỀ KING HOUSE
+                  <ContactMailIcon></ContactMailIcon> &ensp; ĐĂNG KÝ TƯ VẤN
                 </Typography>
               </ListItemButton>
             </Box>
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <Box to="/">
+            <Box>
               <ListItemButton>
                 <Typography
                   sx={{ fontSize: 15, padding: 1, fontFamily: "revert" }}
@@ -334,13 +348,18 @@ const Appbar = () => {
                       id="imgAppbarMobile"
                     />
                     <p style={{ fontSize: "small" }}>{data?.name}</p>
+
                   </Box>
+                  <Divider className="my-6"/>
+
                 </Link>
               ))
             )}
           </Box>
         </Box>
       </Drawer>
+      {openDialogForm === true ? (<Form open={openDialogForm}  handleCallbackCloseDialog={handleCloseDialogForm}></Form>):null}
+
     </Box>
   );
 };

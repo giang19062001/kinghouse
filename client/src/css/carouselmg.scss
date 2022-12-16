@@ -8,6 +8,7 @@
 
     transition: all 300ms ease;
     cursor: pointer;
+    user-select: none;
     width: 100%;
     height: 65vmin;
     position: relative;
@@ -19,11 +20,11 @@
   
   .twitch-card:hover {
     transform: scale(1.05);
-    cursor: auto;
+    cursor: pointer;
   }
   
   .react-stacked-center-carousel-slide-0 .twitch-card {
-    cursor: grabbing;
+    cursor: zoom-in;
 
   }
   
@@ -35,6 +36,8 @@
     border-radius: 30px;
     width: 100%;
     height: 100%;
+    user-select: none;
+
   }
   
   .twitch-card .card-overlay {

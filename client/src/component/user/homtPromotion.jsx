@@ -28,7 +28,7 @@ import {
           <Typography align="center" className="font-bold text-2xl mb-10" >
             DANH SÁCH CĂN HỘ <b className="text-yellow-400">ĐANG KHUYẾN MÃI</b>
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={0}>
             {listDepart?.map((data, index) => (
                 data.status === "Đang khuyến mãi"?(
               <Grid
@@ -38,14 +38,16 @@ import {
                 md={3}
                 lg={3}
                 xl={3}
-                className="ease-in duration-75 hover:shadow hover:shadow-slate-500 pb-5 hover:scale-105 rounded-lg"
+                className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3 hover:scale-105 rounded-lg "
               >
-                <Link to={`/depart/` + data?._id}>
+                <Link to={`/depart/` + data?._id} className="relative" >
+       
+                  <Typography className="absolute top-0 right-5 z-50 text-red-600 font-bold line-through ">{data?.price} đ</Typography>
                   <Avatar
                     variant="square"
-                    className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded mb-2"
+                    className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded mb-2 mx-auto"
                     src={process.env.REACT_APP_API_URL + "/departs/" + data?.photo?.[0]}
-                  />
+                  ></Avatar>
                   <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}}  className="font-bold text-md ">
                     {data?.name}
                   </Typography>
@@ -57,7 +59,7 @@ import {
                   {data?.type}
                 </Typography>
                   <Typography  sx={{paddingLeft:{xs:3,sm:1,md:1}}} className="text-red-500 font-bold mt-2 text-sm">
-                    {data?.price} VNĐ
+                    {data?.pricePromotion} VNĐ
                   </Typography>
                 </Link>
               </Grid>)

@@ -26,6 +26,7 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.56.1",
     "styled-components": "^5.3.6",
+    "validate.js": "^0.13.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

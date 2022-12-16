@@ -6,8 +6,11 @@ const departSchema = new mongoose.Schema({
     require: true,
   },
   price: {
-    type: Number,
+    type: String,
     require: true,
+  },
+  pricePromotion: {
+    type: String,
   },
   description: {
     type: String,
@@ -38,11 +41,11 @@ const departSchema = new mongoose.Schema({
     require: true,
   },
   electricMoney: {
-    type: Number,
+    type: String,
     require: true,
   },
   waterMoney: {
-    type: Number,
+    type: String,
     require: true,
   },
   photo: {

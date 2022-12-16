@@ -4,8 +4,7 @@ const fs = require("fs");
 const ServiceController = {
   addService: async (req, res) => {
     try {
-      console.log(req.body.name);
-      console.log(req.file);
+ 
       service = {
         name: req.body.name,
         photo: req.file.filename,
@@ -27,7 +26,6 @@ const ServiceController = {
   },
   deleteServices: async (req, res) => {
     try {
-      console.log(req.body);
       fs.unlinkSync("images/services/" + req.body.photo);
       await Depart.updateMany({ $pull: { service: req.body.name } });
       const deleteService = await Service.findByIdAndDelete(req.params.id);

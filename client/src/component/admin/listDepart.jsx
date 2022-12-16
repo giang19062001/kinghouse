@@ -55,7 +55,7 @@ export default function ListDepart() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
-            <TableRow className="bg-sky-400">
+            <TableRow className="bg-sky-500">
               <StyledTableCell align="center" className="font-bold">
                 Ảnh căn hộ
               </StyledTableCell>

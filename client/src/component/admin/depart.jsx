@@ -19,15 +19,11 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postDepart } from "../../redux/depart/departThunk";
 import ClearIcon from "@mui/icons-material/Clear";
-import {
-  district,
-  status,
-  type,
-} from "../../util/data";
+import { district, status, type } from "../../util/data";
 import { fetchServices } from "../../redux/service/serviceThunk";
 import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
 import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
@@ -40,26 +36,20 @@ const CssTextField = styled(TextField)({
     "& fieldset": {
       borderRadius: "30px",
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#facc15      ",
-    },
+
   },
-  "& label.Mui-focused": {
-    color: "#facc15",
-  },
+
 });
 
 const CssSelect = styled(Select)({
   borderRadius: "30px",
-  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#facc15 ",
-  },
+
 });
 
 const CssInputLabel = styled(InputLabel)({
-  "&.Mui-focused": {
-    color: "#facc15",
-  },
+  // "&.Mui-focused": {
+  //   color: "#facc15",
+  // },
 });
 
 const Depart = () => {
@@ -67,19 +57,20 @@ const Depart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-     dispatch(fetchServices())
-     dispatch(fetchUlDeparts())
-     dispatch(fetchUlHomes())
-  },[])
+  useEffect(() => {
+    dispatch(fetchServices());
+    dispatch(fetchUlDeparts());
+    dispatch(fetchUlHomes());
+  }, []);
 
-  const service = useSelector(selectListServices)
-  const ultilitiesDepart = useSelector(selectListUlDeparts)
-  const ultilitiesHouse = useSelector(selectListUlHomes)
+  const service = useSelector(selectListServices);
+  const ultilitiesDepart = useSelector(selectListUlDeparts);
+  const ultilitiesHouse = useSelector(selectListUlHomes);
 
   const [departPost, setDepartPost] = useState({
     name: "",
     price: "",
+    pricePromotion: "",
     description: "",
     width: "",
     length: "",
@@ -129,7 +120,6 @@ const Depart = () => {
       photo: photo,
     }));
   };
-
 
   const handleChangeCheckbox = (event) => {
     console.log(event.target.checked, event.target.value, [event.target.name]);
@@ -198,9 +188,7 @@ const Depart = () => {
     <Container sx={{ marginTop: 20 }}>
       <Box>
         <Paper elevation={6} className=" p-12">
-          <Typography className="text-2xl  font-bold mb-10  underline decoration-double decoration-sky-500" align="center">
-            THÊM CĂN HỘ
-          </Typography>
+        <p className="p"><span className="fancy">Thêm căn hộ</span></p>
           <Grid container spacing={4}>
             <Grid item xs={12} md={6} lg={6} xl={6}>
               <Stack spacing={2}>
@@ -212,17 +200,30 @@ const Depart = () => {
                   onChange={handleChange}
                 ></CssTextField>
                 <CssTextField
-                  type="number"
+                  type="text"
                   name="price"
-                  label="Gía căn hộ"
+                  label="Gía thuê căn hộ "
+                  placeholder="VD: 15.000.000"
                   fullWidth
                   onChange={handleChange}
                 ></CssTextField>
+                {departPost.status === "Đang khuyến mãi" ? (
+                  <CssTextField
+                    type="text"
+                    name="pricePromotion"
+                    label="Gía khuyến mãi "
+                    placeholder="VD: 13.000.000"
+                    fullWidth
+                    onChange={handleChange}
+                  ></CssTextField>
+                ) : null}
+
                 <Stack direction="row">
                   <CssTextField
                     type="number"
                     name="width"
                     fullWidth
+                    placeholder="VD: 50"
                     label="Chiều rộng (m2)"
                     onChange={handleChange}
                   ></CssTextField>
@@ -230,22 +231,25 @@ const Depart = () => {
                     type="number"
                     name="length"
                     fullWidth
+                    placeholder="VD: 50"
                     label="Chiều dài (m2)"
                     onChange={handleChange}
                   ></CssTextField>
                 </Stack>
                 <Stack direction="row">
                   <CssTextField
-                    type="number"
+                    type="text"
                     name="electricMoney"
-                    label="Tiền điện"
+                    label="Tiền điện (kw)"
+                    placeholder="VD: 5.000"
                     fullWidth
                     onChange={handleChange}
                   ></CssTextField>
                   <CssTextField
-                    type="number"
+                    type="text"
                     name="waterMoney"
-                    label="Tiền nước"
+                    label="Tiền nước (1 người)"
+                    placeholder="VD: 100.000"
                     fullWidth
                     onChange={handleChange}
                   ></CssTextField>
@@ -302,7 +306,12 @@ const Depart = () => {
                       );
                     })}
                 </div>
-                <label for="photo" className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-sky-500 w-24 p-2">Thêm ảnh</label>
+                <label
+                  for="photo"
+                  className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg  bg-green-500 w-24 p-2"
+                >
+                  Thêm ảnh
+                </label>
                 <input
                   style={{ display: "none" }}
                   type="file"
@@ -408,7 +417,7 @@ const Depart = () => {
             </Grid>
           </Grid>
           <Button
-            className="bg-sky-500 text-slate-50 font-bold hover:scale-105 mt-12 "
+            className=" bg-green-500 text-slate-50 font-bold hover:scale-105 mt-12 "
             sx={{ display: "block", margin: "auto" }}
             onClick={handleAdd}
           >

@@ -4,9 +4,9 @@ const fs = require("fs");
 const DepartController = {
   addDepart: async (req, res) => {
     try {
-      console.log(req.body);
       const name = req.body.name;
       const price = req.body.price;
+      const pricePromotion = req.body.pricePromotion;
       const description = req.body.description;
       const type = req.body.type;
       const width = req.body.width;
@@ -30,6 +30,7 @@ const DepartController = {
       const newDepartData = {
         name,
         price,
+        pricePromotion,
         description,
         type,
         width,
@@ -47,7 +48,6 @@ const DepartController = {
         ultilitiesDepart,
         ultilitiesHouse,
       };
-      console.log(newDepartData)
       const newDepart = new Depart(newDepartData);
       const saveDepart = await newDepart.save();
       res.status(200).json(saveDepart);
@@ -85,10 +85,15 @@ const DepartController = {
         { _id: req.params.id },
         { $push: { photo: photo } }
       );
+      const arr = []
+
       const departFinal = await Depart.findById( req.params.id);
 
-
-      res.status(200).json(departFinal);
+      departFinal.photo.forEach((element) => {
+        arr.push({ photo: element });
+      });
+      const result = {...departFinal._doc,photo:arr}
+      res.status(200).json(result);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -100,17 +105,21 @@ const DepartController = {
         { _id: req.params.id },
         { $pull: { photo: req.body.photo } }
       );
+      const arr = []
 
       const departFinal = await Depart.findById( req.params.id);
 
-      res.status(200).json(departFinal);
+      departFinal.photo.forEach((element) => {
+        arr.push({ photo: element });
+      });
+      const result = {...departFinal._doc,photo:arr}
+      res.status(200).json(result);
     } catch (error) {
       res.status(500).json(error);
     }
   },
   deleteDepart: async (req, res) => {
     try {
-      console.log(req.body);
       req.body.forEach((element) => {
         fs.unlinkSync("images/departs/" + element);
       });
@@ -127,8 +136,12 @@ const DepartController = {
   getDepartDetail: async (req, res) => {
     try {
       const depart = await Depart.findById(req.params.id);
-
-      res.status(200).json(depart);
+      const arr = []
+      depart.photo.forEach((element) => {
+        arr.push({ photo: element });
+      });
+      const result = {...depart._doc,photo:arr}
+      res.status(200).json(result);
     } catch (error) {
       res.status(500).json(error);
     }

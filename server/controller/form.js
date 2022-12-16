@@ -4,7 +4,6 @@ const FormController = {
     addForm : async (req,res)=>{
         try {
 
-            console.log(req.body)
             const newForm = new Form(req.body)
             const saveForm = await newForm.save()
             res.status(200).json(saveForm)

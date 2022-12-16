@@ -9,12 +9,14 @@ import formSlice from './form/formSlice';
 import serviceSile from './service/serviceSlice';
 import ulDepartSlice from './ultilitiesDepart/ulDepartSlice';
 import  ulHomeSlice  from './ultilitiesHome/ulHomeSlice';
+import authSlice from './auth/authSlice';
 const rootReducer = combineReducers({
     departSlice,
     formSlice,
     serviceSile,
     ulDepartSlice,
-    ulHomeSlice
+    ulHomeSlice,
+    authSlice
     
     
 });
@@ -23,7 +25,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [""],
+  // whitelist: [""],
 
 };
 
