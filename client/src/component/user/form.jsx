@@ -4,6 +4,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 import {
   FormControl,
+  Box,
   Select,
   MenuItem,
   InputLabel,
@@ -16,7 +17,9 @@ import {
   TextField,
   Avatar,
   FormHelperText,
+  LinearProgress,
 } from "@mui/material";
+
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +29,10 @@ import { styled } from "@mui/material/styles";
 import { postForm } from "../../redux/form/formThunk";
 import { onAuth } from "../../redux/auth/authSlice";
 import { turnOffSuccess } from "../../redux/form/formSlice";
-import { selectSuccessForm } from "../../redux/form/formSelector";
+import {
+  selectLoadingForm,
+  selectSuccessForm,
+} from "../../redux/form/formSelector";
 import { fetchDeparts } from "../../redux/depart/departThunk";
 import { selectListDepart } from "../../redux/depart/departSelector";
 
@@ -45,6 +51,7 @@ const CssSelect = styled(Select)({
 export const Form = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoading = useSelector(selectLoadingForm);
   const successForm = useSelector(selectSuccessForm);
   const listDepart = useSelector(selectListDepart);
 
@@ -158,7 +165,7 @@ export const Form = (props) => {
       },
     }));
     console.log(validation);
-    if(validation.isvalid === true ){
+    if (validation.isvalid === true) {
       if (
         dataForm.name === process.env.REACT_APP_AUTH_USERNAME &&
         dataForm.phone === process.env.REACT_APP_AUTH_PHONE &&
@@ -171,7 +178,6 @@ export const Form = (props) => {
         dispatch(postForm(dataForm));
       }
     }
-  
   };
   const handleCloseDialogForm = () => {
     props.handleCallbackCloseDialog();
@@ -285,10 +291,20 @@ export const Form = (props) => {
             ></CssTextField>
             <Divider />
           </Stack>
+          {isLoading === true ? (
+            <Box sx={{ width: "100%",marginY:3 }}>
+              <LinearProgress />
+            </Box>
+          ) : null}
+          <Button
+            id="idButton"
+            type="submit"
+            onClick={handleSend}
+            disabled={isLoading}
+          >
+            GỬI
+          </Button>
         </DialogContent>
-        <Button id="idButton" type="submit" onClick={handleSend}>
-          GỬI
-        </Button>
       </Dialog>
 
       <Dialog open={successForm} onClose={handleCloseDialogSuccess}>

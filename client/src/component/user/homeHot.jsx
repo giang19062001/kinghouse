@@ -1,5 +1,5 @@
-import { Box, Container, Avatar, Grid, Typography } from "@mui/material";
-import { selectListDepart } from "../../redux/depart/departSelector";
+import { Box, Container, Avatar, Grid, Typography,Skeleton  } from "@mui/material";
+import { selectListDepart ,selectStatusDepart} from "../../redux/depart/departSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchDeparts } from "../../redux/depart/departThunk";
@@ -14,13 +14,49 @@ const HomeHot = () => {
   }, [dispatch]);
 
   const listDepart = useSelector(selectListDepart);
+  const isLoading = useSelector(selectStatusDepart);
 
   return (
     <Container className="my-12">
-      <Box>
         <Typography align="center" className="font-bold text-2xl mb-10">
           DANH SÁCH CĂN HỘ <b className="text-red-700">ĐANG HOT</b>
         </Typography>
+       {isLoading === true ? (
+        <div>
+          <Grid container spacing={0}>
+            <Grid item xs={6} sm={4} md={3} lg={3} xl={3} className="py-3">
+              <Skeleton animation="wave" variant="rectangular" className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+
+            </Grid>
+            <Grid item xs={6} sm={4} md={3} lg={3} xl={3} className="py-3">
+              <Skeleton animation="wave" variant="rectangular" className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+
+            </Grid>
+            <Grid item xs={6} sm={4} md={3} lg={3} xl={3} className="py-3">
+              <Skeleton animation="wave" variant="rectangular" className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+
+            </Grid>
+            <Grid item xs={6} sm={4} md={3} lg={3} xl={3} className="py-3">
+              <Skeleton animation="wave" variant="rectangular" className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+              <Skeleton animation="wave" width="80%" />
+
+            </Grid>
+          </Grid>
+        </div>
+      ) : (
+      <Box>
+      
         <Grid container spacing={0}>
           {listDepart?.map((data, index) =>
             data.status === "Đang Hot" ? (
@@ -79,6 +115,7 @@ const HomeHot = () => {
           )}
         </Grid>
       </Box>
+      )}
     </Container>
   );
 };

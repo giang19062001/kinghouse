@@ -70,8 +70,9 @@ export default function ListForm() {
   console.log(ListForm);
   return (
     <Container sx={{ marginY: 20 }}>
-  
-      <p className="p"><span className="fancy"> Danh sách đăng ký tư vấn</span></p>
+      <p className="p">
+        <span className="fancy"> Danh sách đăng ký tư vấn</span>
+      </p>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -97,13 +98,16 @@ export default function ListForm() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ListForm.length === 0 ?(
-                <StyledTableRow >
+            {ListForm.length === 0 ? (
+              <StyledTableRow>
                 <StyledTableCell colSpan={4} align="center">
-                  <Typography className=" font-bold text-red-500"> Danh sách đăng ký tư vấn trống</Typography>
+                  <Typography className=" font-bold text-red-500">
+                    {" "}
+                    Danh sách đăng ký tư vấn trống
+                  </Typography>
                 </StyledTableCell>
               </StyledTableRow>
-            ):(
+            ) : (
               ListForm?.map((row, index) => (
                 <StyledTableRow key={index}>
                   <StyledTableCell align="center">
@@ -134,7 +138,6 @@ export default function ListForm() {
                 </StyledTableRow>
               ))
             )}
-            
           </TableBody>
         </Table>
       </TableContainer>
@@ -145,30 +148,90 @@ export default function ListForm() {
         fullWidth
       >
         <Divider />
-        <DialogContent> 
-          <Typography sx={{fontWeight:"bold",padding:1,backgroundColor:"#38bdf8",marginBottom:1,color:"white",borderRadius:10}}
-           align="center" variant="h6">CHI TIẾT ĐƠN ĐĂNG KÝ</Typography>
-          <Grid container >
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #404040",padding:2,borderRadius:2}}>
-              <Stack spacing={2} sx={{ paddingY: 2 ,overflow:"auto"}}>
-                <Typography>Họ tên: <b>{formDetail?.name}</b></Typography>
-                <Typography>SĐT: <b>{formDetail?.phone}</b></Typography>
-                <Typography>Email: <b>{formDetail?.email}</b></Typography>
-                <Typography>Nội dung tư vấn: <b>{formDetail?.note}</b></Typography>
+        <DialogContent>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              padding: 1,
+              backgroundColor: "#38bdf8",
+              marginBottom: 1,
+              color: "white",
+              borderRadius: 10,
+            }}
+            align="center"
+            variant="h6"
+          >
+            CHI TIẾT ĐƠN ĐĂNG KÝ
+          </Typography>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              sx={{ border: "1px solid #404040", padding: 2, borderRadius: 2 }}
+            >
+              <Stack spacing={2} sx={{ paddingY: 2, overflow: "auto" }}>
+                <Typography>
+                  Họ tên: <b>{formDetail?.name}</b>
+                </Typography>
+                <Typography>
+                  SĐT: <b>{formDetail?.phone}</b>
+                </Typography>
+                <Typography>
+                  Email: <b>{formDetail?.email}</b>
+                </Typography>
+                <Typography>
+                  Nội dung tư vấn: <b>{formDetail?.note}</b>
+                </Typography>
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6} xl={6}  sx={{border:"1px solid #404040",padding:2,borderRadius:2}}>
-              <Stack spacing={2} sx={{ paddingY: 2,overflow:"auto"}}>
-                <Typography sx={{color:"#38bdf8",cursor:"pointer"}}>
-                  <b>
-                 <a href={`/admin/depart/${departDetail._id}`} >{departDetail?.name}</a>
-                  </b>
-                  </Typography> 
-                <Typography>Loại căn hộ: <b>{departDetail?.type}</b></Typography>
-                <Typography>Gía thuê: <b>{departDetail?.price} VNĐ </b></Typography>
-                <Typography>Tiền điện: <b>{departDetail?.electricMoney}/kw </b></Typography>
-                <Typography>Tiền nước: <b>{departDetail?.waterMoney}/người </b></Typography>
-                <Typography>Địa chỉ: <b>{departDetail?.addressHouse} </b></Typography>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              sx={{ border: "1px solid #404040", padding: 2, borderRadius: 2 }}
+            >
+              <Stack spacing={2} sx={{ paddingY: 2, overflow: "auto" }}>
+                {departDetail?.isDelete === true ? (
+                  <Typography sx={{ color: "red"}}>
+                    <b>
+                      <p>
+                        {departDetail?.name} ({" "}
+                        <small>Căn hộ này đã được xóa</small>)
+                      </p>
+                    </b>
+                  </Typography>
+                ) : (
+                  <Typography sx={{ color: "#38bdf8", cursor: "pointer" }}>
+                    <b>
+                      <a href={`/admin/depart/${departDetail?._id}`}>
+                        {departDetail?.name}
+                      </a>
+                    </b>
+                  </Typography>
+                )}
+
+                <Typography>
+                  Loại căn hộ: <b>{departDetail?.type}</b>
+                </Typography>
+                <Typography>
+                  Gía thuê: <b>{departDetail?.price} VNĐ </b>
+                </Typography>
+                <Typography>
+                  Tiền điện: <b>{departDetail?.electricMoney}/kw </b>
+                </Typography>
+                <Typography>
+                  Tiền nước: <b>{departDetail?.waterMoney}/người </b>
+                </Typography>
+                <Typography>
+                  Địa chỉ: <b>{departDetail?.addressHouse} </b>
+                </Typography>
               </Stack>
             </Grid>
           </Grid>
