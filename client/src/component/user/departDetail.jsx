@@ -390,6 +390,8 @@ export const Card = React.memo(function (props) {
             }}
           >
             <Skeleton
+                      key={photo}
+
               animation="wave"
               sx={{ bgcolor: "grey.300" }}
               variant="rectangular"

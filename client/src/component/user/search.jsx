@@ -137,8 +137,8 @@ const Search = () => {
     setDataSearch(
       listDepart.filter(
         (item) =>
-          parseInt(item.price.split('.').join('')) >= valuePrice[0] &&
-          parseInt(item.price.split('.').join('')) <= valuePrice[1] &&
+          parseInt(item.price.split(".").join("")) >= valuePrice[0] &&
+          parseInt(item.price.split(".").join("")) <= valuePrice[1] &&
           (valueDistrict !== undefined
             ? item.districtHouse === valueDistrict
             : item.districtHouse !== valueDistrict) &&
@@ -163,7 +163,6 @@ const Search = () => {
             : item.ultilitiesHouse !== value_ultilities_Home)
       )
     );
-
   };
   const formatter = new Intl.NumberFormat("vi-VI", {
     style: "currency",
@@ -171,10 +170,20 @@ const Search = () => {
   });
 
   const handleClose = () => {
-    setDataSearch(undefined)
-  }
+    setDataSearch(undefined);
+    setValueDistrict(undefined);
+    setValueType(undefined);
+    document.getElementById("type").blur();
+    setValuePrice([0, 50000000]);
+    set_value_ultilities_Depart([]);
+    set_value_ultilities_Home([]);
+    setValueArea({
+      length: 0,
+      width: 0,
+    });
+  };
 
-  console.log("dataSearch",dataSearch)
+  console.log("valueDistrict", valueDistrict);
 
   return (
     <Container sx={{ marginY: 10 }}>
@@ -190,8 +199,7 @@ const Search = () => {
             max={50000000}
           />
           <Typography className="float-left">
-            Min: {formatter.format(valuePrice[0])} 
-            
+            Min: {formatter.format(valuePrice[0])}
           </Typography>
           <Typography className="float-right">
             Max: {formatter.format(valuePrice[1])}
@@ -202,6 +210,8 @@ const Search = () => {
             <InputLabel>Khu vực</InputLabel>
             <CssSelect
               label="Khu vực"
+              key={valueDistrict}
+              value={valueDistrict}
               name="districtHouse"
               onChange={(e) => setValueDistrict(e.target.value)}
             >
@@ -215,8 +225,10 @@ const Search = () => {
           <FormControl fullWidth className="pb-3">
             <InputLabel>Loại phòng</InputLabel>
             <CssSelect
-              label="Khu vực"
+              label="Loại phòng"
               name="type"
+              key={valueType}
+              value={valueType}
               onChange={(e) => setValueType(e.target.value)}
             >
               {type.map((data, index) => (
@@ -283,7 +295,7 @@ const Search = () => {
             label="Chiều dài"
             type="number"
             name="length"
-            defaultValue={0}
+            value={valueArea.length}
             onChange={(e) =>
               setValueArea((preState) => ({
                 ...preState,
@@ -295,7 +307,7 @@ const Search = () => {
             label="Chiều rộng"
             type="number"
             name="width"
-            defaultValue={0}
+            value={valueArea.width}
             onChange={(e) =>
               setValueArea((preState) => ({
                 ...preState,
@@ -304,25 +316,26 @@ const Search = () => {
             }
           ></CssTextField>
         </Stack>
-        <Stack 
-        direction={{ sm: "column", md: "row" }}
-        spacing={1}
-        justifyContent="center"
-        alignItems="center">
-        <Button
-          className="bg-sky-400 text-slate-50 hover:bg-sky-500 mt-6 w-32"
-          onClick={handleClickSearch}
+        <Stack
+          direction={{ sm: "column", md: "row" }}
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
         >
-          Áp dụng
-        </Button>
-        {dataSearch !== undefined?(
+          <Button
+            className="bg-sky-400 text-slate-50 hover:bg-sky-500 mt-6 w-32"
+            onClick={handleClickSearch}
+          >
+            Áp dụng
+          </Button>
+          {dataSearch !== undefined ? (
             <Button
-            className="bg-slate-400 text-slate-50 hover:bg-slate-500 mt-6 w-32"
-            onClick={handleClose}
+              className="bg-slate-400 text-slate-50 hover:bg-slate-500 mt-6 w-32"
+              onClick={handleClose}
             >
-           Đóng
+              Reset
             </Button>
-        ):null}
+          ) : null}
         </Stack>
         {/*  */}
         {dataPagination?.currentData() === undefined ? null : (
