@@ -16,6 +16,7 @@ export const formSlice = createSlice({
         turnOffSuccess: (state, action) => {
             state.onSuccess = false
           },
+        
     },
     extraReducers:(builder) =>{
       builder.addCase(fetchForm.fulfilled,(state,action)=>{

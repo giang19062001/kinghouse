@@ -28,6 +28,7 @@ import {
 import { useState } from "react";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
+import {setFormUndefine} from "../../redux/form/formSlice"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
