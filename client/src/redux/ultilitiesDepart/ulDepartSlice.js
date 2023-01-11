@@ -17,6 +17,9 @@ export const ulDepartSlice = createSlice({
          state.isLoading = false;
          state.ultilitiesDeparts = action.payload
       })
+      builder.addMatcher(isAnyOf(postUlDepart.fulfilled,deleteUlDepart.fulfilled),(state,action)=>{
+         state.isLoading = false;
+      })
      builder.addMatcher(isAnyOf(fetchUlDeparts.pending,postUlDepart.pending,deleteUlDepart.pending),(state,action)=>{
         state.isLoading = true;
      })

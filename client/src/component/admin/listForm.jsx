@@ -16,19 +16,22 @@ import {
   Stack,
   Divider,
   Grid,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { fetchForm, fetchFormDetail } from "../../redux/form/formThunk";
+import { deleteForm, fetchForm, fetchFormDetail } from "../../redux/form/formThunk";
 import {
   selectFormDetail,
   selectListForms,
+  selectLoadingForm,
 } from "../../redux/form/formSelector";
 import { useState } from "react";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
-import {setFormUndefine} from "../../redux/form/formSlice"
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,6 +55,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ListForm() {
   const dispatch = useDispatch();
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [idDelete, setIdDelete] = useState("");
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -65,9 +70,17 @@ export default function ListForm() {
   }, [dispatch]);
 
   const ListForm = useSelector(selectListForms);
+  const isLoading = useSelector(selectLoadingForm)
   const formDetail = useSelector(selectFormDetail);
   const departDetail = useSelector(selectDepartDetail);
 
+  const handleDelete = () =>{
+    setOpenDialogDelete(false)
+    dispatch(deleteForm(idDelete)).then(()=>{
+      dispatch(fetchForm());
+
+    })
+  }
   console.log(ListForm);
   return (
     <Container sx={{ marginY: 20 }}>
@@ -96,12 +109,16 @@ export default function ListForm() {
                 align="center"
                 className="font-bold"
               ></StyledTableCell>
+              <StyledTableCell
+                align="center"
+                className="font-bold"
+              ></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {ListForm.length === 0 ? (
               <StyledTableRow>
-                <StyledTableCell colSpan={4} align="center">
+                <StyledTableCell colSpan={6} align="center">
                   <Typography className=" font-bold text-red-500">
                     {" "}
                     Danh sách đăng ký tư vấn trống
@@ -135,6 +152,18 @@ export default function ListForm() {
                     >
                       Xem chi tiết
                     </Button>
+                    
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      className="bg-red-500 text-slate-50  hover:bg-red-700  "
+                      onClick={
+                        ()=>{setOpenDialogDelete(true);setIdDelete(row?._id)}
+                      }
+                    >
+                     Xóa
+                    </Button>
+                    
                   </StyledTableCell>
                 </StyledTableRow>
               ))
@@ -143,9 +172,26 @@ export default function ListForm() {
         </Table>
       </TableContainer>
       <Dialog
+        open={openDialogDelete}
+        onClose={()=>{setOpenDialogDelete(false);setIdDelete("")}}
+        maxWidth="sm"
+        fullWidth
+      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
+      <Divider/>
+
+        <DialogContent>
+            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+        </DialogContent>
+        <Divider/>
+
+        <DialogActions>
+          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
-        maxWidth="sm"
+        maxWidth="md"
         fullWidth
       >
         <Divider />
@@ -238,6 +284,14 @@ export default function ListForm() {
           </Grid>
         </DialogContent>
       </Dialog>
+      {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
     </Container>
   );
 }

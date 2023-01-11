@@ -183,7 +183,6 @@ const Search = () => {
     });
   };
 
-  console.log("valueDistrict", valueDistrict);
 
   return (
     <Container sx={{ marginY: 10 }}>
@@ -362,18 +361,21 @@ const Search = () => {
                       md={3}
                       lg={3}
                       xl={3}
-                      className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3  rounded-lg "
+                      className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3  rounded-lg relative "
                     >
                       <Link to={`/depart/` + data?._id}>
                         <Avatar
                           variant="square"
-                          className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2 mx-auto"
+                          className="h-32 w-28 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded  mb-2 mx-auto "
                           src={
                             process.env.REACT_APP_API_URL +
                             "/departs/" +
                             data?.photo?.[0]
                           }
                         />
+                          <p className="absolute top-5 right-7 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
+                        {data?.price} đ
+                      </p>
                         <Typography
                           sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
                           className="font-bold text-md"
@@ -393,17 +395,17 @@ const Search = () => {
                         >
                           {data?.type}
                         </Typography>
-                        <Typography
+                        {/* <Typography
                           sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
                           className="text-red-500 font-bold mt-2 text-sm"
                         >
                           {data?.price} VNĐ
-                        </Typography>
+                        </Typography> */}
                         <Typography
                           sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
                           className="text-orange-500 font-bold mt-2 text-sm "
                         >
-                          Diện tích: {data?.length} * {data?.width} (dài * rộng)
+                          {data?.length} m ( dài ) *  {data?.width} m ( rộng ) 
                         </Typography>
                       </Link>
                     </Grid>

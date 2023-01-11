@@ -1,7 +1,7 @@
 import { Box, Container, Typography, Divider, Stack,Dialog,Skeleton } from "@mui/material";
 
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
@@ -13,19 +13,11 @@ import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 import React from "react";
-import {
-  StackedCarousel,
-  ResponsiveContainer,
-  StackedCarouselSlideProps,
-} from "react-stacked-center-carousel";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import "../../css/carouselmg.scss";
+
 
 const DepartDetailAdmin = () => {
   window.scrollTo({ top: 5, behavior: "auto" });
 
-  const ref = React.useRef();
   useEffect(() => {
     dispatch(fetchServices());
     dispatch(fetchUlDeparts());
@@ -39,7 +31,6 @@ const DepartDetailAdmin = () => {
 
   const params = useParams();
   const dispatch = useDispatch();
-  const [data, setData] = useState();
 
   useEffect(() => {
     dispatch(fetchDepartDetail(params.id));
@@ -122,70 +113,7 @@ const DepartDetailAdmin = () => {
         <p>Loading...</p>
       ) : (
         <Stack>
-          <Box className="mb-2">
-            {depart.photo.length !== 0 ? (
-              <div
-                style={{
-                  width: "100%",
-                  position: "relative",
-                  marginBottom: 20,
-                }}
-              >
-                <ResponsiveContainer
-                  carouselRef={ref}
-                  render={(parentWidth, carouselRef) => {
-                    let currentVisibleSlide = 5;
-                    if (parentWidth <= 1440) currentVisibleSlide = 3;
-                    if (parentWidth <= 1080) currentVisibleSlide = 3;
-                    return (
-                      <StackedCarousel
-                        ref={carouselRef}
-                        slideComponent={Card}
-                        slideWidth={parentWidth < 800 ? parentWidth - 120 : 750}
-                        carouselWidth={parentWidth}
-                        data={depart.photo}
-                        currentVisibleSlide={currentVisibleSlide}
-                        maxVisibleSlide={5}
-                        customScales={[1, 0.85, 0.7, 0.55]}
-                        transitionTime={450}
-                        useGrabCursor={true}
-                      />
-                    );
-                  }}
-                />
-                <>
-                  <ArrowCircleLeftIcon
-                    style={{
-                      position: "absolute",
-                      top: "40%",
-                      left: 30,
-                      zIndex: 10,
-                    }}
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      ref.current?.goBack();
-                    }}
-                  ></ArrowCircleLeftIcon>
-                  <ArrowCircleRightIcon
-                    style={{
-                      position: "absolute",
-                      top: "40%",
-                      right: 30,
-                      zIndex: 10,
-                    }}
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      ref.current?.goNext();
-                    }}
-                  ></ArrowCircleRightIcon>
-                </>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </Box>
+       
           <Box className="pt-2">
             <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
               THÔNG TIN CĂN HỘ
@@ -221,15 +149,19 @@ const DepartDetailAdmin = () => {
               </b>{" "}
             </Typography>
             <Typography>
+              Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
+            </Typography>
+            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+              CHI PHÍ
+            </Typography>
+            <Typography>
               Tiền điện: <b> {depart?.electricMoney}đ/kw</b>{" "}
             </Typography>
             <Typography>
               Tiền nước: <b> {depart?.waterMoney}đ/người</b>
             </Typography>
 
-            <Typography>
-              Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
-            </Typography>
+            
             <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
               THÔNG TIN TÒA NHÀ SỞ HỮU
             </Typography>
@@ -279,75 +211,3 @@ const DepartDetailAdmin = () => {
 export default DepartDetailAdmin;
 
 
-export const Card = React.memo(function (props) {
-  const { data, dataIndex, isCenterSlide, swipeTo, slideIndex } = props;
-  const { photo } = data[dataIndex] || {};
-
-  const [imageDialog, setImageDialog] = useState({
-    open: false,
-    value: "",
-  });
-  const handleCloseImageDialog = () => {
-    setImageDialog({ open: false, value: "" });
-  };
-  return photo !== undefined ? (
-    <div>
-      <div className="twitch-card" draggable={false}>
-        <div className={`cover fill`}>
-          <div
-            className="card-overlay fill"
-            onClick={() => {
-              if (!isCenterSlide) {
-                swipeTo(slideIndex);
-              } else {
-                setImageDialog({ open: true, value: photo });
-              }
-            }}
-          />
-          <img
-            key={photo}
-            className="cover-image fill"
-            src={process.env.REACT_APP_API_URL + "/departs/" + photo}
-            alt=""
-          />
-        </div>
-      </div>
-      <Dialog
-        maxWidth={"lg"}
-        open={imageDialog.open}
-        onClose={handleCloseImageDialog}
-      >
-        <img
-          key={photo}
-          src={process.env.REACT_APP_API_URL + "/departs/" + imageDialog.value}
-          alt=""
-          style={{ display: "block", margin: "auto" }}
-        ></img>
-      </Dialog>
-    </div>
-  ) : (
-    <div>
-      <div className="twitch-card" draggable={false}>
-        <div className={`cover fill`}>
-          <div
-            className="card-overlay fill"
-            onClick={() => {
-              if (!isCenterSlide) {
-                swipeTo(slideIndex);
-              }
-            }}
-          >
-            <Skeleton
-              animation="wave"
-              sx={{ bgcolor: "grey.300" }}
-              variant="rectangular"
-              width={700}
-              height="65vmin"
-              className="cover-image fill"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});

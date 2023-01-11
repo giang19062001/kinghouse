@@ -12,19 +12,28 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Avatar
+  Avatar,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { selectListServices } from "../../redux/service/serviceSelector";
+import { selectListServices, selectStatusServices } from "../../redux/service/serviceSelector";
 import { deleteService, fetchServices, postService } from "../../redux/service/serviceThunk";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ServicesComponent = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
   const listService = useSelector(selectListServices)
+  const isLoading = useSelector(selectStatusServices)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [dataDelete, setDataDelete] = useState({});
+
   const [servicePose, serServicePost] = useState({
     name: "",
     photo: undefined,
@@ -53,13 +62,15 @@ const ServicesComponent = () => {
     console.log(servicePose);
     dispatch(postService(servicePose))
     .then(()=>{
-      navigate(0)
+      dispatch(fetchServices())
+
     })
   };
-  const handleDelete = (data) => {
-    dispatch(deleteService(data))
+  const handleDelete = () => {
+    setOpenDialogDelete(false)
+    dispatch(deleteService(dataDelete))
     .then(()=>{
-      // navigate(0)
+      dispatch(fetchServices())
     })
   };
   
@@ -134,7 +145,9 @@ const ServicesComponent = () => {
                 <TableCell align="center">
                   <Button
                     className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                    onClick={()=>handleDelete({id:row?._id,name:row?.name,photo:row?.photo})}
+                    onClick={
+                      ()=>{setOpenDialogDelete(true);setDataDelete({id:row?._id,name:row?.name,photo:row?.photo})}
+                    }
                   >
                     Xóa
                   </Button>
@@ -144,6 +157,31 @@ const ServicesComponent = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
+        <Dialog
+        open={openDialogDelete}
+        onClose={()=>{setOpenDialogDelete(false);setDataDelete({})}}
+        maxWidth="sm"
+        fullWidth
+      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
+      <Divider/>
+
+        <DialogContent>
+            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+        </DialogContent>
+        <Divider/>
+
+        <DialogActions>
+          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

@@ -7,12 +7,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button, Container } from "@mui/material";
-import { selectListDepart } from "../../redux/depart/departSelector";
+import { Avatar, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@mui/material";
+import { selectListDepart, selectStatusDepart } from "../../redux/depart/departSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchDeparts,deleteDepart } from "../../redux/depart/departThunk";
-import { Link,useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useState } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,17 +38,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ListDepart() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchDeparts());
   }, [dispatch]);
 
   const listDepart = useSelector(selectListDepart);
-  
-  const handleDelete = (data) =>{
-    dispatch(deleteDepart(data))
+  const isLoading = useSelector(selectStatusDepart)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [dataDelete, setDataDelete] = useState({});
+
+  const handleDelete = () =>{
+    setOpenDialogDelete(false)
+    dispatch(deleteDepart(dataDelete))
     .then(()=>{
-      navigate(0)
+      dispatch(fetchDeparts());
     })
   }
 
@@ -118,7 +124,9 @@ export default function ListDepart() {
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <Button className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                  onClick={()=>handleDelete({id:row?._id,photo:row?.photo})}
+                  onClick={
+                    ()=>{setOpenDialogDelete(true);setDataDelete({id:row?._id,photo:row?.photo})}
+                  }
                   >
                     Xóa
                   </Button>
@@ -128,6 +136,31 @@ export default function ListDepart() {
           </TableBody>
         </Table>
       </TableContainer>
+      {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
+        <Dialog
+        open={openDialogDelete}
+        onClose={()=>{setOpenDialogDelete(false);setDataDelete({})}}
+        maxWidth="sm"
+        fullWidth
+      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
+      <Divider/>
+
+        <DialogContent>
+            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+        </DialogContent>
+        <Divider/>
+
+        <DialogActions>
+          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

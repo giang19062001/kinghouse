@@ -17,6 +17,9 @@ export const serviceSlice = createSlice({
          state.isLoading = false;
          state.services = action.payload
       })
+      builder.addMatcher(isAnyOf(postService.fulfilled,deleteService.fulfilled),(state,action)=>{
+         state.isLoading = false;
+      })
      builder.addMatcher(isAnyOf(fetchServices.pending,postService.pending,deleteService.pending),(state,action)=>{
         state.isLoading = true;
      })

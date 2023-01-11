@@ -88,12 +88,16 @@ const HomePromotion = () => {
                   md={3}
                   lg={3}
                   xl={3}
-                  className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3 hover:scale-105 rounded-lg "
+                  className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3 hover:scale-105 rounded-lg relative"
                 >
-                  <Link to={`/depart/` + data?._id} className="relative">
-                    <Typography className="absolute top-0 right-5 z-50 text-red-600 font-bold line-through ">
+                  <Link to={`/depart/` + data?._id} >
+                  <p
+                    alt=""
+                    className="absolute top-4 left-7 md:left-5 lg:left-5 xl:left-5 z-50 bg-yellow-400 text-slate-50 p-1 rounded-sm"
+                  >Sale</p> 
+                    <p className="absolute top-5 right-7 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold line-through  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
                       {data?.price} đ
-                    </Typography>
+                    </p>
                     <Avatar
                       variant="square"
                       className="h-36 w-36 md:h-48 lg:h-60 xl:h-60  md:w-48 lg:w-64 xl:w-64 object-cover rounded mb-2 mx-auto"

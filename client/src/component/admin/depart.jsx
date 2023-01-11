@@ -20,8 +20,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { postDepart } from "../../redux/depart/departThunk";
+import { fetchDeparts, postDepart } from "../../redux/depart/departThunk";
 import ClearIcon from "@mui/icons-material/Clear";
 import { district, status, type } from "../../util/data";
 import { fetchServices } from "../../redux/service/serviceThunk";
@@ -55,7 +54,6 @@ const CssInputLabel = styled(InputLabel)({
 const Depart = () => {
   const [file, setFile] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -178,9 +176,9 @@ const Depart = () => {
 
   const handleAdd = () => {
     console.log(departPost);
-    dispatch(postDepart(departPost)).then(() => {
-      navigate(0);
-    });
+    dispatch(postDepart(departPost)).then(()=>{
+      dispatch(fetchDeparts());
+    })
   };
 
   console.log(departPost);

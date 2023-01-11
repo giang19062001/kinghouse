@@ -17,6 +17,9 @@ export const ulHomeSlice = createSlice({
          state.isLoading = false;
          state.ultilitiesHomes = action.payload
       })
+      builder.addMatcher(isAnyOf(postUlHome.fulfilled,deleteUlHome.fulfilled),(state,action)=>{
+         state.isLoading = false;
+      })
      builder.addMatcher(isAnyOf(fetchUlHomes.pending,postUlHome.pending,deleteUlHome.pending),(state,action)=>{
         state.isLoading = true;
      })

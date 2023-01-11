@@ -23,6 +23,9 @@ export const departSlice = createSlice({
        state.isLoading = false;
        state.depart = action.payload
     })
+    builder.addCase(updateDepart.fulfilled,deleteImage.fulfilled,updateImage.fulfilled,deleteDepart.fulfilled,(state,action)=>{
+      state.isLoading = false;
+   })
      builder.addMatcher(isAnyOf(fetchDeparts.pending,fetchDepartDetail.pending,deleteDepart.pending,
       updateDepart.pending,deleteImage.pending,updateImage.pending),(state,action)=>{
         state.isLoading = true;

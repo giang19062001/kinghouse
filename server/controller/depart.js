@@ -81,19 +81,15 @@ const DepartController = {
         photo.push(req.files[i].filename);
       }
 
-      const updateDelete = await Depart.updateOne(
+       await Depart.updateOne(
         { _id: req.params.id },
         { $push: { photo: photo } }
       );
-      const arr = []
 
       const departFinal = await Depart.findById( req.params.id);
 
-      departFinal.photo.forEach((element) => {
-        arr.push({ photo: element });
-      });
-      const result = {...departFinal._doc,photo:arr}
-      res.status(200).json(result);
+
+      res.status(200).json(departFinal);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -101,19 +97,15 @@ const DepartController = {
   deleteImage: async (req, res) => {
     try {
       fs.unlinkSync("images/departs/" + req.body.photo);
-      const departDelete = await Depart.updateOne(
+       await Depart.updateOne(
         { _id: req.params.id },
         { $pull: { photo: req.body.photo } }
       );
-      const arr = []
 
       const departFinal = await Depart.findById( req.params.id);
 
-      departFinal.photo.forEach((element) => {
-        arr.push({ photo: element });
-      });
-      const result = {...departFinal._doc,photo:arr}
-      res.status(200).json(result);
+  
+      res.status(200).json(departFinal);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -136,12 +128,8 @@ const DepartController = {
   getDepartDetail: async (req, res) => {
     try {
       const depart = await Depart.findById(req.params.id);
-      const arr = []
-      depart.photo.forEach((element) => {
-        arr.push({ photo: element });
-      });
-      const result = {...depart._doc,photo:arr}
-      res.status(200).json(result);
+     
+      res.status(200).json(depart);
     } catch (error) {
       res.status(500).json(error);
     }

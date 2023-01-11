@@ -21,6 +21,7 @@ import { selectListDepart } from "../../redux/depart/departSelector";
 import { fetchDeparts } from "../../redux/depart/departThunk";
 import { Form } from "./form";
 import "../../css/appbarSearch.scss"
+import { Stack } from "@mui/system";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -114,13 +115,25 @@ const Appbar = () => {
       <AppBar position="static" className="bg-slate-50 ">
         <Container>
           <Toolbar>
-            <Box sx={{ flexGrow: 1, mr: 1 }}>
+            <Box sx={{ flexGrow: 1, mr: 5 }}>
               <Link to="/">
+                <Stack direction="row"
+                 justifyContent="center"
+                 alignItems="center"
+                 id="idHoverImage"
+                 >
                 <img
                   src={require("../../assets/logoKingH.jpg")}
                   alt=""
                   className="mx-auto w-24 rounded-full"
                 />
+                <Box >
+                <Typography id="idHoverTypography" align="center" className="text-slate-900 text-md tracking-tight font-bold		">King House</Typography>
+                <Typography id="idHoverTypography"  align="center" className="text-slate-900 text-md	tracking-tight	">Nâng tầm giá trị sống</Typography>
+                </Box>
+              
+                </Stack>
+              
               </Link>
             </Box>
             <Box
@@ -156,7 +169,7 @@ const Appbar = () => {
                   </p>
                 ) : (
                   dataSearch?.map((data, index) => (
-                    <Link to={`/depart/` + data?._id}>
+                    <Link to={`/depart/` + data?._id}  key={data}>
                       <Box id="idBoxDataSearch">
                         <img
                           src={
@@ -338,7 +351,7 @@ const Appbar = () => {
               </p>
             ) : (
               dataSearch?.map((data, index) => (
-                <Link to={`/depart/` + data?._id}>
+                <Link to={`/depart/` + data?._id} key={data}>
                   <Box sx={{ display: "flex", margin: 2 }}>
                     <img
                       src={

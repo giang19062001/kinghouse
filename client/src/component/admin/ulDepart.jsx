@@ -13,22 +13,29 @@ import {
   TableBody,
   TableCell,
   Avatar,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   deleteUlDepart,
   fetchUlDeparts,
   postUlDepart,
 } from "../../redux/ultilitiesDepart/ulDepartThunk";
-import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
-
+import { selectListUlDeparts, selectStatusUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 const UlDepartComponent = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const listUlDepart = useSelector(selectListUlDeparts);
+  const isLoading = useSelector(selectStatusUlDeparts)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [dataDelete, setDataDelete] = useState({});
   const [ulDepartPost, setUlDepartPost] = useState({
     name: "",
     photo: undefined,
@@ -54,12 +61,14 @@ const UlDepartComponent = () => {
 
   const handleAdd = () => {
     dispatch(postUlDepart(ulDepartPost)).then(() => {
-      navigate(0);
+      dispatch(fetchUlDeparts())
     });
   };
-  const handleDelete = (data) => {
-    dispatch(deleteUlDepart(data)).then(() => {
-      navigate(0);
+  const handleDelete = () => {
+    setOpenDialogDelete(false)
+
+    dispatch(deleteUlDepart(dataDelete)).then(() => {
+      dispatch(fetchUlDeparts())
     });
   };
 
@@ -128,12 +137,8 @@ const UlDepartComponent = () => {
                 <TableCell align="center">
                   <Button
                     className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                    onClick={() =>
-                      handleDelete({
-                        id: row?._id,
-                        name: row?.name,
-                        photo: row?.photo,
-                      })
+                    onClick={
+                      ()=>{setOpenDialogDelete(true);setDataDelete({id:row?._id,name:row?.name,photo:row?.photo})}
                     }
                   >
                     Xóa
@@ -144,6 +149,31 @@ const UlDepartComponent = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
+         <Dialog
+        open={openDialogDelete}
+        onClose={()=>{setOpenDialogDelete(false);setDataDelete({})}}
+        maxWidth="sm"
+        fullWidth
+      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
+      <Divider/>
+
+        <DialogContent>
+            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+        </DialogContent>
+        <Divider/>
+
+        <DialogActions>
+          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

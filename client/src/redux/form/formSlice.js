@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { fetchForm,postForm,fetchFormDetail } from "./formThunk";
+import { fetchForm,postForm,fetchFormDetail,deleteForm } from "./formThunk";
 
 const initialState = {
     forms: [],
@@ -31,11 +31,14 @@ export const formSlice = createSlice({
         state.isLoading = false;
         state.onSuccess = true
      })
-     builder.addMatcher(isAnyOf(fetchForm.pending,fetchFormDetail.pending,postForm.pending),(state,action)=>{
+     builder.addCase(deleteForm.fulfilled,(state,action)=>{
+      state.isLoading = false;
+   })
+     builder.addMatcher(isAnyOf(fetchForm.pending,fetchFormDetail.pending,postForm.pending,deleteForm.pending),(state,action)=>{
         state.isLoading = true;
      })
 
-     builder.addMatcher(isAnyOf(fetchForm.rejected,fetchFormDetail.rejected,postForm.rejected),(state,action)=>{
+     builder.addMatcher(isAnyOf(fetchForm.rejected,fetchFormDetail.rejected,postForm.rejected,deleteForm.rejected),(state,action)=>{
         state.isLoading = false;
         state.error = action.payload
      })

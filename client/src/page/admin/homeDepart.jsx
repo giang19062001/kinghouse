@@ -19,6 +19,7 @@ const HomeDepart = () =>{
             <ListDepart></ListDepart>
                </div>
         )}
+    
     </>
       
     )

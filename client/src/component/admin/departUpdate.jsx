@@ -17,7 +17,6 @@ import {
   import { styled } from "@mui/material/styles";
   import { useState } from "react";
   import { useDispatch,useSelector } from "react-redux";
-  import { useNavigate } from "react-router-dom";
   import { deleteImage, fetchDepartDetail, updateDepart, updateImage } from "../../redux/depart/departThunk";
   import {
     district,
@@ -33,6 +32,9 @@ import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
 import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { selectStatusDepart } from "../../redux/depart/departSelector";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -59,14 +61,14 @@ const CssInputLabel = styled(InputLabel)({
     const service = useSelector(selectListServices)
     const ultilitiesDepart = useSelector(selectListUlDeparts)
     const ultilitiesHouse = useSelector(selectListUlHomes)
-  
+    const isLoading = useSelector(selectStatusDepart)
+
     useEffect(()=>{
        dispatch(fetchServices())
        dispatch(fetchUlDeparts())
        dispatch(fetchUlHomes())
     },[])
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const params = useParams();
 
     const [departUpdate, setDepartUpdate] = useState({
@@ -154,11 +156,10 @@ const CssInputLabel = styled(InputLabel)({
     };
   
     const hanldeUpdate = () =>{
-      console.log(setDepartUpdate)
       dispatch(updateDepart(departUpdate))
-      .then(()=>{
-        navigate(0)
-      })
+      .then((res)=>{
+        setDepartUpdate(res.payload)
+       })
     }
 
     const handleDeleteImage = (image) =>{
@@ -298,9 +299,9 @@ const CssInputLabel = styled(InputLabel)({
                 <div className="flex flex-row flex-wrap">
                 {departUpdate?.photo?.map((dataImage,index)=>(
                   <div className="relative" key={index}>
-                   <img className="w-56 object-contain p-1" alt="" src={process.env.REACT_APP_API_URL + "/departs/" + dataImage.photo} />
+                   <img className="w-56 object-contain p-1" alt="" src={process.env.REACT_APP_API_URL + "/departs/" + dataImage} />
                    <button 
-                   onClick={()=>handleDeleteImage(dataImage.photo)}
+                   onClick={()=>handleDeleteImage(dataImage)}
                    className="hover:scale-105 absolute font-bold right-0 top-0 text-slate-50 bg-red-500 rounded-lg py-1 px-3 text-xs">X</button>
                    </div>
                 ))}
@@ -453,6 +454,14 @@ const CssInputLabel = styled(InputLabel)({
           </Button>
           </Paper>
         </Box>
+        {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
       </Container>
     );
   };

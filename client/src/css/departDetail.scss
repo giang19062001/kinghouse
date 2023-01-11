@@ -1,0 +1,92 @@
+
+
+#BoxGlobalMainDepartDetail {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  float: left;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  margin-bottom: 3em;
+  margin-left: 1em;
+}
+
+#BoxChildMainDepartDetail {
+  min-width: 100%;
+  height: auto;
+  transition: 0.5s;
+  padding: 25px 0 0 0;
+  
+}
+#ImageMainDepartDetail {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  margin-bottom: 1em;
+  &:hover{
+    cursor: zoom-in;
+  }
+}
+#BoxGlobalSubDepartDetail {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  overflow-y: hidden;
+  margin-bottom: 3em;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+#BoxChildSubDepartDetail {
+
+  width: auto;
+  min-height: 100%;
+  transition: 0.5s;
+  padding-top: 1px;
+  padding-bottom: 1px;
+
+}
+
+#ImageSubDepartDetail {
+
+  width: 100%;
+  height: auto;
+  display: block;
+
+}
+
+
+#movePre {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 10%;
+  height: 10%;
+  color: rgb(255, 255, 255);
+  z-index: 10;
+  border: 2px solid  rgb(255, 238, 0);
+  &:hover{
+    cursor: pointer;
+  }
+
+}
+#moveNext {
+  position: absolute;
+  top: 40%;
+  right: 0;
+  width: 10%;
+  height: 10%;
+  color: rgb(255, 255, 255);
+  z-index: 10;
+  border: 2px solid  rgb(255, 238, 0);
+  &:hover{
+    cursor: pointer;
+  }
+
+}

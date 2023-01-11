@@ -37,6 +37,38 @@
     background-color: rgb(13, 172, 235);
   }
 }
+#idHoverImage{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  position: relative;
+  transition: color 0.4s;
+  z-index: 1;
+  padding: 5px;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: #fbbf24;
+    border-radius: 30px;
+    transform-origin: 1 0 ;
+    transform: scaleX(0);
+    transition: 0.8s;
+    padding: 15px;
+    z-index: -1;
+  }
+
+  &:hover {
+     #idHoverTypography{
+      color: #fff;
+    }
+    &:before {
+      transform: scaleX(1);
+    }
+  }
+}
 #idHover {
   color: #000;
   display: inline-block;

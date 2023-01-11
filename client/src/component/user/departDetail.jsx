@@ -5,16 +5,15 @@ import {
   Divider,
   Button,
   Stack,
-  DialogContent,
   Dialog,
-  Skeleton,
+
 } from "@mui/material";
 
-import { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect,  } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
-import { selectDepartDetail } from "../../redux/depart/departSelector";
+import { selectDepartDetail, selectStatusDepart } from "../../redux/depart/departSelector";
 import { fetchServices } from "../../redux/service/serviceThunk";
 import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
 import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
@@ -22,20 +21,17 @@ import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 import React from "react";
-import {
-  StackedCarousel,
-  ResponsiveContainer,
-  StackedCarouselSlideProps,
-} from "react-stacked-center-carousel";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import "../../css/carouselmg.scss";
+import "../../css/departDetail.scss";
+
 import Home from "./home";
 import { Form } from "./form";
-import { borderRadius, maxWidth } from "@mui/system";
 
 const DepartDetail = () => {
-  window.scrollTo({ top: 5, behavior: "auto" });
+  // window.scrollTo({ top: 5, behavior: "auto" });
 
   const ref = React.useRef();
 
@@ -46,15 +42,29 @@ const DepartDetail = () => {
     dispatch(fetchServices());
     dispatch(fetchUlDeparts());
     dispatch(fetchUlHomes());
-  }, []);
+  }, [dispatch]);
 
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
+  const isLoading = useSelector(selectStatusDepart)
 
   const depart = useSelector(selectDepartDetail);
-  const [openDialogForm, setOpenDialogForm] = useState(false);
+  const [arrayImages, setArrayImages] = useState();
+  const [arrayImagesSub, setArrayImagesSub] = useState();
 
+  useEffect(()=>{
+    setArrayImages(depart.photo)
+    setArrayImagesSub(depart.photo)
+  },[depart.photo])
+  const [openDialogForm, setOpenDialogForm] = useState(false);
+  const [imageDialog, setImageDialog] = useState({
+    open: false,
+    value: "",
+  });
+  const handleCloseImageDialog = () => {
+    setImageDialog({ open: false, value: "" });
+  };
   useEffect(() => {
     dispatch(fetchDepartDetail(params.id));
   }, [dispatch, params.id]);
@@ -137,79 +147,98 @@ const DepartDetail = () => {
     );
   };
 
-  // console.log("data", data);
+  const [value, setValue] = useState(0);
+  const moveNext = (data) => {
+    setValue(value - 100);
 
+    // let fristElement = arrayImagesSub[0];
+
+    // let arrayAfterRemove = arrayImagesSub.filter(
+    //   (element) => element !== fristElement
+    // );
+
+    setArrayImagesSub([...arrayImagesSub, data]);
+  };
+  const movePre = (data) => {
+    setValue(value + 100);
+
+    // let lastElement = arrayImagesSub[arrayImagesSub.length - 1];
+    // let arrayAfterRemove = arrayImagesSub.filter(
+    //   (element) => element !== lastElement
+    // );
+    setArrayImagesSub([data, ...arrayImagesSub]);
+  };
+
+
+  console.log("arrayImages", arrayImages);
   return (
     <Container sx={{ marginY: 10 }}>
-      {Object.keys(depart)?.length === 0 ? (
-        <p>Loading... depart</p>
-      ) : (
+      
         <Stack>
-          <Box>
-            {depart.photo.length !== 0 ? (
-              <div
-                style={{
-                  width: "100%",
-                  position: "relative",
-                  marginBottom: 20,
-                }}
-              >
-                <ResponsiveContainer
-                  carouselRef={ref}
-                  render={(parentWidth, carouselRef) => {
-                    let currentVisibleSlide = 5;
-                    if (parentWidth <= 1440) currentVisibleSlide = 3;
-                    if (parentWidth <= 1080) currentVisibleSlide = 3;
+          <Stack
+            className="bg-slate-50"
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box id="BoxGlobalSubDepartDetail">
+              {arrayImagesSub?.map((data, index) => (
+                <Box
+                  key={data}
+                  id="BoxChildSubDepartDetail"
+                  style={{ transform: `translateY(${value}%)` }}
+                >
+                  <img
+                    key={data}
+                    src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                    alt=""
+                    id="ImageSubDepartDetail"
+                    onClick={() => setImageDialog({ open: true, value: data })}
 
-                    return (
-                      <StackedCarousel
-                        ref={carouselRef}
-                        slideComponent={Card}
-                        slideWidth={parentWidth < 800 ? parentWidth - 120 : 750}
-                        carouselWidth={parentWidth}
-                        data={depart.photo}
-                        currentVisibleSlide={currentVisibleSlide}
-                        maxVisibleSlide={5}
-                        customScales={[1, 0.85, 0.7, 0.55]}
-                        transitionTime={450}
-                        useGrabCursor={true}
-                      />
-                    );
-                  }}
-                />
-                <>
-                  <ArrowCircleLeftIcon
-                    style={{
-                      position: "absolute",
-                      top: "40%",
-                      left: 10,
-                      zIndex: 10,
-                    }}
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      ref.current?.goBack();
-                    }}
-                  ></ArrowCircleLeftIcon>
-                  <ArrowCircleRightIcon
-                    style={{
-                      position: "absolute",
-                      top: "40%",
-                      right: 10,
-                      zIndex: 10,
-                    }}
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      ref.current?.goNext();
-                    }}
-                  ></ArrowCircleRightIcon>
-                </>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </Box>
+                  />
+                </Box>
+              ))}
+            </Box>
+
+            <Box id="BoxGlobalMainDepartDetail">
+              {arrayImages?.map((data, index) => (
+                <Box
+                  key={data}
+                  id="BoxChildMainDepartDetail"
+                  style={{ transform: `translateX(${value}%)` }}
+                >
+                  <img
+                    key={data}
+                    src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                    alt=""
+                    id="ImageMainDepartDetail"
+                    onClick={() => setImageDialog({ open: true, value: data })}
+                  />
+                  <Box>
+                    {index === 0?(
+                      null
+                    ):(
+                      <ArrowCircleLeftIcon
+                      id="movePre"
+                      onClick={() => movePre(data)}
+                    />
+                    )}
+                  
+                     {index === arrayImages.length -1 ?(
+                      null
+                     ):(
+                      <ArrowCircleRightIcon
+                      id="moveNext"
+                      onClick={() => moveNext(data)}
+                    />
+                     )}
+                 
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Stack>
+
           <Box>
             <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
               THÔNG TIN CĂN HỘ
@@ -249,15 +278,18 @@ const DepartDetail = () => {
               </b>{" "}
             </Typography>
             <Typography>
+              Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
+            </Typography>
+            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+              CHI PHÍ
+            </Typography>
+            <Typography>
               Tiền điện: <b> {depart?.electricMoney} đ/kw</b>{" "}
             </Typography>
             <Typography>
               Tiền nước: <b> {depart?.waterMoney} đ/người</b>
             </Typography>
 
-            <Typography>
-              Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
-            </Typography>
             <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
               THÔNG TIN TÒA NHÀ SỞ HỮU
             </Typography>
@@ -314,8 +346,22 @@ const DepartDetail = () => {
               </Button>
             </Box>
           </Box>
+          <Dialog
+            maxWidth={"lg"}
+            open={imageDialog.open}
+            onClose={handleCloseImageDialog}
+          >
+            <img
+              key={imageDialog.value}
+              src={
+                process.env.REACT_APP_API_URL + "/departs/" + imageDialog.value
+              }
+              alt=""
+              style={{ display: "block", margin: "auto" }}
+            ></img>
+          </Dialog>
         </Stack>
-      )}
+      
       <Divider className="mt-12 mb-4" />
       <Divider className="mb-12 mt-4" />
       {openDialogForm === true ? (
@@ -324,84 +370,17 @@ const DepartDetail = () => {
           handleCallbackCloseDialog={handleCloseDialogForm}
         ></Form>
       ) : null}
+        {isLoading === true ?(
+           <Backdrop
+           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+           open={isLoading}
+         >
+           <CircularProgress color="inherit" />
+         </Backdrop>
+      ):null}
       <Home></Home>
     </Container>
   );
 };
 
 export default DepartDetail;
-
-export const Card = React.memo(function (props) {
-  const { data, dataIndex, isCenterSlide, swipeTo, slideIndex } = props;
-  const { photo } = data[dataIndex] || {};
-
-  const [imageDialog, setImageDialog] = useState({
-    open: false,
-    value: "",
-  });
-  const handleCloseImageDialog = () => {
-    setImageDialog({ open: false, value: "" });
-  };
-  return photo !== undefined ? (
-    <div>
-      <div className="twitch-card" draggable={false}>
-        <div className={`cover fill`}>
-          <div
-            className="card-overlay fill"
-            onClick={() => {
-              if (!isCenterSlide) {
-                swipeTo(slideIndex);
-              } else {
-                setImageDialog({ open: true, value: photo });
-              }
-            }}
-          />
-          <img
-            key={photo}
-            className="cover-image fill"
-            src={process.env.REACT_APP_API_URL + "/departs/" + photo}
-            alt=""
-          />
-        </div>
-      </div>
-      <Dialog
-        maxWidth={"lg"}
-        open={imageDialog.open}
-        onClose={handleCloseImageDialog}
-      >
-        <img
-          key={photo}
-          src={process.env.REACT_APP_API_URL + "/departs/" + imageDialog.value}
-          alt=""
-          style={{ display: "block", margin: "auto" }}
-        ></img>
-      </Dialog>
-    </div>
-  ) : (
-    <div>
-      <div className="twitch-card" draggable={false}>
-        <div className={`cover fill`}>
-          <div
-            className="card-overlay fill"
-            onClick={() => {
-              if (!isCenterSlide) {
-                swipeTo(slideIndex);
-              }
-            }}
-          >
-            <Skeleton
-                      key={photo}
-
-              animation="wave"
-              sx={{ bgcolor: "grey.300" }}
-              variant="rectangular"
-              width={700}
-              height="65vmin"
-              className="cover-image fill"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});

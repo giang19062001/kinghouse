@@ -25,6 +25,18 @@ export const fetchForm = createAsyncThunk(
         }
       }
   );
+  export const deleteForm = createAsyncThunk(
+    'delete/form',
+    async (id,{rejectWithValue}) => {
+        try {
+          console.log("id",id)
+          const response = await api.delete(`/api/form/${id}`)
+          return response.data
+        } catch (err) {
+          return rejectWithValue(err.message);
+        }
+      }
+  );
 
   export const postForm = createAsyncThunk(
     'post/form',
