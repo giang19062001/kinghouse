@@ -1,66 +1,57 @@
-
-
 #BoxGlobalMainDepartDetail {
   margin: 0;
   padding: 0;
   display: flex;
-  float: left;
   align-items: center;
   position: relative;
   overflow-x: hidden;
-  margin-bottom: 3em;
-  margin-left: 1em;
+  margin-left: 5px;
+  width: 80%;
 }
 
 #BoxChildMainDepartDetail {
   min-width: 100%;
   height: auto;
   transition: 0.5s;
-  padding: 25px 0 0 0;
+  overflow-x: hidden;
   
 }
 #ImageMainDepartDetail {
   width: 100%;
-  height: auto;
+  height: 65vmin;
+  border-radius: 2px;
   display: block;
-
-  margin-bottom: 1em;
-  &:hover{
+  &:hover {
     cursor: zoom-in;
   }
 }
+
 #BoxGlobalSubDepartDetail {
-  margin: 0;
-  padding: 0;
+  width: 20%;
+  height: 65vmin;
   display: flex;
   flex-direction: column;
   position: relative;
-  align-items: center;
-  overflow-y: hidden;
-  margin-bottom: 3em;
-  &:hover{
+  overflow-y: scroll;
+  &:hover {
     cursor: pointer;
   }
 }
 
 #BoxChildSubDepartDetail {
+  margin-right: 5px;
 
-  width: auto;
-  min-height: 100%;
   transition: 0.5s;
-  padding-top: 1px;
-  padding-bottom: 1px;
-
+  padding-bottom: 3px;
 }
 
 #ImageSubDepartDetail {
-
   width: 100%;
-  height: auto;
+  height: 15vmin;
   display: block;
+  border-radius: 2px;
 
 }
-
 
 #movePre {
   position: absolute;
@@ -70,11 +61,9 @@
   height: 10%;
   color: rgb(255, 255, 255);
   z-index: 10;
-  border: 2px solid  rgb(255, 238, 0);
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-
 }
 #moveNext {
   position: absolute;
@@ -84,9 +73,7 @@
   height: 10%;
   color: rgb(255, 255, 255);
   z-index: 10;
-  border: 2px solid  rgb(255, 238, 0);
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
-
 }

@@ -277,9 +277,9 @@ export const Form = (props) => {
                   </MenuItem>
                 ))}
               </CssSelect>
-              <FormHelperText>
-                {hasError("depart") ? validation.errors.depart?.[0] : null}
-              </FormHelperText>
+                <FormHelperText>
+                  {hasError("depart") ? validation.errors.depart?.[0] : null}
+                </FormHelperText>
             </FormControl>
             <CssTextField
               type="text"

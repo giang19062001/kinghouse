@@ -405,7 +405,7 @@ const Search = () => {
                           sx={{ paddingLeft: { xs: 3, sm: 1, md: 1 } }}
                           className="text-orange-500 font-bold mt-2 text-sm "
                         >
-                          {data?.length} m ( dài ) *  {data?.width} m ( rộng ) 
+                         {data?.length}m  * {data?.width}m 
                         </Typography>
                       </Link>
                     </Grid>
