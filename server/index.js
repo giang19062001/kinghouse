@@ -12,9 +12,9 @@ dotenv.config()
 mongoose.connect((process.env.MONGODB_URL),()=> {console.log("connected to mongodb") })
 
 
-app.use(cors({origin:"*"})) 
-app.use (bodyParser.json()) 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({origin:process.env.REACT_LOCALHOST})) 
+app.use (bodyParser.json({limit:'50mb'})) 
+app.use(bodyParser.urlencoded({ extended: true,limit:'50mb',parameterLimit: 50000  }));
 app.use(morgan("common"))
 
 app.use(express.static('images')); //anh cho fontend
@@ -35,6 +35,6 @@ app.use("/api/ulDepart",ulDepartRouter)
 app.use("/api/ulHome",ulHomeRouter)
 
 
-app.listen(process.env.PORT,() =>{
-    console.log("server is running..." + process.env.PORT)
+app.listen(process.env.PORT || 8000,() =>{
+    console.log("server is running..." )
 })

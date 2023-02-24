@@ -10,15 +10,15 @@ const HomeDepart = () =>{
 
     return (
         <>
-        {/* {auth === false?(
+        {auth === false?(
                 <PageForbidden></PageForbidden>
-        ):( */}
+        ):(
             <div>
             <Menu></Menu>
             <Depart></Depart>
             <ListDepart></ListDepart>
                </div>
-        {/* )} */}
+        )}
     
     </>
       

@@ -1,10 +1,10 @@
-import { Box, Container, Typography, Divider, Stack,Paper,Dialog } from "@mui/material";
+import { Box, Container, Typography, Divider, Stack,Paper,Dialog, Backdrop, CircularProgress } from "@mui/material";
 
 import { useState, useEffect } from "react";
 import {  useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
-import { selectDepartDetail } from "../../redux/depart/departSelector";
+import { selectDepartDetail, selectStatusDepart } from "../../redux/depart/departSelector";
 
 import { fetchServices } from "../../redux/service/serviceThunk";
 import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
@@ -28,6 +28,7 @@ const DepartDetailAdmin = () => {
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
+  const isLoading = useSelector(selectStatusDepart);
   const depart = useSelector(selectDepartDetail);
   const [value, setValue] = useState(0);
   const [arrayImage,setArrayImage] = useState([])
@@ -195,7 +196,7 @@ const DepartDetailAdmin = () => {
          <Paper sx={{padding:1}} elevation={2}>
         <Stack direction="row" justifyContent="center" alignItems="center" >
           <Box id="BoxGlobalSubDepartDetail">
-            {arrayImage.map((data, index) => (
+            {arrayImage?.map((data, index) => (
               <Box
                 key={index}
                 id="BoxChildSubDepartDetail"
@@ -357,7 +358,16 @@ const DepartDetailAdmin = () => {
           ></img>
         </Dialog>
         </Stack>
+        
       )}
+       {isLoading === true || arrayImage.length === 0? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
     </Container>
   );
 };

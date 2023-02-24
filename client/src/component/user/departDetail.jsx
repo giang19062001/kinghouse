@@ -5,7 +5,7 @@ import {
   Divider,
   Button,
   Stack,
-  Dialog,Paper
+  Dialog,Paper, LinearProgress
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
@@ -224,20 +224,22 @@ const DepartDetail = () => {
         <Paper sx={{padding:1}} elevation={2}>
         <Stack direction="row" justifyContent="center" alignItems="center" >
           <Box id="BoxGlobalSubDepartDetail">
-            {arrayImage.map((data, index) => (
-              <Box
-                key={index}
-                id="BoxChildSubDepartDetail"
-              >
-                <img
+            {
+              arrayImage?.map((data, index) => (
+                <Box
                   key={index}
-                  src={process.env.REACT_APP_API_URL + "/departs/" + data}
-                  alt=""
-                  id="ImageSubDepartDetail"
-                  onClick={() => moveCurrent(data)}
-                />
-              </Box>
-            ))}
+                  id="BoxChildSubDepartDetail"
+                >
+                  <img
+                    key={index}
+                    src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                    alt=""
+                    id="ImageSubDepartDetail"
+                    onClick={() => moveCurrent(data)}
+                  />
+                </Box>
+              ))}
+      
           </Box>
 
           <Box id="BoxGlobalMainDepartDetail">
@@ -412,7 +414,7 @@ const DepartDetail = () => {
           handleCallbackCloseDialog={handleCloseDialogForm}
         ></Form>
       ) : null}
-      {isLoading === true ? (
+      {isLoading === true || arrayImage.length === 0? (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isLoading}

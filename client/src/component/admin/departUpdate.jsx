@@ -186,7 +186,12 @@ const CssInputLabel = styled(InputLabel)({
           <p className="p"><span className="fancy">Chỉnh sửa căn hộ</span></p>
 
           {departUpdate === undefined?(
-            <p>Loading...</p>
+            <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
           ):(
             <Grid container spacing={4} key={departUpdate._id}>
             <Grid item xs={12} md={6} lg={6} xl={6}>
