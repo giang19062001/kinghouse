@@ -25,6 +25,6 @@ let path = require('path');
         }
     }
     
-    const upload = multer({ storage, fileFilter });
+    const upload = multer({ storage:storage, fileFilter:fileFilter,limits: {fileSize: 100000000}} );
 
 module.exports = upload
