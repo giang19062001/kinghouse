@@ -15,7 +15,9 @@ import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
 import React from "react";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-
+import CategoryIcon from "@mui/icons-material/Category";
+import CropSquareIcon from "@mui/icons-material/CropSquare";
+import PlaceIcon from "@mui/icons-material/Place";
 const DepartDetailAdmin = () => {
   // window.scrollTo({ top: 5, behavior: "auto" });
 
@@ -28,7 +30,6 @@ const DepartDetailAdmin = () => {
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
-  const isLoading = useSelector(selectStatusDepart);
   const depart = useSelector(selectDepartDetail);
   const [value, setValue] = useState(0);
   const [arrayImage,setArrayImage] = useState([])
@@ -188,162 +189,196 @@ const DepartDetailAdmin = () => {
   // swipe
 
   return (
-    <Container sx={{ marginY: 20 }}>
-      {Object.keys(depart)?.length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        <Stack>
-         <Paper sx={{padding:1}} elevation={2}>
-        <Stack direction="row" justifyContent="center" alignItems="center" >
-          <Box id="BoxGlobalSubDepartDetail">
-            {arrayImage?.map((data, index) => (
-              <Box
-                key={index}
-                id="BoxChildSubDepartDetail"
-              >
-                <img
-                  key={index}
-                  src={process.env.REACT_APP_API_URL + "/departs/" + data}
-                  alt=""
-                  id="ImageSubDepartDetail"
-                  onClick={() => moveCurrent(data)}
-                />
-              </Box>
-            ))}
-          </Box>
-
-          <Box id="BoxGlobalMainDepartDetail">
-            {depart?.photo?.map((data, index) => (
-              <Box
-                key={index}
-                id="BoxChildMainDepartDetail"
-                style={{ transform: `translateX(${value}%)` }}
-                onTouchStart={(e) => handleTouchStart(e)}
-                onTouchMove={(e) => handleTouchMove({ event: e, index: index })}
-              >
-                <img
-                  key={index}
-                  src={process.env.REACT_APP_API_URL + "/departs/" + data}
-                  alt=""
-                  id="ImageMainDepartDetail"
-                  onClick={() => setImageDialog({ open: true, value: data })}
-                />
-                <Box>
-                  {index === 0 ? null : (
-                    <ArrowCircleLeftIcon
-                      id="movePre"
-                      onClick={() => {
-                        movePre(100);
-                        setIndexCurrent(index - 1);
-                      }}
+    <Container sx={{ marginY: 15 }}>
+      <Stack>
+        <Paper sx={{ padding: 1 }} elevation={2}>
+          <Stack className="flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row">
+            <Stack direction="row" justifyContent="center" alignItems="center">
+              <Box id="BoxGlobalSubDepartDetail">
+                {arrayImage?.map((data, index) => (
+                  <Box key={index} id="BoxChildSubDepartDetail">
+                    <img
+                      key={index}
+                      src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                      alt=""
+                      id="ImageSubDepartDetail"
+                      onClick={() => moveCurrent(data)}
                     />
-                  )}
-
-                  {index === depart?.photo?.length - 1 ? null : (
-                    <ArrowCircleRightIcon
-                      id="moveNext"
-                      onClick={() => {
-                        moveNext(100);
-                        setIndexCurrent(index + 1);
-                      }}
-                    />
-                  )}
-                </Box>
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
-        </Stack>
-        </Paper>
-       
-          <Box className="pt-2">
-            <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
-              THÔNG TIN CĂN HỘ
-            </Typography>
-            <Typography>
-              Tên căn hộ: <b> {depart?.name}</b>
-            </Typography>
-            <Typography>
-              Loại căn hộ: <b> {depart?.type}</b>
-            </Typography>
-            {depart?.status === "Đang khuyến mãi"?(
-              <div>
-              <Typography>
-              Gía gốc:{" "}
-              <b className="text-red-500 line-through "> {depart?.price} VNĐ</b>
+
+              <Box id="BoxGlobalMainDepartDetail">
+                {depart?.photo?.map((data, index) => (
+                  <Box
+                    key={index}
+                    id="BoxChildMainDepartDetail"
+                    style={{ transform: `translateX(${value}%)` }}
+                    onTouchStart={(e) => handleTouchStart(e)}
+                    onTouchMove={(e) =>
+                      handleTouchMove({ event: e, index: index })
+                    }
+                  >
+                    <img
+                      key={index}
+                      src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                      alt=""
+                      id="ImageMainDepartDetail"
+                      onClick={() =>
+                        setImageDialog({ open: true, value: data })
+                      }
+                    />
+                    <Box>
+                      {index === 0 ? null : (
+                        <ArrowCircleLeftIcon
+                          id="movePre"
+                          onClick={() => {
+                            movePre(100);
+                            setIndexCurrent(index - 1);
+                          }}
+                        />
+                      )}
+
+                      {index === depart?.photo?.length - 1 ? null : (
+                        <ArrowCircleRightIcon
+                          id="moveNext"
+                          onClick={() => {
+                            moveNext(100);
+                            setIndexCurrent(index + 1);
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Stack>
+            <Paper
+              elevation={2}
+              sx={{ padding: 2 }}
+              className="my-2 mx-0 md:mx-2 md:my-0 lg:mx-2 lg:my-0 xl:mx-2 xl:my-0"
+            >
+              <Typography
+                align="center"
+                className=" text-sky-400 font-semibold my-2 md:my-6 lg:my-6 xl:my-6 p-2 bg-slate-50 shadow font-sans
+              lg:mt-0 xl:mt-0"
+              >
+                THÔNG TIN CĂN HỘ
               </Typography>
-               <Typography>
-               Gía Khuyến mãi:{" "}
-               <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
-               </Typography>
-               </div>
-            ):(
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6">
+                <b> {depart?.name}</b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6  text-sky-500">
+                <PlaceIcon></PlaceIcon> <b> {depart?.addressHouse}</b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-green-600  ">
+                <b>
+                  {" "}
+                  <CategoryIcon></CategoryIcon> {depart?.type}
+                </b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-orange-500">
+                <b>
+                  {" "}
+                  <CropSquareIcon></CropSquareIcon> {depart?.length} *{" "}
+                  {depart?.width} m2
+                </b>
+              </Typography>
+             
+           
+            </Paper>
+          </Stack>
+        </Paper>
+
+        <Box>
+          <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
+            THÔNG TIN CHI TIẾT
+          </Typography>
+          <Typography>
+            Tên căn hộ: <b> {depart?.name}</b>
+          </Typography>
+          <Typography>
+            Loại căn hộ: <b> {depart?.type}</b>
+          </Typography>
+          {depart?.status === "Đang khuyến mãi" ? (
+            <div>
               <Typography>
+                Gía gốc:{" "}
+                <b className="text-red-500 line-through ">
+                  {" "}
+                  {depart?.price} VNĐ
+                </b>
+              </Typography>
+              <Typography>
+                Gía Khuyến mãi:{" "}
+                <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
+              </Typography>
+            </div>
+          ) : (
+            <Typography>
               Gía thuê căn hộ:{" "}
               <b className="text-red-500"> {depart?.price} VNĐ</b>
             </Typography>
-            )}
-            <Typography>
-              Diện tích (dài * rộng):{" "}
-              <b>
-                {" "}
-                {depart?.length} * {depart?.width} m2
-              </b>{" "}
-            </Typography>
-            <Typography>
-              Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
-            </Typography>
-            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
-              CHI PHÍ
-            </Typography>
-            <Typography>
-              Tiền điện: <b> {depart?.electricMoney}đ/kw</b>{" "}
-            </Typography>
-            <Typography>
-              Tiền nước: <b> {depart?.waterMoney}đ/người</b>
-            </Typography>
+          )}
 
-            
-            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
-              THÔNG TIN TÒA NHÀ SỞ HỮU
-            </Typography>
-            <Typography>
-              Tên tòa nhà sở hữu: <b>{depart?.nameHouse}</b>
-            </Typography>
-            <Typography>
-              Địa chỉ tòa nhà: <b> {depart?.addressHouse}</b>
-            </Typography>
-            <Typography>
-              Mô tả tiện ích xung quanh tòa nhà:{" "}
-              <i>{depart?.descriptionHouse}</i>
-            </Typography>
+          <Typography>
+            Diện tích (dài * rộng):{" "}
+            <b>
+              {" "}
+              {depart?.length} * {depart?.width} m2
+            </b>{" "}
+          </Typography>
+          <Typography>
+            Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
+          </Typography>
+          <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+            CHI PHÍ
+          </Typography>
+          <Typography>
+            Tiền điện: <b> {depart?.electricMoney} đ/kw</b>{" "}
+          </Typography>
+          <Typography>
+            Tiền nước: <b> {depart?.waterMoney} đ/người</b>
+          </Typography>
 
-            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
-              NHỮNG DỊCH VỤ ĐÃ BAO GỒM GIÁ THUÊ
-            </Typography>
-            <Box className=" py-6 flex flex-wrap">
-              {depart?.service?.map((data, index) => templateIconSer(data))}
-            </Box>
+          <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+            THÔNG TIN TÒA NHÀ SỞ HỮU
+          </Typography>
+          <Typography>
+            Tên tòa nhà sở hữu: <b>{depart?.nameHouse}</b>
+          </Typography>
+          <Typography>
+            Địa chỉ tòa nhà: <b> {depart?.addressHouse}</b>
+          </Typography>
+          <Typography>
+            Mô tả tiện ích xung quanh tòa nhà: <i>{depart?.descriptionHouse}</i>
+          </Typography>
 
-            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
-              TIỆN ÍCH BÊN TRONG CĂN HỘ
-            </Typography>
-            <Box className="py-6 flex flex-wrap">
-              {depart?.ultilitiesDepart?.map((data, index) =>
-                templateIconUlDepart(data)
-              )}
-            </Box>
-
-            <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
-              TIỆN ÍCH BÊN TRONG TÒA NHÀ
-            </Typography>
-            <Box className="py-6 flex flex-wrap">
-              {depart?.ultilitiesHouse?.map((data, index) =>
-                templateIconUlHouse(data)
-              )}
-            </Box>
-            <Divider />
+          <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+            NHỮNG DỊCH VỤ ĐÃ BAO GỒM GIÁ THUÊ
+          </Typography>
+          <Box className="py-6 flex flex-wrap">
+            {depart?.service?.map((data) => templateIconSer(data))}
           </Box>
-          <Dialog
+
+          <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+            TIỆN ÍCH BÊN TRONG CĂN HỘ
+          </Typography>
+          <Box className="py-6 flex flex-wrap">
+            {depart?.ultilitiesDepart?.map((data) =>
+              templateIconUlDepart(data)
+            )}
+          </Box>
+
+          <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
+            TIỆN ÍCH BÊN TRONG TÒA NHÀ
+          </Typography>
+          <Box className="py-6 flex flex-wrap">
+            {depart?.ultilitiesHouse?.map((data) => templateIconUlHouse(data))}
+          </Box>
+          <Divider variant="middle" />
+        </Box>
+        <Dialog
           maxWidth={"lg"}
           open={imageDialog.open}
           onClose={handleCloseImageDialog}
@@ -357,17 +392,9 @@ const DepartDetailAdmin = () => {
             style={{ display: "block", margin: "auto" }}
           ></img>
         </Dialog>
-        </Stack>
-        
-      )}
-       {isLoading === true || arrayImage.length === 0? (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      ) : null}
+      </Stack>
+
+     
     </Container>
   );
 };

@@ -351,7 +351,7 @@ const DepartUpdate = () => {
                   <label>Những dịch vụ đã bao gồm giá thuê: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {service?.map((data, index) =>
-                      departUpdate.service.includes(data?.name) ? (
+                      departUpdate.service?.includes(data?.name) ? (
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
                           name="service"
@@ -432,7 +432,7 @@ const DepartUpdate = () => {
                   <label>Tiện ích bên trong căn hộ: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {ultilitiesDepart?.map((data, index) =>
-                      departUpdate.ultilitiesDepart.includes(data?.name) ? (
+                      departUpdate.ultilitiesDepart?.includes(data?.name) ? (
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
                           name="ultilitiesDepart"
@@ -454,7 +454,7 @@ const DepartUpdate = () => {
                   <label>Tiện ích bên khu vực tòa nhà sở hữu căn hộ: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {ultilitiesHouse?.map((data, index) =>
-                      departUpdate.ultilitiesHouse.includes(data?.name) ? (
+                      departUpdate.ultilitiesHouse?.includes(data?.name) ? (
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
                           name="ultilitiesHouse"

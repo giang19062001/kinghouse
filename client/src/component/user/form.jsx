@@ -180,7 +180,7 @@ export const Form = (props) => {
           if(!res.error){
             setOpenSuccess(true)
           }else{
-            setOpenError(false)
+            setOpenError(true)
           }
         })
       }

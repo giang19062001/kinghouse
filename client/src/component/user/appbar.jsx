@@ -127,7 +127,7 @@ const Appbar = () => {
                   alt=""
                   className="mx-auto w-24 rounded-full"
                 />
-                <Box >
+                <Box sx={{ display: { xs: "none", sm: "block", md: "block" },}} >
                 <Typography id="idHoverTypography" align="center" className="text-slate-900 text-md tracking-tight font-bold		">King House</Typography>
                 <Typography id="idHoverTypography"  align="center" className="text-slate-900 text-md	tracking-tight	">Nâng tầm giá trị sống</Typography>
                 </Box>

@@ -5,7 +5,9 @@ import {
   Divider,
   Button,
   Stack,
-  Dialog,Paper, LinearProgress
+  Dialog,
+  Paper,
+  LinearProgress,
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
@@ -27,6 +29,9 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import CategoryIcon from "@mui/icons-material/Category";
+import CropSquareIcon from "@mui/icons-material/CropSquare";
+import PlaceIcon from "@mui/icons-material/Place";
 import "../../css/departDetail.scss";
 
 import Home from "./home";
@@ -51,22 +56,21 @@ const DepartDetail = () => {
 
   const depart = useSelector(selectDepartDetail);
   const [value, setValue] = useState(0);
-  const [arrayImage,setArrayImage] = useState([])
+  const [arrayImage, setArrayImage] = useState([]);
   const [indexCurrent, setIndexCurrent] = useState(0);
-
 
   const [openDialogForm, setOpenDialogForm] = useState(false);
   const [imageDialog, setImageDialog] = useState({
     open: false,
     value: "",
   });
- 
+
   useEffect(() => {
     dispatch(fetchDepartDetail(params.id));
   }, [dispatch, params.id]);
-  useEffect(()=>{
-     setArrayImage(depart?.photo)
-  },[depart])
+  useEffect(() => {
+    setArrayImage(depart?.photo);
+  }, [depart]);
 
   const handleCloseImageDialog = () => {
     setImageDialog({ open: false, value: "" });
@@ -150,16 +154,14 @@ const DepartDetail = () => {
   };
 
   const moveNext = (number) => {
-    console.log("number",number)
+    console.log("number", number);
 
-    setValue(value - number)
-
+    setValue(value - number);
   };
   const movePre = (number) => {
-    console.log("number",number)
+    console.log("number", number);
 
-      setValue(value + number)
-     
+    setValue(value + number);
   };
 
   const moveCurrent = (data) => {
@@ -217,78 +219,135 @@ const DepartDetail = () => {
   };
   // swipe
 
-
   return (
     <Container sx={{ marginY: 10 }}>
       <Stack>
-        <Paper sx={{padding:1}} elevation={2}>
-        <Stack direction="row" justifyContent="center" alignItems="center" >
-          <Box id="BoxGlobalSubDepartDetail">
-            {
-              arrayImage?.map((data, index) => (
-                <Box
-                  key={index}
-                  id="BoxChildSubDepartDetail"
-                >
-                  <img
-                    key={index}
-                    src={process.env.REACT_APP_API_URL + "/departs/" + data}
-                    alt=""
-                    id="ImageSubDepartDetail"
-                    onClick={() => moveCurrent(data)}
-                  />
-                </Box>
-              ))}
-      
-          </Box>
-
-          <Box id="BoxGlobalMainDepartDetail">
-            {depart?.photo?.map((data, index) => (
-              <Box
-                key={index}
-                id="BoxChildMainDepartDetail"
-                style={{ transform: `translateX(${value}%)` }}
-                onTouchStart={(e) => handleTouchStart(e)}
-                onTouchMove={(e) => handleTouchMove({ event: e, index: index })}
-              >
-                <img
-                  key={index}
-                  src={process.env.REACT_APP_API_URL + "/departs/" + data}
-                  alt=""
-                  id="ImageMainDepartDetail"
-                  onClick={() => setImageDialog({ open: true, value: data })}
-                />
-                <Box>
-                  {index === 0 ? null : (
-                    <ArrowCircleLeftIcon
-                      id="movePre"
-                      onClick={() => {
-                        movePre(100);
-                        setIndexCurrent(index - 1);
-                      }}
+        <Paper sx={{ padding: 1 }} elevation={2}>
+          <Stack className="flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row">
+            <Stack direction="row" justifyContent="center" alignItems="center">
+              <Box id="BoxGlobalSubDepartDetail">
+                {arrayImage?.map((data, index) => (
+                  <Box key={index} id="BoxChildSubDepartDetail">
+                    <img
+                      key={index}
+                      src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                      alt=""
+                      id="ImageSubDepartDetail"
+                      onClick={() => moveCurrent(data)}
                     />
-                  )}
-
-                  {index === depart?.photo?.length - 1 ? null : (
-                    <ArrowCircleRightIcon
-                      id="moveNext"
-                      onClick={() => {
-                        moveNext(100);
-                        setIndexCurrent(index + 1);
-                      }}
-                    />
-                  )}
-                </Box>
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
-        </Stack>
+
+              <Box id="BoxGlobalMainDepartDetail">
+                {depart?.photo?.map((data, index) => (
+                  <Box
+                    key={index}
+                    id="BoxChildMainDepartDetail"
+                    style={{ transform: `translateX(${value}%)` }}
+                    onTouchStart={(e) => handleTouchStart(e)}
+                    onTouchMove={(e) =>
+                      handleTouchMove({ event: e, index: index })
+                    }
+                  >
+                    <img
+                      key={index}
+                      src={process.env.REACT_APP_API_URL + "/departs/" + data}
+                      alt=""
+                      id="ImageMainDepartDetail"
+                      onClick={() =>
+                        setImageDialog({ open: true, value: data })
+                      }
+                    />
+                    <Box>
+                      {index === 0 ? null : (
+                        <ArrowCircleLeftIcon
+                          id="movePre"
+                          onClick={() => {
+                            movePre(100);
+                            setIndexCurrent(index - 1);
+                          }}
+                        />
+                      )}
+
+                      {index === depart?.photo?.length - 1 ? null : (
+                        <ArrowCircleRightIcon
+                          id="moveNext"
+                          onClick={() => {
+                            moveNext(100);
+                            setIndexCurrent(index + 1);
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Stack>
+            <Paper
+              elevation={2}
+              sx={{ padding: 2 }}
+              className="my-2 mx-0 md:mx-2 md:my-0 lg:mx-2 lg:my-0 xl:mx-2 xl:my-0"
+            >
+              <Typography
+                align="center"
+                className=" text-sky-400 font-semibold my-2 md:my-6 lg:my-6 xl:my-6 p-2 bg-slate-50 shadow font-sans
+              lg:mt-0 xl:mt-0"
+              >
+                THÔNG TIN CĂN HỘ
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6">
+                <b> {depart?.name}</b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6  text-sky-500">
+                <PlaceIcon></PlaceIcon> <b> {depart?.addressHouse}</b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-green-600  ">
+                <b>
+                  {" "}
+                  <CategoryIcon></CategoryIcon> {depart?.type}
+                </b>
+              </Typography>
+              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-orange-500">
+                <b>
+                  {" "}
+                  <CropSquareIcon></CropSquareIcon> {depart?.length} *{" "}
+                  {depart?.width} m2
+                </b>
+              </Typography>
+              <Divider className="my-2 md:my-6 lg:my-6 xl:my-6" />
+              {depart?.status === "Đang khuyến mãi" ? (
+                <Typography
+                  align="center"
+                  className=" float-left font-bold   mb-2 md:mb-6 lg:mb-6 xl:mb-6 text-lg md:text-lg lg:text-xl xl:text-xl"
+                >
+                  <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
+                </Typography>
+              ) : (
+                <Typography
+                  align="center"
+                  className="  mb-2 md:mb-6 lg:mb-6 xl:mb-6  font-bold text-lg md:text-lg lg:text-xl xl:text-xl"
+                >
+                  <b className="text-red-500 "> {depart?.price} VNĐ</b>
+                </Typography>
+              )}
+              <Button
+                sx={{ display: "block", margin: "auto", width: 200 }}
+                className="
+                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700"
+                onClick={() => {
+                  handleClickOpenDialogForm();
+                }}
+              >
+                Đăng ký tư vấn
+              </Button>
+            </Paper>
+          </Stack>
         </Paper>
-       
 
         <Box>
           <Typography className=" text-sky-400 font-semibold mb-6 bg-slate-50 shadow  p-2 mt-6 font-sans">
-            THÔNG TIN CĂN HỘ
+            THÔNG TIN CHI TIẾT
           </Typography>
           <Typography>
             Tên căn hộ: <b> {depart?.name}</b>
@@ -373,22 +432,6 @@ const DepartDetail = () => {
             {depart?.ultilitiesHouse?.map((data) => templateIconUlHouse(data))}
           </Box>
           <Divider variant="middle" />
-          <Box className="py-6 ">
-            <Typography className=" float-left font-bold mb-6">
-              Mọi chi tiết vui lòng liên hệ số: {process.env.REACT_APP_PHONE}{" "}
-              hoặc đăng ký tư vấn tại đây
-            </Typography>
-            <Button
-              sx={{ display: "block", margin: "auto" }}
-              className="float-none  md:float-right lg:float-right xl:float-right
-                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700"
-              onClick={() => {
-                handleClickOpenDialogForm();
-              }}
-            >
-              Đăng ký tư vấn
-            </Button>
-          </Box>
         </Box>
         <Dialog
           maxWidth={"lg"}
@@ -414,7 +457,7 @@ const DepartDetail = () => {
           handleCallbackCloseDialog={handleCloseDialogForm}
         ></Form>
       ) : null}
-      {isLoading === true || arrayImage.length === 0? (
+      {isLoading === true || arrayImage?.length === 0 ? (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isLoading}
