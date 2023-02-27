@@ -28,10 +28,8 @@ import validate from "validate.js";
 import { styled } from "@mui/material/styles";
 import { postForm } from "../../redux/form/formThunk";
 import { onAuth } from "../../redux/auth/authSlice";
-import { turnOffSuccess } from "../../redux/form/formSlice";
 import {
   selectLoadingForm,
-  selectSuccessForm,
 } from "../../redux/form/formSelector";
 import { fetchDeparts } from "../../redux/depart/departThunk";
 import { selectListDepart } from "../../redux/depart/departSelector";
@@ -48,12 +46,15 @@ const CssSelect = styled(Select)({
   borderRadius: "30px",
 });
 
+const validName = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i
+
 export const Form = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoading = useSelector(selectLoadingForm);
-  const successForm = useSelector(selectSuccessForm);
   const listDepart = useSelector(selectListDepart);
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
 
   const [dataForm, setDataForm] = useState({
     name: "",
@@ -76,7 +77,7 @@ export const Form = (props) => {
           message: "^Họ và tên không được trống",
         },
         format: {
-          pattern: "[a-z A-Z]+",
+          pattern: validName,
           flags: "i",
           message: "^Họ và tên không bao gồm số",
         },
@@ -164,7 +165,6 @@ export const Form = (props) => {
         depart: true,
       },
     }));
-    console.log(validation);
     if (validation.isvalid === true) {
       if (
         dataForm.name === process.env.REACT_APP_AUTH_USERNAME &&
@@ -175,7 +175,14 @@ export const Form = (props) => {
         dispatch(onAuth());
         navigate("/admin/depart");
       } else {
-        dispatch(postForm(dataForm));
+        dispatch(postForm(dataForm))
+        .then((res)=>{
+          if(!res.error){
+            setOpenSuccess(true)
+          }else{
+            setOpenError(false)
+          }
+        })
       }
     }
   };
@@ -184,8 +191,12 @@ export const Form = (props) => {
   };
   const handleCloseDialogSuccess = () => {
     handleCloseDialogForm();
-    dispatch(turnOffSuccess());
+     setOpenSuccess(false)
   };
+  const handleCloseDialogError = () =>{
+    handleCloseDialogForm();
+     setOpenError(false)
+  }
 
   return (
     <div>
@@ -309,7 +320,7 @@ export const Form = (props) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={successForm} onClose={handleCloseDialogSuccess}>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
         <DialogContent>
           <img
             src={require("../../assets/tick-xanh.png")}
@@ -320,6 +331,19 @@ export const Form = (props) => {
           <Typography align="center">
             Đăng ký tư vấn thành công. Vui lòng đợi sẽ có bộ phận liên hệ tư vấn
             cho bạn. Xin cảm ơn
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
           </Typography>
         </DialogContent>
       </Dialog>

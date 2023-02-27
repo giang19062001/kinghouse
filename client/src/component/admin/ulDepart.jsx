@@ -41,6 +41,19 @@ const UlDepartComponent = () => {
     photo: undefined,
   });
 
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
+
+  
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchUlDeparts())
+    setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchUlDeparts())
+    setOpenError(false)
+  }
+  
   useEffect(() => {
     dispatch(fetchUlDeparts());
   }, [dispatch]);
@@ -60,15 +73,23 @@ const UlDepartComponent = () => {
   };
 
   const handleAdd = () => {
-    dispatch(postUlDepart(ulDepartPost)).then(() => {
-      dispatch(fetchUlDeparts())
+    dispatch(postUlDepart(ulDepartPost)).then((res) => {
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     });
   };
   const handleDelete = () => {
     setOpenDialogDelete(false)
 
-    dispatch(deleteUlDepart(dataDelete)).then(() => {
-      dispatch(fetchUlDeparts())
+    dispatch(deleteUlDepart(dataDelete)).then((res) => {
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     });
   };
 
@@ -173,6 +194,32 @@ const UlDepartComponent = () => {
         <DialogActions>
           <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Tác vụ  thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
       </Dialog>
     </Container>
   );

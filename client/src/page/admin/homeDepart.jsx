@@ -18,7 +18,7 @@ const HomeDepart = () =>{
             <Depart></Depart>
             <ListDepart></ListDepart>
                </div>
-        )}
+)}
     
     </>
       

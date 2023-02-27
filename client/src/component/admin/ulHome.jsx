@@ -41,6 +41,18 @@ const UlHomeComponent = () => {
   });
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
+
+  
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchUlHomes())
+    setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchUlHomes())
+    setOpenError(false)
+  }
   useEffect(() => {
     dispatch(fetchUlHomes());
   }, [dispatch]);
@@ -60,17 +72,24 @@ const UlHomeComponent = () => {
   };
 
   const handleAdd = () => {
-    dispatch(postUlHome(ulHomePost)).then(()=>(
-      dispatch(fetchUlHomes())
-    ))
+    dispatch(postUlHome(ulHomePost)).then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
+    })
   };
   const handleDelete = () => {
     setOpenDialogDelete(false)
 
-    dispatch(deleteUlHome(dataDelete)).then(()=>(
-      dispatch(fetchUlHomes())
-
-    ))
+    dispatch(deleteUlHome(dataDelete)).then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
+    })
   };
 
   return (
@@ -174,6 +193,32 @@ const UlHomeComponent = () => {
         <DialogActions>
           <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Tác vụ  thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
       </Dialog>
     </Container>
   );

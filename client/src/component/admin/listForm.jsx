@@ -74,11 +74,26 @@ export default function ListForm() {
   const formDetail = useSelector(selectFormDetail);
   const departDetail = useSelector(selectDepartDetail);
 
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
+
+  
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchForm());
+    setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchForm());
+    setOpenError(false)
+  }
   const handleDelete = () =>{
     setOpenDialogDelete(false)
-    dispatch(deleteForm(idDelete)).then(()=>{
-      dispatch(fetchForm());
-
+    dispatch(deleteForm(idDelete)).then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     })
   }
   console.log(ListForm);
@@ -292,6 +307,32 @@ export default function ListForm() {
            <CircularProgress color="inherit" />
          </Backdrop>
       ):null}
+        <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Xóa  thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }

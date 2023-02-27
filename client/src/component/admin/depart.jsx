@@ -16,6 +16,8 @@ import {
   Paper,
   IconButton,
   Divider,
+  Dialog,
+  DialogContent,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -64,7 +66,8 @@ const Depart = () => {
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
-
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
   const [departPost, setDepartPost] = useState({
     name: "",
     price: "",
@@ -85,6 +88,14 @@ const Depart = () => {
     ultilitiesHouse: [],
   });
 
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchDeparts());
+     setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchDeparts());
+     setOpenError(false)
+  }
   function uploadSingleFile(e) {
     handlePhoto(e.target.files);
     let ImagesArray = Object.entries(e.target.files).map((e) =>
@@ -175,9 +186,12 @@ const Depart = () => {
   };
 
   const handleAdd = () => {
-    console.log(departPost);
-    dispatch(postDepart(departPost)).then(()=>{
-      dispatch(fetchDeparts());
+    dispatch(postDepart(departPost)).then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     })
   };
 
@@ -423,6 +437,32 @@ const Depart = () => {
           </Button>
         </Paper>
       </Box>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Thêm căn hộ mới thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };

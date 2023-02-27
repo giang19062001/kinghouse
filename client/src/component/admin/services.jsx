@@ -38,7 +38,18 @@ const ServicesComponent = () => {
     name: "",
     photo: undefined,
   });
- 
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
+
+  
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchServices())
+    setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchServices())
+    setOpenError(false)
+  }
   useEffect(()=>{
    dispatch(fetchServices())
   },[dispatch])
@@ -59,18 +70,25 @@ const ServicesComponent = () => {
   };
 
   const handleAdd = () => {
-    console.log(servicePose);
     dispatch(postService(servicePose))
-    .then(()=>{
-      dispatch(fetchServices())
+    .then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
 
     })
   };
   const handleDelete = () => {
     setOpenDialogDelete(false)
     dispatch(deleteService(dataDelete))
-    .then(()=>{
-      dispatch(fetchServices())
+    .then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     })
   };
   
@@ -181,6 +199,32 @@ const ServicesComponent = () => {
         <DialogActions>
           <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Tác vụ thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
       </Dialog>
     </Container>
   );

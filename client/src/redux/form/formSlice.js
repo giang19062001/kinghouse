@@ -5,7 +5,6 @@ const initialState = {
     forms: [],
     isLoading:false,
     error:"",
-    onSuccess:false,
     form:{}
 }
 
@@ -13,9 +12,7 @@ export const formSlice = createSlice({
     name:'forms',
     initialState,
     reducers: {
-        turnOffSuccess: (state, action) => {
-            state.onSuccess = false
-          },
+      
         
     },
     extraReducers:(builder) =>{
@@ -29,7 +26,6 @@ export const formSlice = createSlice({
     })
     builder.addCase(postForm.fulfilled,(state,action)=>{
         state.isLoading = false;
-        state.onSuccess = true
      })
      builder.addCase(deleteForm.fulfilled,(state,action)=>{
       state.isLoading = false;
@@ -50,6 +46,5 @@ export const formSlice = createSlice({
     }
     
 })
-export const {  turnOffSuccess } = formSlice.actions;
 
 export default formSlice.reducer;

@@ -46,12 +46,28 @@ export default function ListDepart() {
   const isLoading = useSelector(selectStatusDepart)
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
+  const [openSucces,setOpenSuccess] = useState(false)
+  const [openError,setOpenError] = useState(false)
+
+  
+  const handleCloseDialogSuccess = () => {
+    dispatch(fetchDeparts());
+     setOpenSuccess(false)
+  };
+  const handleCloseDialogError = () =>{
+    dispatch(fetchDeparts());
+     setOpenError(false)
+  }
 
   const handleDelete = () =>{
     setOpenDialogDelete(false)
     dispatch(deleteDepart(dataDelete))
-    .then(()=>{
-      dispatch(fetchDeparts());
+    .then((res)=>{
+      if(!res.error){
+        setOpenSuccess(true)
+      }else{
+        setOpenError(true)
+      }
     })
   }
 
@@ -160,6 +176,32 @@ export default function ListDepart() {
         <DialogActions>
           <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+        <DialogContent>
+          <img
+            src={require("../../assets/tick-xanh.png")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Xóa căn hộ thành công
+          </Typography>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openError} onClose={handleCloseDialogError}>
+        <DialogContent>
+          <img
+            src={require("../../assets/error.jpg")}
+            alt=""
+            width={200}
+            style={{ display: "block", margin: "auto" }}
+          ></img>
+          <Typography align="center">
+            Đang có lỗi xảy ra vui lòng thử lại sau
+          </Typography>
+        </DialogContent>
       </Dialog>
     </Container>
   );
