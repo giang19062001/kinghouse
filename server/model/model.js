@@ -32,12 +32,28 @@ const departSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  bedroom :{
+    type: Number,
+    require: true,
+  },
+  bathroom :{
+    type: Number,
+    require: true,
+  },
   service: {
     type: [String],
     require: true,
   },
   ultilitiesDepart: {
     type: [String],
+    require: true,
+  },
+  anotherMoney:{
+    type: String,
+    require: true,
+  },
+  depositMoney: {
+    type: String,
     require: true,
   },
   electricMoney: {

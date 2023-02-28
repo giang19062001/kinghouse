@@ -79,8 +79,12 @@ const DepartUpdate = () => {
     width: "",
     length: "",
     status: "",
+    bedroom: 0,
+    bathroom: 0,
     service: [],
     ultilitiesDepart: [],
+    depositMoney: "",
+    anotherMoney: "",
     electricMoney: "",
     waterMoney: "",
     photo: [],
@@ -210,13 +214,13 @@ const DepartUpdate = () => {
               <CircularProgress color="inherit" />
             </Backdrop>
           ) : (
-            <Grid container spacing={4} key={departUpdate._id}>
+            <Grid container spacing={4} key={departUpdate?._id}>
               <Grid item xs={12} md={6} lg={6} xl={6}>
                 <Stack spacing={2}>
                   <CssTextField
                     type="text"
                     name="name"
-                    defaultValue={departUpdate.name}
+                    defaultValue={departUpdate?.name}
                     label="Tên căn hộ"
                     fullWidth
                     onChange={handleChange}
@@ -225,12 +229,12 @@ const DepartUpdate = () => {
                     type="text"
                     name="price"
                     placeholder="VD: 15.000.000"
-                    defaultValue={departUpdate.price}
+                    defaultValue={departUpdate?.price}
                     label="Gía căn hộ"
                     fullWidth
                     onChange={handleChange}
                   ></CssTextField>
-                  {departUpdate.status === "Đang khuyến mãi" ? (
+                  {departUpdate?.status === "Đang khuyến mãi" ? (
                     <CssTextField
                       type="text"
                       name="pricePromotion"
@@ -241,32 +245,30 @@ const DepartUpdate = () => {
                       onChange={handleChange}
                     ></CssTextField>
                   ) : null}
-                  <Stack direction="row">
                     <CssTextField
-                      type="number"
-                      name="width"
-                      placeholder="VD: 50"
-                      defaultValue={departUpdate.width}
-                      fullWidth
-                      label="Chiều rộng (m2)"
-                      onChange={handleChange}
-                    ></CssTextField>
-                    <CssTextField
-                      type="number"
-                      name="length"
-                      placeholder="VD: 50"
-                      defaultValue={departUpdate.length}
-                      fullWidth
-                      label="Chiều dài (m2)"
-                      onChange={handleChange}
-                    ></CssTextField>
-                  </Stack>
-                  <Stack direction="row">
+                  type="text"
+                  name="depositMoney"
+                  defaultValue={departUpdate?.depositMoney}
+                  label="Đặt cọc "
+                  placeholder="VD: 01 tháng tiền phòng - Hợp đồng thuê 06 tháng"
+                  fullWidth
+                  onChange={handleChange}
+                ></CssTextField>
+                <CssTextField
+                  type="text"
+                  name="anotherMoney"
+                  defaultValue={departUpdate?.anotherMoney}
+                  label="Chi phí khác "
+                  placeholder="VD: Truyền hình cap, xe máy, wifi miễn phí "
+                  fullWidth
+                  onChange={handleChange}
+                ></CssTextField>
+                    <Stack direction="row">
                     <CssTextField
                       type="text"
                       name="electricMoney"
                       placeholder="VD: 5.000"
-                      defaultValue={departUpdate.electricMoney}
+                      defaultValue={departUpdate?.electricMoney}
                       label="Tiền điện"
                       fullWidth
                       onChange={handleChange}
@@ -275,19 +277,61 @@ const DepartUpdate = () => {
                       type="text"
                       name="waterMoney"
                       placeholder="VD: 100.000"
-                      defaultValue={departUpdate.waterMoney}
+                      defaultValue={departUpdate?.waterMoney}
                       label="Tiền nước"
                       fullWidth
                       onChange={handleChange}
                     ></CssTextField>
                   </Stack>
+                  <Stack direction="row">
+                    <CssTextField
+                      type="number"
+                      name="width"
+                      placeholder="VD: 50"
+                      defaultValue={departUpdate?.width}
+                      fullWidth
+                      label="Chiều rộng (m2)"
+                      onChange={handleChange}
+                    ></CssTextField>
+                    <CssTextField
+                      type="number"
+                      name="length"
+                      placeholder="VD: 50"
+                      defaultValue={departUpdate?.length}
+                      fullWidth
+                      label="Chiều dài (m2)"
+                      onChange={handleChange}
+                    ></CssTextField>
+                  </Stack>
+                  <Stack direction="row">
+                  <CssTextField
+                    type="number"
+                    name="bedroom"
+                    fullWidth
+                    defaultValue={departUpdate?.bedroom}
+
+                    placeholder="VD: 3"
+                    label="Số phòng tắm (m2)"
+                    onChange={handleChange}
+                  ></CssTextField>
+                  <CssTextField
+                    type="number"
+                    name="bathroom"
+                    fullWidth
+                    defaultValue={departUpdate?.bathroom}
+                    placeholder="VD: 2"
+                    label="Số phòng vệ sinh"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </Stack>
+              
 
                   <FormControl fullWidth>
                     <CssInputLabel>Loại căn hộ</CssInputLabel>
                     <CssSelect
                       name="type"
                       onChange={handleChange}
-                      defaultValue={departUpdate.type}
+                      defaultValue={departUpdate?.type}
                       // value={1}
                       label="Loại căn hộ"
                     >
@@ -301,7 +345,7 @@ const DepartUpdate = () => {
                     <CssSelect
                       name="status"
                       onChange={handleChange}
-                      defaultValue={departUpdate.status}
+                      defaultValue={departUpdate?.status}
                       // value={1}
                       label="Tình trạng căn hộ"
                     >
@@ -310,6 +354,16 @@ const DepartUpdate = () => {
                       ))}
                     </CssSelect>
                   </FormControl>
+                  <CssTextField
+                    type="text"
+                    name="description"
+                    defaultValue={departUpdate?.description}
+                    label="Mô tả căn hộ"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    onChange={handleChange}
+                  ></CssTextField>
                   <label for="photo">Ảnh mô tả căn hộ</label>
 
                   <Box className="flex flex-row flex-wrap">
@@ -335,7 +389,7 @@ const DepartUpdate = () => {
                   </Box>
                   <label
                     for="photo"
-                    className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-green-500 w-24 p-2"
+                    className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-sky-500 w-24 p-2"
                   >
                     Thêm ảnh
                   </label>
@@ -348,38 +402,8 @@ const DepartUpdate = () => {
                     accept="image/png, image/jpg, image/jpeg"
                     multiple
                   />
-                  <label>Những dịch vụ đã bao gồm giá thuê: </label>
-                  <FormGroup className="flex flex-row flex-wrap">
-                    {service?.map((data, index) =>
-                      departUpdate.service?.includes(data?.name) ? (
-                        <FormControlLabel
-                          control={<Checkbox defaultChecked />}
-                          name="service"
-                          label={data?.name}
-                          onChange={handleChangeCheckbox}
-                          value={data?.name}
-                        />
-                      ) : (
-                        <FormControlLabel
-                          control={<Checkbox />}
-                          name="service"
-                          label={data?.name}
-                          onChange={handleChangeCheckbox}
-                          value={data?.name}
-                        />
-                      )
-                    )}
-                  </FormGroup>
-                  <CssTextField
-                    type="text"
-                    name="description"
-                    defaultValue={departUpdate.description}
-                    label="Mô tả căn hộ"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    onChange={handleChange}
-                  ></CssTextField>
+                 
+               
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6} lg={6} xl={6}>
@@ -398,7 +422,7 @@ const DepartUpdate = () => {
                       // value={1}
                       label="Khu vực"
                       name="districtHouse"
-                      defaultValue={departUpdate.districtHouse}
+                      defaultValue={departUpdate?.districtHouse}
                       onChange={handleChange}
                     >
                       {district.map((data, index) => (
@@ -411,7 +435,7 @@ const DepartUpdate = () => {
                   <CssTextField
                     type="text"
                     name="addressHouse"
-                    defaultValue={departUpdate.addressHouse}
+                    defaultValue={departUpdate?.addressHouse}
                     label="Địa chỉ cụ thể tòa nhà"
                     fullWidth
                     multiline
@@ -421,18 +445,39 @@ const DepartUpdate = () => {
                   <CssTextField
                     type="text"
                     name="descriptionHouse"
-                    defaultValue={departUpdate.descriptionHouse}
+                    defaultValue={departUpdate?.descriptionHouse}
                     label="Mô tả tiện ích xung quanh tòa nhà "
                     fullWidth
                     multiline
                     rows={4}
                     onChange={handleChange}
                   ></CssTextField>
-
+ <label>Những dịch vụ đã bao gồm giá thuê: </label>
+                  <FormGroup className="flex flex-row flex-wrap">
+                    {service?.map((data, index) =>
+                      departUpdate?.service?.includes(data?.name) ? (
+                        <FormControlLabel
+                          control={<Checkbox defaultChecked />}
+                          name="service"
+                          label={data?.name}
+                          onChange={handleChangeCheckbox}
+                          value={data?.name}
+                        />
+                      ) : (
+                        <FormControlLabel
+                          control={<Checkbox />}
+                          name="service"
+                          label={data?.name}
+                          onChange={handleChangeCheckbox}
+                          value={data?.name}
+                        />
+                      )
+                    )}
+                  </FormGroup>
                   <label>Tiện ích bên trong căn hộ: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {ultilitiesDepart?.map((data, index) =>
-                      departUpdate.ultilitiesDepart?.includes(data?.name) ? (
+                      departUpdate?.ultilitiesDepart?.includes(data?.name) ? (
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
                           name="ultilitiesDepart"
@@ -454,7 +499,7 @@ const DepartUpdate = () => {
                   <label>Tiện ích bên khu vực tòa nhà sở hữu căn hộ: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {ultilitiesHouse?.map((data, index) =>
-                      departUpdate.ultilitiesHouse?.includes(data?.name) ? (
+                      departUpdate?.ultilitiesHouse?.includes(data?.name) ? (
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
                           name="ultilitiesHouse"

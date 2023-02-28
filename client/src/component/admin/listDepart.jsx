@@ -7,14 +7,27 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Typography } from "@mui/material";
-import { selectListDepart, selectStatusDepart } from "../../redux/depart/departSelector";
+import {
+  Avatar,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Typography,
+} from "@mui/material";
+import {
+  selectListDepart,
+  selectStatusDepart,
+} from "../../redux/depart/departSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchDeparts,deleteDepart } from "../../redux/depart/departThunk";
+import { fetchDeparts, deleteDepart } from "../../redux/depart/departThunk";
 import { Link } from "react-router-dom";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -23,7 +36,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 15,
-    fontWeight:"bold"
+    fontWeight: "bold",
   },
 }));
 
@@ -43,35 +56,32 @@ export default function ListDepart() {
   }, [dispatch]);
 
   const listDepart = useSelector(selectListDepart);
-  const isLoading = useSelector(selectStatusDepart)
+  const isLoading = useSelector(selectStatusDepart);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
-  const [openSucces,setOpenSuccess] = useState(false)
-  const [openError,setOpenError] = useState(false)
+  const [openSucces, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
-  
   const handleCloseDialogSuccess = () => {
     dispatch(fetchDeparts());
-     setOpenSuccess(false)
+    setOpenSuccess(false);
   };
-  const handleCloseDialogError = () =>{
+  const handleCloseDialogError = () => {
     dispatch(fetchDeparts());
-     setOpenError(false)
-  }
+    setOpenError(false);
+  };
 
-  const handleDelete = () =>{
-    setOpenDialogDelete(false)
-    dispatch(deleteDepart(dataDelete))
-    .then((res)=>{
-      if(!res.error){
-        setOpenSuccess(true)
-      }else{
-        setOpenError(true)
+  const handleDelete = () => {
+    setOpenDialogDelete(false);
+    dispatch(deleteDepart(dataDelete)).then((res) => {
+      if (!res.error) {
+        setOpenSuccess(true);
+      } else {
+        setOpenError(true);
       }
-    })
-  }
+    });
+  };
 
-  console.log(listDepart);
   return (
     <Container sx={{ marginY: 10 }}>
       <TableContainer component={Paper}>
@@ -97,7 +107,7 @@ export default function ListDepart() {
                 align="center"
                 className="font-bold"
               ></StyledTableCell>
-                   <StyledTableCell
+              <StyledTableCell
                 align="center"
                 className="font-bold"
               ></StyledTableCell>
@@ -112,13 +122,21 @@ export default function ListDepart() {
                       variant="square"
                       className="w-48 h-48 rounded transition duration-300 ease-in-out hover:scale-110"
                       src={
-                        process.env.REACT_APP_API_URL + "/departs/" + row?.photo?.[0]
+                        process.env.REACT_APP_API_URL +
+                        "/departs/" +
+                        row?.photo?.[0]
                       }
                     />
                   </Link>
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <Link to={`/admin/depart/` + row?._id}  className="hover:text-sky-500"> {row?.name}</Link>
+                  <Link
+                    to={`/admin/depart/` + row?._id}
+                    className="hover:text-sky-500"
+                  >
+                    {" "}
+                    {row?.name}
+                  </Link>
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -131,50 +149,88 @@ export default function ListDepart() {
                   {row?.addressHouse}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <Link to={`/admin/departUpdate/`+ row?._id}>
-                  <Button className="bg-yellow-400 text-slate-50  hover:shadow-lg  hover:shadow-yellow-500/50"                 
-                  >
-                    Chỉnh sửa
-                  </Button>
+                  <Link to={`/admin/departUpdate/` + row?._id}>
+                    <Button className="bg-yellow-400 text-slate-50  hover:shadow-lg  hover:shadow-yellow-500/50">
+                      Chỉnh sửa
+                    </Button>
                   </Link>
                 </StyledTableCell>
+
                 <StyledTableCell align="center">
-                  <Button className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
-                  onClick={
-                    ()=>{setOpenDialogDelete(true);setDataDelete({id:row?._id,photo:row?.photo})}
-                  }
-                  >
-                    Xóa
-                  </Button>
+                  {row?.isDelete === false ? (
+                    <Button
+                      className="bg-red-600 text-slate-50  hover:bg-red-700 hover:shadow-lg  hover:shadow-red-500/50"
+                      onClick={() => {
+                        setOpenDialogDelete(true);
+                        setDataDelete(row);
+                      }}
+                    >
+                      Khóa căn hộ
+                    </Button>
+                  ) : (
+                    <Button
+                      className="bg-green-500 text-slate-50  hover:bg-green-600 hover:shadow-lg  hover:shadow-green-500/50"
+                      onClick={() => {
+                        setOpenDialogDelete(true);
+                        setDataDelete(row);
+                      }}
+                    >
+                      Mở khóa căn hộ
+                    </Button>
+                  )}
                 </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {isLoading === true ?(
-           <Backdrop
-           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-           open={isLoading}
-         >
-           <CircularProgress color="inherit" />
-         </Backdrop>
-      ):null}
-        <Dialog
+      {isLoading === true ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
+      <Dialog
         open={openDialogDelete}
-        onClose={()=>{setOpenDialogDelete(false);setDataDelete({})}}
+        onClose={() => {
+          setOpenDialogDelete(false);
+          setDataDelete({});
+        }}
         maxWidth="sm"
         fullWidth
-      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
-      <Divider/>
-
+      >
+        {" "}
+        <DialogTitle
+          sx={{
+            backgroundColor: "#facc15            ",
+            color: "white",
+            fontWeight: "bold",
+          }}
+        >
+          Cảnh báo
+        </DialogTitle>
+        <Divider />
         <DialogContent>
-            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{ fontWeight: "bold", padding: 2 }}
+          >
+            Bạn chỉ có thể khóa/ mở khóa khi đã có khách thuê căn hộ hoặc trả
+            căn hộ, bạn có chắc muốn khóa/ mở khóa
+          </Typography>
         </DialogContent>
-        <Divider/>
-
+        <Divider />
         <DialogActions>
-          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+          <Button
+            onClick={handleDelete}
+            sx={{ display: "block", margin: "auto" }}
+            variant="outlined"
+          >
+            Xác nhận
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
@@ -185,9 +241,7 @@ export default function ListDepart() {
             width={200}
             style={{ display: "block", margin: "auto" }}
           ></img>
-          <Typography align="center">
-            Xóa căn hộ thành công
-          </Typography>
+          <Typography align="center">Khóa/ mở khóa căn hộ thành công</Typography>
         </DialogContent>
       </Dialog>
       <Dialog open={openError} onClose={handleCloseDialogError}>

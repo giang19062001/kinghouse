@@ -18,6 +18,8 @@ import {
   Divider,
   Dialog,
   DialogContent,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -31,20 +33,18 @@ import { fetchUlHomes } from "../../redux/ultilitiesHome/ulHomeThunk";
 import { selectListServices } from "../../redux/service/serviceSelector";
 import { selectListUlDeparts } from "../../redux/ultilitiesDepart/ulDepartSelector";
 import { selectListUlHomes } from "../../redux/ultilitiesHome/ulHomeSelector";
+import { selectStatusDepart } from "../../redux/depart/departSelector";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderRadius: "30px",
     },
-
   },
-
 });
 
 const CssSelect = styled(Select)({
   borderRadius: "30px",
-
 });
 
 const CssInputLabel = styled(InputLabel)({
@@ -63,13 +63,12 @@ const Depart = () => {
     dispatch(fetchUlHomes());
   }, []);
 
- 
-
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
-  const [openSucces,setOpenSuccess] = useState(false)
-  const [openError,setOpenError] = useState(false)
+  const isLoading = useSelector(selectStatusDepart);
+  const [openSucces, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [departPost, setDepartPost] = useState({
     name: "",
     price: "",
@@ -78,8 +77,12 @@ const Depart = () => {
     width: "",
     length: "",
     status: "",
+    bedroom: 0,
+    bathroom: 0,
     service: [],
     ultilitiesDepart: [],
+    depositMoney: "",
+    anotherMoney: "",
     electricMoney: "",
     waterMoney: "",
     photo: [],
@@ -90,23 +93,23 @@ const Depart = () => {
     ultilitiesHouse: [],
   });
 
-  useEffect(()=>{
-    if(departPost.status !== "Đang khuyến mãi"){
+  useEffect(() => {
+    if (departPost.status !== "Đang khuyến mãi") {
       setDepartPost((preState) => ({
         ...preState,
-        pricePromotion:"" ,
+        pricePromotion: "",
       }));
     }
-  },[departPost.status])
+  }, [departPost.status]);
 
   const handleCloseDialogSuccess = () => {
     dispatch(fetchDeparts());
-     setOpenSuccess(false)
+    setOpenSuccess(false);
   };
-  const handleCloseDialogError = () =>{
+  const handleCloseDialogError = () => {
     dispatch(fetchDeparts());
-     setOpenError(false)
-  }
+    setOpenError(false);
+  };
   function uploadSingleFile(e) {
     handlePhoto(e.target.files);
     let ImagesArray = Object.entries(e.target.files).map((e) =>
@@ -193,21 +196,22 @@ const Depart = () => {
   };
 
   const handleAdd = () => {
-    dispatch(postDepart(departPost)).then((res)=>{
-      if(!res.error){
-        setOpenSuccess(true)
-      }else{
-        setOpenError(true)
+    dispatch(postDepart(departPost)).then((res) => {
+      if (!res.error) {
+        setOpenSuccess(true);
+      } else {
+        setOpenError(true);
       }
-    })
+    });
   };
 
-  console.log("da",departPost)
   return (
     <Container sx={{ marginTop: 20 }}>
       <Box>
         <Paper elevation={6} className=" p-12">
-        <p className="p"><span className="fancy">Thêm căn hộ</span></p>
+          <p className="p">
+            <span className="fancy">Thêm căn hộ</span>
+          </p>
           <Grid container spacing={4}>
             <Grid item xs={12} md={6} lg={6} xl={6}>
               <Stack spacing={2}>
@@ -236,25 +240,22 @@ const Depart = () => {
                     onChange={handleChange}
                   ></CssTextField>
                 ) : null}
-
-                <Stack direction="row">
-                  <CssTextField
-                    type="number"
-                    name="width"
-                    fullWidth
-                    placeholder="VD: 50"
-                    label="Chiều rộng (m2)"
-                    onChange={handleChange}
-                  ></CssTextField>
-                  <CssTextField
-                    type="number"
-                    name="length"
-                    fullWidth
-                    placeholder="VD: 50"
-                    label="Chiều dài (m2)"
-                    onChange={handleChange}
-                  ></CssTextField>
-                </Stack>
+                <CssTextField
+                  type="text"
+                  name="depositMoney"
+                  label="Đặt cọc "
+                  placeholder="VD: 01 tháng tiền phòng - Hợp đồng thuê 06 tháng"
+                  fullWidth
+                  onChange={handleChange}
+                ></CssTextField>
+                <CssTextField
+                  type="text"
+                  name="anotherMoney"
+                  label="Chi phí khác "
+                  placeholder="VD: Truyền hình cap, xe máy, wifi miễn phí "
+                  fullWidth
+                  onChange={handleChange}
+                ></CssTextField>
                 <Stack direction="row">
                   <CssTextField
                     type="text"
@@ -270,6 +271,42 @@ const Depart = () => {
                     label="Tiền nước (1 người)"
                     placeholder="VD: 100.000"
                     fullWidth
+                    onChange={handleChange}
+                  ></CssTextField>
+                </Stack>
+                <Stack direction="row">
+                  <CssTextField
+                    type="number"
+                    name="bedroom"
+                    fullWidth
+                    placeholder="VD: 3"
+                    label="Số phòng tắm (m2)"
+                    onChange={handleChange}
+                  ></CssTextField>
+                  <CssTextField
+                    type="number"
+                    name="bathroom"
+                    fullWidth
+                    placeholder="VD: 2"
+                    label="Số phòng vệ sinh"
+                    onChange={handleChange}
+                  ></CssTextField>
+                </Stack>
+                <Stack direction="row">
+                  <CssTextField
+                    type="number"
+                    name="width"
+                    fullWidth
+                    placeholder="VD: 50"
+                    label="Chiều rộng (m2)"
+                    onChange={handleChange}
+                  ></CssTextField>
+                  <CssTextField
+                    type="number"
+                    name="length"
+                    fullWidth
+                    placeholder="VD: 50"
+                    label="Chiều dài (m2)"
                     onChange={handleChange}
                   ></CssTextField>
                 </Stack>
@@ -300,6 +337,15 @@ const Depart = () => {
                     ))}
                   </CssSelect>
                 </FormControl>
+                <CssTextField
+                  type="text"
+                  name="description"
+                  label="Mô tả căn hộ"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  onChange={handleChange}
+                ></CssTextField>
                 <Divider />
 
                 <label for="photo">
@@ -327,7 +373,7 @@ const Depart = () => {
                 </Box>
                 <label
                   for="photo"
-                  className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg  bg-green-500 w-24 p-2"
+                  className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg  bg-sky-500 w-24 p-2"
                 >
                   Thêm ảnh
                 </label>
@@ -340,29 +386,6 @@ const Depart = () => {
                   accept="image/png, image/jpg, image/jpeg"
                   multiple
                 />
-                <Divider />
-
-                <label>Những dịch vụ đã bao gồm giá thuê: </label>
-                <FormGroup className="flex flex-row flex-wrap">
-                  {service.map((data, index) => (
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      name="service"
-                      label={data?.name}
-                      onChange={handleChangeCheckbox}
-                      value={data?.name}
-                    />
-                  ))}
-                </FormGroup>
-                <CssTextField
-                  type="text"
-                  name="description"
-                  label="Mô tả căn hộ"
-                  fullWidth
-                  multiline
-                  rows={4}
-                  onChange={handleChange}
-                ></CssTextField>
               </Stack>
             </Grid>
             <Grid item xs={12} md={6} lg={6} xl={6}>
@@ -370,6 +393,7 @@ const Depart = () => {
                 <CssTextField
                   type="text"
                   name="nameHouse"
+                  placeholder="Vd: Lanmark 81,..."
                   label="Tên tòa nhà sỡ hữu"
                   fullWidth
                   onChange={handleChange}
@@ -407,6 +431,19 @@ const Depart = () => {
                   rows={4}
                   onChange={handleChange}
                 ></CssTextField>
+
+                <label>Những dịch vụ đã bao gồm giá thuê: </label>
+                <FormGroup className="flex flex-row flex-wrap">
+                  {service.map((data, index) => (
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      name="service"
+                      label={data?.name}
+                      onChange={handleChangeCheckbox}
+                      value={data?.name}
+                    />
+                  ))}
+                </FormGroup>
 
                 <label>Tiện ích bên trong căn hộ: </label>
                 <FormGroup className="flex flex-row flex-wrap">
@@ -452,9 +489,7 @@ const Depart = () => {
             width={200}
             style={{ display: "block", margin: "auto" }}
           ></img>
-          <Typography align="center">
-            Thêm căn hộ mới thành công
-          </Typography>
+          <Typography align="center">Thêm căn hộ mới thành công</Typography>
         </DialogContent>
       </Dialog>
       <Dialog open={openError} onClose={handleCloseDialogError}>
@@ -470,6 +505,14 @@ const Depart = () => {
           </Typography>
         </DialogContent>
       </Dialog>
+      {isLoading === true  ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
     </Container>
   );
 };

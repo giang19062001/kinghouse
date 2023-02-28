@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { fetchDeparts,fetchDepartDetail,deleteDepart,deleteImage,updateDepart,updateImage} from "./departThunk";
+import { fetchDeparts,fetchDepartDetail,deleteDepart,deleteImage,updateDepart,updateImage,postDepart} from "./departThunk";
 
 const initialState = {
     departs: [],
@@ -23,15 +23,15 @@ export const departSlice = createSlice({
        state.isLoading = false;
        state.depart = action.payload
     })
-    builder.addMatcher(isAnyOf(updateDepart.fulfilled,deleteImage.fulfilled,updateImage.fulfilled,deleteDepart.fulfilled),(state,action)=>{
+    builder.addMatcher(isAnyOf(postDepart.fulfilled,updateDepart.fulfilled,deleteImage.fulfilled,updateImage.fulfilled,deleteDepart.fulfilled),(state,action)=>{
       state.isLoading = false;
    })
      builder.addMatcher(isAnyOf(fetchDeparts.pending,fetchDepartDetail.pending,deleteDepart.pending,
-      updateDepart.pending,deleteImage.pending,updateImage.pending),(state,action)=>{
+      updateDepart.pending,deleteImage.pending,updateImage.pending,postDepart.pending),(state,action)=>{
         state.isLoading = true;
      })
      builder.addMatcher(isAnyOf(fetchDeparts.rejected,fetchDepartDetail.rejected,deleteDepart.rejected,
-      updateDepart.rejected,deleteImage.rejected,updateImage.rejected),(state,action)=>{
+      updateDepart.rejected,deleteImage.rejected,updateImage.rejected,postDepart.rejected),(state,action)=>{
         state.isLoading = false;
         state.error = action.payload
      })

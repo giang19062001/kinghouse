@@ -1,5 +1,6 @@
 const { Depart, Form } = require("../model/model");
 const fs = require("fs");
+const { Console } = require("console");
 
 const DepartController = {
   addDepart: async (req, res) => {
@@ -12,6 +13,10 @@ const DepartController = {
       const width = req.body.width;
       const length = req.body.length;
       const status = req.body.status;
+      const bedroom = req.body.bedroom;
+      const bathroom = req.body.bathroom;
+      const anotherMoney = req.body.anotherMoney;
+
       const depositMoney = req.body.depositMoney;
       const electricMoney = req.body.electricMoney;
       const waterMoney = req.body.waterMoney;
@@ -36,6 +41,9 @@ const DepartController = {
         width,
         length,
         status,
+        bedroom,
+        bathroom,
+        anotherMoney,
         depositMoney,
         electricMoney,
         waterMoney,
@@ -57,7 +65,7 @@ const DepartController = {
   },
   getAllDepart: async (req, res) => {
     try {
-      const allDeaprt = await Depart.find({ isDelete: false });
+      const allDeaprt = await Depart.find();
       res.status(200).json(allDeaprt);
     } catch (error) {
       res.status(500).json(error);
@@ -112,12 +120,12 @@ const DepartController = {
   },
   deleteDepart: async (req, res) => {
     try {
-      req.body.forEach((element) => {
-        fs.unlinkSync("images/departs/" + element);
-      });
+      // req.body.forEach((element) => {
+      //   fs.unlinkSync("images/departs/" + element);
+      // });
       const departDelete = await Depart.findByIdAndUpdate(
         { _id: req.params.id },
-        { isDelete: true }
+        { isDelete: req.body.isDelete === true ? false : true }
       );
 
       res.status(200).json(departDelete);

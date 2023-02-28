@@ -79,7 +79,6 @@ export const fetchDeparts = createAsyncThunk(
   export const deleteImage = createAsyncThunk(
     'delete/departImage',
     async (data,{rejectWithValue}) => {
-      console.log(data)
         try {
           const config = {
             headers: {
@@ -97,13 +96,14 @@ export const fetchDeparts = createAsyncThunk(
   export const deleteDepart = createAsyncThunk(
     'delete/depart',
     async (data,{rejectWithValue}) => {
+
         try {
           const config = {
             headers: {
               "Content-Type": "application/json",
             },
           };
-          const response = await api.put(`/api/depart/delete/${data.id}`,data.photo,config)
+          const response = await api.put(`/api/depart/delete/${data._id}`,data,config)
           return response.data
         } catch (err) {
           return rejectWithValue(err.message);

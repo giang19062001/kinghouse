@@ -7,7 +7,6 @@ import {
   Stack,
   Dialog,
   Paper,
-  LinearProgress,
   Grid,
 } from "@mui/material";
 
@@ -30,12 +29,13 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import CategoryIcon from "@mui/icons-material/Category";
+import HouseIcon from "@mui/icons-material/House";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import PlaceIcon from "@mui/icons-material/Place";
 import MailIcon from "@mui/icons-material/Mail";
-import InvertColorsIcon from "@mui/icons-material/InvertColors";
-import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
+
+import HotelIcon from "@mui/icons-material/Hotel";
+import BathtubIcon from "@mui/icons-material/Bathtub";
 import "../../css/departDetail.scss";
 
 import Home from "./home";
@@ -227,7 +227,10 @@ const DepartDetail = () => {
     <Container sx={{ marginY: 10 }}>
       <Stack>
         <Paper sx={{ padding: 1 }} elevation={2}>
-          <Stack className="flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row">
+          <Stack
+            className="flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row"
+            sx={{ width: "auto" }}
+          >
             <Stack direction="row" justifyContent="center" alignItems="center">
               <Box id="BoxGlobalSubDepartDetail">
                 {arrayImage?.map((data, index) => (
@@ -293,7 +296,7 @@ const DepartDetail = () => {
               sx={{ padding: 0.5 }}
               className="my-2 mx-0 md:mx-2 md:my-0 lg:mx-2 lg:my-0 xl:mx-2 xl:my-0"
             >
-              <Box className="bg-sky-500 p-2 rounded-sm" >
+              <Box className="bg-sky-500 p-2 rounded-sm">
                 <Typography className="my-2  text-slate-50 font-bold">
                   <b> {depart?.name}</b>
                 </Typography>
@@ -301,13 +304,13 @@ const DepartDetail = () => {
                   <PlaceIcon></PlaceIcon> {depart?.addressHouse}
                 </Typography>
               </Box>
-              <Box className="bg-sky-200" >
+              <Box className="bg-sky-200">
                 {depart?.status === "Đang khuyến mãi" ? (
                   <Typography
                     align="center"
                     className=" my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl rounded-sm p-2"
                   >
-                    <b  style={{color:"#FF1E1E"}}>
+                    <b style={{ color: "#FF1E1E" }}>
                       {" "}
                       {depart?.pricePromotion} VNĐ
                     </b>
@@ -317,7 +320,7 @@ const DepartDetail = () => {
                     align="center"
                     className="  my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl  rounded-sm p-2"
                   >
-                    <b style={{color:"#FF1E1E"}}> {depart?.price} VNĐ</b>
+                    <b style={{ color: "#FF1E1E" }}> {depart?.price} VNĐ</b>
                   </Typography>
                 )}
               </Box>
@@ -326,49 +329,71 @@ const DepartDetail = () => {
                   <Typography className="my-2 ">
                     <b>
                       {" "}
-                      <CategoryIcon className="text-green-700 "></CategoryIcon>{" "}
-                      {depart?.type}
+                      <HouseIcon className="text-sky-600 "></HouseIcon>{" "}
+                      {depart?.isDelete === false ? "Còn trống" : "Đã thuê"}
                     </b>
                   </Typography>
+
                   <Typography className="my-2  ">
                     <b>
                       {" "}
-                      <CropSquareIcon className="text-orange-600"></CropSquareIcon>{" "}
+                      <CropSquareIcon className="text-sky-600"></CropSquareIcon>{" "}
                       {depart?.length} * {depart?.width} m2
                     </b>
                   </Typography>
                 </Grid>
                 <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
-                  <Typography className="my-2   ">
+                  <Typography className="my-2  ">
                     <b>
                       {" "}
-                      <ElectricBoltIcon className="text-yellow-400 "></ElectricBoltIcon>{" "}
-                      {depart?.electricMoney} đ/kw
+                      <HotelIcon className="text-sky-600"></HotelIcon>{" "}
+                      {depart?.bedroom} phòng ngủ
                     </b>
                   </Typography>
                   <Typography className="my-2  ">
                     <b>
                       {" "}
-                      <InvertColorsIcon className="text-sky-600 "></InvertColorsIcon>
-                      {depart?.waterMoney} đ/người
+                      <BathtubIcon className="text-sky-600"></BathtubIcon>{" "}
+                      {depart?.bathroom} phòng WC
                     </b>
                   </Typography>
                 </Grid>
               </Grid>
 
-              <Divider className="my-4 " />
-
-              <Button
-                sx={{ display: "block", margin: "auto", width: 250 }}
-                className="
-                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700 flex gap-2"
-                onClick={() => {
-                  handleClickOpenDialogForm();
-                }}
-              >
-                <MailIcon></MailIcon>
-                Đăng ký tư vấn
-              </Button>
+              <Divider className="my-4" />
+              {depart?.isDelete === true ? (
+                <Button
+                  sx={{
+                    display: "block",
+                    margin: "auto",
+                    width: 250,
+                    height: 70,
+                    marginBottom: 2,
+                  }}
+                  className="
+                   text-slate-50 bg-slate-500 font-bold  "
+                >
+                  Căn hộ đã được thuê
+                </Button>
+              ) : (
+                <Button
+                  sx={{
+                    display: "block",
+                    margin: "auto",
+                    width: 250,
+                    height: 70,
+                    marginBottom: 2,
+                  }}
+                  className="
+                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700 flex gap-6"
+                  onClick={() => {
+                    handleClickOpenDialogForm();
+                  }}
+                >
+                  <MailIcon></MailIcon>
+                  Đăng ký tư vấn
+                </Button>
+              )}
             </Paper>
           </Stack>
         </Paper>
@@ -382,6 +407,19 @@ const DepartDetail = () => {
           </Typography>
           <Typography>
             Loại căn hộ: <b> {depart?.type}</b>
+          </Typography>
+          <Typography>
+            Diện tích (dài * rộng):{" "}
+            <b>
+              {" "}
+              {depart?.length} * {depart?.width} m2
+            </b>{" "}
+          </Typography>
+          <Typography>
+            Số phòng ngủ: <b> {depart?.bedroom} phòng</b>
+          </Typography>
+          <Typography>
+            Số phòng vệ sinh: <b> {depart?.bathroom} phòng</b>
           </Typography>
           {depart?.status === "Đang khuyến mãi" ? (
             <Box>
@@ -403,14 +441,10 @@ const DepartDetail = () => {
               <b className="text-red-500"> {depart?.price} VNĐ</b>
             </Typography>
           )}
-
           <Typography>
-            Diện tích (dài * rộng):{" "}
-            <b>
-              {" "}
-              {depart?.length} * {depart?.width} m2
-            </b>{" "}
+            Đặt cọc: <b> {depart?.depositMoney}</b>
           </Typography>
+
           <Typography>
             Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
           </Typography>
@@ -423,7 +457,9 @@ const DepartDetail = () => {
           <Typography>
             Tiền nước: <b> {depart?.waterMoney} đ/người</b>
           </Typography>
-
+          <Typography>
+            Chi phí khác: <b> {depart?.anotherMoney}</b>
+          </Typography>
           <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
             THÔNG TIN TÒA NHÀ SỞ HỮU
           </Typography>
