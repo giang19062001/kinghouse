@@ -63,6 +63,8 @@ const Depart = () => {
     dispatch(fetchUlHomes());
   }, []);
 
+ 
+
   const service = useSelector(selectListServices);
   const ultilitiesDepart = useSelector(selectListUlDeparts);
   const ultilitiesHouse = useSelector(selectListUlHomes);
@@ -88,6 +90,15 @@ const Depart = () => {
     ultilitiesHouse: [],
   });
 
+  useEffect(()=>{
+    if(departPost.status !== "Đang khuyến mãi"){
+      setDepartPost((preState) => ({
+        ...preState,
+        pricePromotion:"" ,
+      }));
+    }
+  },[departPost.status])
+
   const handleCloseDialogSuccess = () => {
     dispatch(fetchDeparts());
      setOpenSuccess(false)
@@ -101,12 +112,10 @@ const Depart = () => {
     let ImagesArray = Object.entries(e.target.files).map((e) =>
       URL.createObjectURL(e[1])
     );
-    console.log("ImagesArray", ImagesArray);
     setFile([...file, ...ImagesArray]);
   }
 
   function deleteFile(indexDelete) {
-    console.log("indexDelete", indexDelete);
     const fileDelete = file.filter((item, index) => index !== indexDelete);
     setDepartPost((preState) => ({
       ...preState,
@@ -116,14 +125,12 @@ const Depart = () => {
   }
 
   const handlePhoto = (files) => {
-    console.log("files photo", files);
     const photo = [];
 
     for (let i = 0; i < files.length; i++) {
       photo.push(files[i]);
     }
 
-    console.log("photo", photo);
     setDepartPost((preState) => ({
       ...preState,
       photo: photo,
@@ -195,7 +202,7 @@ const Depart = () => {
     })
   };
 
-  console.log(departPost);
+  console.log("da",departPost)
   return (
     <Container sx={{ marginTop: 20 }}>
       <Box>
@@ -298,11 +305,11 @@ const Depart = () => {
                 <label for="photo">
                   Ảnh mô tả căn hộ <i>(yêu cầu trên 5 tấm)</i>
                 </label>
-                <div className="flex flex-row flex-wrap">
+                <Box className="flex flex-row flex-wrap">
                   {file.length > 0 &&
                     file.map((item, index) => {
                       return (
-                        <div key={item} className="relative p-2">
+                        <Box key={item} className="relative p-2">
                           <img
                             src={item}
                             alt=""
@@ -314,10 +321,10 @@ const Depart = () => {
                           >
                             <ClearIcon></ClearIcon>
                           </IconButton>
-                        </div>
+                        </Box>
                       );
                     })}
-                </div>
+                </Box>
                 <label
                   for="photo"
                   className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg  bg-green-500 w-24 p-2"

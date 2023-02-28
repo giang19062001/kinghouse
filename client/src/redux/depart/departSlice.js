@@ -31,7 +31,7 @@ export const departSlice = createSlice({
         state.isLoading = true;
      })
      builder.addMatcher(isAnyOf(fetchDeparts.rejected,fetchDepartDetail.rejected,deleteDepart.rejected,
-      updateDepart.rejected,deleteImage.rejected,updateImage.pending),(state,action)=>{
+      updateDepart.rejected,deleteImage.rejected,updateImage.rejected),(state,action)=>{
         state.isLoading = false;
         state.error = action.payload
      })

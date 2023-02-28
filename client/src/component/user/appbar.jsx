@@ -5,7 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Container, Divider, Typography, Badge, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
-import ContactMailIcon from '@mui/icons-material/ContactMail';
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -16,14 +16,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Link } from "react-router-dom";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { TextField } from "@mui/material";
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectListDepart } from "../../redux/depart/departSelector";
 import { fetchDeparts } from "../../redux/depart/departThunk";
 import { Form } from "./form";
-import "../../css/appbarSearch.scss"
+import "../../css/appbarSearch.scss";
 import { Stack } from "@mui/system";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeader = styled("Box")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
@@ -37,7 +37,6 @@ const CssTextField = styled(TextField)({
     "& fieldset": {
       borderRadius: "30px",
     },
- 
   },
 });
 const CssTextFieldMobile = styled(TextField)({
@@ -75,11 +74,10 @@ const Appbar = () => {
 
   const dispatch = useDispatch();
 
-  
   React.useEffect(() => {
     dispatch(fetchDeparts());
   }, [dispatch]);
-  
+
   const handleChangeValueSearch = (e) => {
     setValueSearch(e.target.value);
   };
@@ -100,7 +98,6 @@ const Appbar = () => {
     }
   }, [handleFindSearch, valueSearch]);
 
-
   const handleClickOpenDialogForm = () => {
     setOpenDialogForm(true);
   };
@@ -109,7 +106,11 @@ const Appbar = () => {
     setOpenDialogForm(false);
   };
 
-
+  // window.addEventListener("click", function (e) {
+  //   if (openBoxSearch === true) {
+  //     setOpenBoxSearch(false);
+  //   }
+  // });
   return (
     <Box>
       <AppBar position="static" className="bg-slate-50 ">
@@ -117,23 +118,36 @@ const Appbar = () => {
           <Toolbar>
             <Box sx={{ flexGrow: 1, mr: 5 }}>
               <Link to="/">
-                <Stack direction="row"
-                 justifyContent="center"
-                 alignItems="center"
-                 id="idHoverImage"
-                 >
-                <img
-                  src={require("../../assets/logoKingH.jpg")}
-                  alt=""
-                  className="mx-auto w-24 rounded-full"
-                />
-                <Box sx={{ display: { xs: "none", sm: "block", md: "block" },}} >
-                <Typography id="idHoverTypography" align="center" className="text-slate-900 text-md tracking-tight font-bold		">King House</Typography>
-                <Typography id="idHoverTypography"  align="center" className="text-slate-900 text-md	tracking-tight	">Nâng tầm giá trị sống</Typography>
-                </Box>
-              
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  id="idHoverImage"
+                >
+                  <img
+                    src={require("../../assets/logoKingH.jpg")}
+                    alt=""
+                    className="mx-auto w-24 rounded-full"
+                  />
+                  <Box
+                    sx={{ display: { xs: "none", sm: "block", md: "block" } }}
+                  >
+                    <Typography
+                      id="idHoverTypography"
+                      align="center"
+                      className="text-slate-900 text-lg tracking-tight font-bold		"
+                    >
+                      King House
+                    </Typography>
+                    <Typography
+                      id="idHoverTypography"
+                      align="center"
+                      className="text-slate-900 text-lg	tracking-tight	"
+                    >
+                      Nâng tầm giá trị sống
+                    </Typography>
+                  </Box>
                 </Stack>
-              
               </Link>
             </Box>
             <Box
@@ -169,11 +183,16 @@ const Appbar = () => {
                   </p>
                 ) : (
                   dataSearch?.map((data, index) => (
-                    <Link to={`/depart/` + data?._id}  key={data}>
+                    <Link
+                      to={`/depart/` + data?._id}
+                      key={data}
+                      onClick={() => setOpenBoxSearch(false)}
+                    >
                       <Box id="idBoxDataSearch">
                         <img
                           src={
-                            process.env.REACT_APP_API_URL + "/departs/" +
+                            process.env.REACT_APP_API_URL +
+                            "/departs/" +
                             data?.photo?.[0]
                           }
                           className="w-12 h-12 rounded-lg"
@@ -202,10 +221,11 @@ const Appbar = () => {
                 mr: 1,
               }}
             >
-              
-              <Button  onClick={() => {
+              <Button
+                onClick={() => {
                   handleClickOpenDialogForm();
-                }}>
+                }}
+              >
                 <Typography id="idHover">ĐĂNG KÝ TƯ VẤN</Typography>
               </Button>
             </Box>
@@ -216,9 +236,10 @@ const Appbar = () => {
                 mr: 1,
               }}
             >
-              <Link to="/">
+              <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`} >
+                {" "}
                 <Typography id="idHover">LIÊN HỆ</Typography>
-              </Link>
+              </a>
             </Box>
 
             <Box
@@ -302,9 +323,11 @@ const Appbar = () => {
           <Divider />
           <ListItem disablePadding>
             <Box>
-              <ListItemButton onClick={() => {
+              <ListItemButton
+                onClick={() => {
                   handleClickOpenDialogForm();
-                }}>
+                }}
+              >
                 <Typography
                   sx={{ fontSize: 15, padding: 1, fontFamily: "revert" }}
                 >
@@ -316,13 +339,15 @@ const Appbar = () => {
           <Divider />
           <ListItem disablePadding>
             <Box>
-              <ListItemButton>
-                <Typography
-                  sx={{ fontSize: 15, padding: 1, fontFamily: "revert" }}
-                >
-                  <PhoneIcon></PhoneIcon> &ensp;LIÊN HỆ
-                </Typography>
-              </ListItemButton>
+              <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`}>
+                <ListItemButton>
+                  <Typography
+                    sx={{ fontSize: 15, padding: 1, fontFamily: "revert" }}
+                  >
+                    <PhoneIcon></PhoneIcon> &ensp;LIÊN HỆ
+                  </Typography>
+                </ListItemButton>
+              </a>
             </Box>
           </ListItem>
           <Divider />
@@ -351,28 +376,39 @@ const Appbar = () => {
               </p>
             ) : (
               dataSearch?.map((data, index) => (
-                <Link to={`/depart/` + data?._id} key={data}>
+                <Link
+                  to={`/depart/` + data?._id}
+                  key={data}
+                  onClick={() => {
+                    setOpenSearchMobile(false);
+                    setOpen(false);
+                  }}
+                >
                   <Box sx={{ display: "flex", margin: 2 }}>
                     <img
                       src={
-                        process.env.REACT_APP_API_URL + "/departs/"  + data?.photo?.[0]
+                        process.env.REACT_APP_API_URL +
+                        "/departs/" +
+                        data?.photo?.[0]
                       }
                       alt=""
                       id="imgAppbarMobile"
                     />
                     <p style={{ fontSize: "small" }}>{data?.name}</p>
-
                   </Box>
-                  <Divider className="my-6"/>
-
+                  <Divider className="my-6" />
                 </Link>
               ))
             )}
           </Box>
         </Box>
       </Drawer>
-      {openDialogForm === true ? (<Form open={openDialogForm}  handleCallbackCloseDialog={handleCloseDialogForm}></Form>):null}
-
+      {openDialogForm === true ? (
+        <Form
+          open={openDialogForm}
+          handleCallbackCloseDialog={handleCloseDialogForm}
+        ></Form>
+      ) : null}
     </Box>
   );
 };

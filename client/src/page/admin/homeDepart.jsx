@@ -5,11 +5,12 @@ import ListDepart from "../../component/admin/listDepart"
 import { selectStatusAuth } from "../../redux/auth/authSelector";
 import { PageForbidden } from "../../page/admin/pageForbidden";
 import {  useSelector } from "react-redux";
+import React from "react";
 const HomeDepart = () =>{
     const auth = useSelector(selectStatusAuth);
 
     return (
-        <>
+        <React.Fragment>
         {auth === false?(
                 <PageForbidden></PageForbidden>
         ):(
@@ -20,7 +21,7 @@ const HomeDepart = () =>{
                </div>
 )}
     
-    </>
+    </React.Fragment>
       
     )
  

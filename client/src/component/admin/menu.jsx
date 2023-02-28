@@ -41,7 +41,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeader = styled("Box")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
@@ -70,7 +70,7 @@ const Menu = () => {
 
   return (
 
-         <div>
+         <Box>
          <AppBar
            position="fixed"
            open={open}
@@ -164,15 +164,18 @@ const Menu = () => {
                </Box>
              ))}
              <Button
-               sx={{ display: "block", margin: "auto" }}
-               className="text-slate-50 bg-red-500 mt-6 hover:scale-105"
+               sx={{ display: "block", margin: "auto",width:150 }}
+               className="bg-slate-50 text-red-500 mt-6 hover:scale-105  "
                onClick={handleLogOut}
              >
-               Đăng xuất
+              <b>
+              Đăng xuất
+
+              </b>
              </Button>
            </List>
          </Drawer>
-       </div>
+       </Box>
    
 
   );

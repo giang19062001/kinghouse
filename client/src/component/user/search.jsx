@@ -348,7 +348,7 @@ const Search = () => {
                 Không tìm thấy kết quả tìm kiếm
               </Typography>
             ) : (
-              <div>
+              <Box>
                 <Typography align="center" className="font-bold text-xl my-6">
                   DANH SÁCH KẾT QUẢ TÌM KIẾM
                 </Typography>
@@ -411,7 +411,7 @@ const Search = () => {
                     </Grid>
                   ))}
                 </Grid>
-              </div>
+              </Box>
             )}
           </Box>
         )}

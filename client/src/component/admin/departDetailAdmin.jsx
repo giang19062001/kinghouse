@@ -1,10 +1,25 @@
-import { Box, Container, Typography, Divider, Stack,Paper,Dialog, Backdrop, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Divider,
+  Stack,
+  Paper,
+  Dialog,
+  Backdrop,
+  CircularProgress,
+  Button,
+  Grid,
+} from "@mui/material";
 
 import { useState, useEffect } from "react";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
-import { selectDepartDetail, selectStatusDepart } from "../../redux/depart/departSelector";
+import {
+  selectDepartDetail,
+  selectStatusDepart,
+} from "../../redux/depart/departSelector";
 
 import { fetchServices } from "../../redux/service/serviceThunk";
 import { fetchUlDeparts } from "../../redux/ultilitiesDepart/ulDepartThunk";
@@ -18,6 +33,8 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import CategoryIcon from "@mui/icons-material/Category";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import PlaceIcon from "@mui/icons-material/Place";
+import InvertColorsIcon from "@mui/icons-material/InvertColors";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 const DepartDetailAdmin = () => {
   // window.scrollTo({ top: 5, behavior: "auto" });
 
@@ -32,7 +49,7 @@ const DepartDetailAdmin = () => {
   const ultilitiesHouse = useSelector(selectListUlHomes);
   const depart = useSelector(selectDepartDetail);
   const [value, setValue] = useState(0);
-  const [arrayImage,setArrayImage] = useState([])
+  const [arrayImage, setArrayImage] = useState([]);
   const [indexCurrent, setIndexCurrent] = useState(0);
   const params = useParams();
   const dispatch = useDispatch();
@@ -43,23 +60,23 @@ const DepartDetailAdmin = () => {
   useEffect(() => {
     dispatch(fetchDepartDetail(params.id));
   }, [dispatch, params.id]);
-  useEffect(()=>{
-    setArrayImage(depart?.photo)
- },[depart])
+  useEffect(() => {
+    setArrayImage(depart?.photo);
+  }, [depart]);
 
- const handleCloseImageDialog = () => {
-  setImageDialog({ open: false, value: "" });
-};
+  const handleCloseImageDialog = () => {
+    setImageDialog({ open: false, value: "" });
+  };
   const templateIconSer = (data) => {
     const result = service.find((element) => element.name === data);
     return (
-      <div className="flex flex-row flex-wrap">
+      <Box className="flex flex-row flex-wrap">
         <Stack
           direction="column"
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          sx={{marginX:2}}
+          sx={{ marginX: 2 }}
         >
           <img
             className="w-10 mx-auto"
@@ -70,67 +87,65 @@ const DepartDetailAdmin = () => {
             {result?.name}
           </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
   const templateIconUlDepart = (data) => {
     const result = ultilitiesDepart.find((element) => element.name === data);
     return (
-      <div className=" flex flex-row flex-wrap">
-          <Stack
+      <Box className=" flex flex-row flex-wrap">
+        <Stack
           direction="column"
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          sx={{marginX:2}}
+          sx={{ marginX: 2 }}
         >
-        <img
-          className="w-10 mx-auto"
-          alt=""
-          src={process.env.REACT_APP_API_URL + "/ulDepart/" + result?.photo}
-        />
-        <Typography align="center" className="mt-4 mb-10">
-          {result?.name}
-        </Typography>
+          <img
+            className="w-10 mx-auto"
+            alt=""
+            src={process.env.REACT_APP_API_URL + "/ulDepart/" + result?.photo}
+          />
+          <Typography align="center" className="mt-4 mb-10">
+            {result?.name}
+          </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
   const templateIconUlHouse = (data) => {
     const result = ultilitiesHouse.find((element) => element.name === data);
     return (
-      <div className="flex flex-row flex-wrap">
-          <Stack
+      <Box className="flex flex-row flex-wrap">
+        <Stack
           direction="column"
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          sx={{marginX:2}}
+          sx={{ marginX: 2 }}
         >
-        <img
-          className="w-10 mx-auto"
-          alt=""
-          src={process.env.REACT_APP_API_URL + "/ulHome/" + result?.photo}
-        />
-        <Typography align="center" className="mt-4 mb-10">
-          {result?.name}
-        </Typography>
+          <img
+            className="w-10 mx-auto"
+            alt=""
+            src={process.env.REACT_APP_API_URL + "/ulHome/" + result?.photo}
+          />
+          <Typography align="center" className="mt-4 mb-10">
+            {result?.name}
+          </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
 
   const moveNext = (number) => {
-    console.log("number",number)
+    console.log("number", number);
 
-    setValue(value - number)
-
+    setValue(value - number);
   };
   const movePre = (number) => {
-    console.log("number",number)
+    console.log("number", number);
 
-      setValue(value + number)
-     
+    setValue(value + number);
   };
 
   const moveCurrent = (data) => {
@@ -189,7 +204,7 @@ const DepartDetailAdmin = () => {
   // swipe
 
   return (
-    <Container sx={{ marginY: 15 }}>
+    <Container sx={{ marginY: 20 }}>
       <Stack>
         <Paper sx={{ padding: 1 }} elevation={2}>
           <Stack className="flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row">
@@ -255,37 +270,75 @@ const DepartDetailAdmin = () => {
             </Stack>
             <Paper
               elevation={2}
-              sx={{ padding: 2 }}
+              sx={{ padding: 0.5 }}
               className="my-2 mx-0 md:mx-2 md:my-0 lg:mx-2 lg:my-0 xl:mx-2 xl:my-0"
             >
-              <Typography
-                align="center"
-                className=" text-sky-400 font-semibold my-2 md:my-6 lg:my-6 xl:my-6 p-2 bg-slate-50 shadow font-sans
-              lg:mt-0 xl:mt-0"
-              >
-                THÔNG TIN CĂN HỘ
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6">
-                <b> {depart?.name}</b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6  text-sky-500">
-                <PlaceIcon></PlaceIcon> <b> {depart?.addressHouse}</b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-green-600  ">
-                <b>
-                  {" "}
-                  <CategoryIcon></CategoryIcon> {depart?.type}
-                </b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-orange-500">
-                <b>
-                  {" "}
-                  <CropSquareIcon></CropSquareIcon> {depart?.length} *{" "}
-                  {depart?.width} m2
-                </b>
-              </Typography>
-             
-           
+              <Box className="bg-sky-500 p-2 rounded-sm">
+                <Typography className="my-2  text-slate-50 font-bold">
+                  <b> {depart?.name}</b>
+                </Typography>
+                <Typography className="my-2  text-slate-50">
+                  <PlaceIcon></PlaceIcon> {depart?.addressHouse}
+                </Typography>
+              </Box>
+              <Box className="bg-sky-200">
+                {depart?.status === "Đang khuyến mãi" ? (
+                  <Typography
+                    align="center"
+                    className=" my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl rounded-sm p-2"
+                  >
+                    <b style={{ color: "#FF1E1E" }}>
+                      {" "}
+                      {depart?.pricePromotion} VNĐ
+                    </b>
+                  </Typography>
+                ) : (
+                  <Typography
+                    align="center"
+                    className="  my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl  rounded-sm p-2"
+                  >
+                    <b style={{ color: "#FF1E1E" }}> {depart?.price} VNĐ</b>
+                  </Typography>
+                )}
+              </Box>
+              <Grid container className="mt-2">
+                <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
+                  <Typography className="my-2 ">
+                    <b>
+                      {" "}
+                      <CategoryIcon className="text-green-700 "></CategoryIcon>{" "}
+                      {depart?.type}
+                    </b>
+                  </Typography>
+                  <Typography className="my-2  ">
+                    <b>
+                      {" "}
+                      <CropSquareIcon className="text-orange-600"></CropSquareIcon>{" "}
+                      {depart?.length} * {depart?.width} m2
+                    </b>
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
+                  <Typography className="my-2   ">
+                    <b>
+                      {" "}
+                      <ElectricBoltIcon className="text-yellow-400 "></ElectricBoltIcon>{" "}
+                      {depart?.electricMoney} đ/kw
+                    </b>
+                  </Typography>
+                  <Typography className="my-2  ">
+                    <b>
+                      {" "}
+                      <InvertColorsIcon className="text-sky-600 "></InvertColorsIcon>
+                      {depart?.waterMoney} đ/người
+                    </b>
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Button
+                sx={{ display: "block", margin: "auto", width: 250 }}
+                disabled
+              ></Button>
             </Paper>
           </Stack>
         </Paper>
@@ -301,7 +354,7 @@ const DepartDetailAdmin = () => {
             Loại căn hộ: <b> {depart?.type}</b>
           </Typography>
           {depart?.status === "Đang khuyến mãi" ? (
-            <div>
+            <Box>
               <Typography>
                 Gía gốc:{" "}
                 <b className="text-red-500 line-through ">
@@ -313,7 +366,7 @@ const DepartDetailAdmin = () => {
                 Gía Khuyến mãi:{" "}
                 <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
               </Typography>
-            </div>
+            </Box>
           ) : (
             <Typography>
               Gía thuê căn hộ:{" "}
@@ -393,12 +446,8 @@ const DepartDetailAdmin = () => {
           ></img>
         </Dialog>
       </Stack>
-
-     
     </Container>
   );
 };
 
 export default DepartDetailAdmin;
-
-

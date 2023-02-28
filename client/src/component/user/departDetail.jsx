@@ -8,6 +8,7 @@ import {
   Dialog,
   Paper,
   LinearProgress,
+  Grid,
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
@@ -32,6 +33,9 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import CategoryIcon from "@mui/icons-material/Category";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import PlaceIcon from "@mui/icons-material/Place";
+import MailIcon from "@mui/icons-material/Mail";
+import InvertColorsIcon from "@mui/icons-material/InvertColors";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import "../../css/departDetail.scss";
 
 import Home from "./home";
@@ -86,7 +90,7 @@ const DepartDetail = () => {
   const templateIconSer = (data) => {
     const result = service.find((element) => element.name === data);
     return (
-      <div className="flex flex-row flex-wrap">
+      <Box className="flex flex-row flex-wrap">
         <Stack
           direction="column"
           justifyContent="center"
@@ -103,13 +107,13 @@ const DepartDetail = () => {
             {result?.name}
           </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
   const templateIconUlDepart = (data) => {
     const result = ultilitiesDepart.find((element) => element.name === data);
     return (
-      <div className=" flex flex-row flex-wrap">
+      <Box className=" flex flex-row flex-wrap">
         <Stack
           direction="column"
           justifyContent="center"
@@ -126,13 +130,13 @@ const DepartDetail = () => {
             {result?.name}
           </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
   const templateIconUlHouse = (data) => {
     const result = ultilitiesHouse.find((element) => element.name === data);
     return (
-      <div className="flex flex-row flex-wrap">
+      <Box className="flex flex-row flex-wrap">
         <Stack
           direction="column"
           justifyContent="center"
@@ -149,7 +153,7 @@ const DepartDetail = () => {
             {result?.name}
           </Typography>
         </Stack>
-      </div>
+      </Box>
     );
   };
 
@@ -286,59 +290,83 @@ const DepartDetail = () => {
             </Stack>
             <Paper
               elevation={2}
-              sx={{ padding: 2 }}
+              sx={{ padding: 0.5 }}
               className="my-2 mx-0 md:mx-2 md:my-0 lg:mx-2 lg:my-0 xl:mx-2 xl:my-0"
             >
-              <Typography
-                align="center"
-                className=" text-sky-400 font-semibold my-2 md:my-6 lg:my-6 xl:my-6 p-2 bg-slate-50 shadow font-sans
-              lg:mt-0 xl:mt-0"
-              >
-                THÔNG TIN CĂN HỘ
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6">
-                <b> {depart?.name}</b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6  text-sky-500">
-                <PlaceIcon></PlaceIcon> <b> {depart?.addressHouse}</b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-green-600  ">
-                <b>
-                  {" "}
-                  <CategoryIcon></CategoryIcon> {depart?.type}
-                </b>
-              </Typography>
-              <Typography className="my-2 md:my-6 lg:my-6 xl:my-6 text-orange-500">
-                <b>
-                  {" "}
-                  <CropSquareIcon></CropSquareIcon> {depart?.length} *{" "}
-                  {depart?.width} m2
-                </b>
-              </Typography>
-              <Divider className="my-2 md:my-6 lg:my-6 xl:my-6" />
-              {depart?.status === "Đang khuyến mãi" ? (
-                <Typography
-                  align="center"
-                  className=" float-left font-bold   mb-2 md:mb-6 lg:mb-6 xl:mb-6 text-lg md:text-lg lg:text-xl xl:text-xl"
-                >
-                  <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
+              <Box className="bg-sky-500 p-2 rounded-sm" >
+                <Typography className="my-2  text-slate-50 font-bold">
+                  <b> {depart?.name}</b>
                 </Typography>
-              ) : (
-                <Typography
-                  align="center"
-                  className="  mb-2 md:mb-6 lg:mb-6 xl:mb-6  font-bold text-lg md:text-lg lg:text-xl xl:text-xl"
-                >
-                  <b className="text-red-500 "> {depart?.price} VNĐ</b>
+                <Typography className="my-2  text-slate-50">
+                  <PlaceIcon></PlaceIcon> {depart?.addressHouse}
                 </Typography>
-              )}
+              </Box>
+              <Box className="bg-sky-200" >
+                {depart?.status === "Đang khuyến mãi" ? (
+                  <Typography
+                    align="center"
+                    className=" my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl rounded-sm p-2"
+                  >
+                    <b  style={{color:"#FF1E1E"}}>
+                      {" "}
+                      {depart?.pricePromotion} VNĐ
+                    </b>
+                  </Typography>
+                ) : (
+                  <Typography
+                    align="center"
+                    className="  my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl  rounded-sm p-2"
+                  >
+                    <b style={{color:"#FF1E1E"}}> {depart?.price} VNĐ</b>
+                  </Typography>
+                )}
+              </Box>
+              <Grid container className="mt-2">
+                <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
+                  <Typography className="my-2 ">
+                    <b>
+                      {" "}
+                      <CategoryIcon className="text-green-700 "></CategoryIcon>{" "}
+                      {depart?.type}
+                    </b>
+                  </Typography>
+                  <Typography className="my-2  ">
+                    <b>
+                      {" "}
+                      <CropSquareIcon className="text-orange-600"></CropSquareIcon>{" "}
+                      {depart?.length} * {depart?.width} m2
+                    </b>
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
+                  <Typography className="my-2   ">
+                    <b>
+                      {" "}
+                      <ElectricBoltIcon className="text-yellow-400 "></ElectricBoltIcon>{" "}
+                      {depart?.electricMoney} đ/kw
+                    </b>
+                  </Typography>
+                  <Typography className="my-2  ">
+                    <b>
+                      {" "}
+                      <InvertColorsIcon className="text-sky-600 "></InvertColorsIcon>
+                      {depart?.waterMoney} đ/người
+                    </b>
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Divider className="my-4 " />
+
               <Button
-                sx={{ display: "block", margin: "auto", width: 200 }}
+                sx={{ display: "block", margin: "auto", width: 250 }}
                 className="
-                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700"
+                 text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700 flex gap-2"
                 onClick={() => {
                   handleClickOpenDialogForm();
                 }}
               >
+                <MailIcon></MailIcon>
                 Đăng ký tư vấn
               </Button>
             </Paper>
@@ -356,7 +384,7 @@ const DepartDetail = () => {
             Loại căn hộ: <b> {depart?.type}</b>
           </Typography>
           {depart?.status === "Đang khuyến mãi" ? (
-            <div>
+            <Box>
               <Typography>
                 Gía gốc:{" "}
                 <b className="text-red-500 line-through ">
@@ -368,7 +396,7 @@ const DepartDetail = () => {
                 Gía Khuyến mãi:{" "}
                 <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
               </Typography>
-            </div>
+            </Box>
           ) : (
             <Typography>
               Gía thuê căn hộ:{" "}

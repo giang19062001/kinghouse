@@ -45,7 +45,7 @@ const Home = () => {
         DANH SÁCH TOÀN BỘ CĂN HỘ <b className="text-sky-400">KING HOUSE</b>
       </Typography>
       {isLoading === true ? (
-        <div>
+        <Box>
           <Grid container spacing={0}>
             <Grid item xs={6} sm={4} md={3} lg={3} xl={3} className="py-3">
               <Skeleton
@@ -88,9 +88,9 @@ const Home = () => {
               <Skeleton animation="wave" width="80%" />
             </Grid>
           </Grid>
-        </div>
+        </Box>
       ) : (
-        <div>
+        <Box>
           <Box>
             <Grid container spacing={0}>
               {dataPagination?.currentData()?.map((data, index) =>
@@ -107,7 +107,7 @@ const Home = () => {
                     <Link to={`/depart/` + data?._id}>
                     <p
                     alt=""
-                    className="absolute top-4 left-7 md:left-5 lg:left-5 xl:left-5 z-50 bg-red-600 text-slate-50 p-1 rounded-sm"
+                    className="absolute top-5 left-7 md:left-5 lg:left-5 xl:left-5 z-50 bg-red-600 text-slate-50 p-1 rounded-sm text-xs md:text-sm lg:text-md xl:text-md"
                   >Hot</p> 
                       <p className="absolute top-5 right-7 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold   bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
                         {data?.price} đ
@@ -161,7 +161,7 @@ const Home = () => {
                     <Link to={`/depart/` + data?._id} >
                     <p
                     alt=""
-                    className="absolute top-4 left-7 md:left-5 lg:left-5 xl:left-5 z-50 bg-yellow-400 text-slate-50 p-1 rounded-sm"
+                    className="absolute top-5 left-7 md:left-5 lg:left-5 xl:left-5 z-50 bg-yellow-400 text-slate-50 p-1 rounded-sm text-xs md:text-sm lg:text-md xl:text-md"
                   >Sale</p> 
                       <p className="absolute top-5 right-7 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold line-through  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
                         {data?.price} đ
@@ -216,7 +216,7 @@ const Home = () => {
               onChange={handleChange}
             />
           </Stack>
-        </div>
+        </Box>
       )}
     </Container>
   );

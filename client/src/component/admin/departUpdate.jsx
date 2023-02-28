@@ -312,9 +312,9 @@ const DepartUpdate = () => {
                   </FormControl>
                   <label for="photo">Ảnh mô tả căn hộ</label>
 
-                  <div className="flex flex-row flex-wrap">
+                  <Box className="flex flex-row flex-wrap">
                     {departUpdate?.photo?.map((dataImage, index) => (
-                      <div className="relative" key={index}>
+                      <Box className="relative" key={index}>
                         <img
                           className="w-56 object-contain p-1"
                           alt=""
@@ -330,9 +330,9 @@ const DepartUpdate = () => {
                         >
                           X
                         </button>
-                      </div>
+                      </Box>
                     ))}
-                  </div>
+                  </Box>
                   <label
                     for="photo"
                     className="hover:scale-105 cursor-pointer text-slate-50 font-bold rounded-lg bg-green-500 w-24 p-2"

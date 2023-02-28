@@ -199,16 +199,16 @@ export const Form = (props) => {
   }
 
   return (
-    <div>
+    <Box>
       <Dialog
         open={props.open}
         onClose={handleCloseDialogForm}
         maxWidth="sm"
         fullWidth
       >
-        <div id="idDiv">
+        <Box id="idDiv">
           <span id="idTitle">ĐĂNG KÝ TƯ VẤN</span>
-        </div>
+        </Box>
         <hr />
         <Divider />
         <DialogContent>
@@ -347,6 +347,6 @@ export const Form = (props) => {
           </Typography>
         </DialogContent>
       </Dialog>
-    </div>
+    </Box>
   );
 };

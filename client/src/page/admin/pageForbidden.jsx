@@ -2,6 +2,7 @@ import React from "react";
 import "../../css/pageForbidden.scss";
 export const PageForbidden = () => {
   return (
+    <React.Fragment>
     <div className="bg">
       <div class="text-wrapper">
         <div class="title" data-content="404">
@@ -27,5 +28,6 @@ export const PageForbidden = () => {
         </div>
       </div>
     </div>
+    </React.Fragment>
   );
 };
