@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import {
@@ -43,8 +43,7 @@ import { Form } from "./form";
 
 const DepartDetail = () => {
   // window.scrollTo({ top: 5, behavior: "auto" });
-
-  const params = useParams();
+  const { state } = useLocation()
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,6 +58,11 @@ const DepartDetail = () => {
   const isLoading = useSelector(selectStatusDepart);
 
   const depart = useSelector(selectDepartDetail);
+
+  useEffect(() => {
+    document.title = depart?.name;
+  }, [depart?.name]);
+
   const [value, setValue] = useState(0);
   const [arrayImage, setArrayImage] = useState([]);
   const [indexCurrent, setIndexCurrent] = useState(0);
@@ -70,8 +74,8 @@ const DepartDetail = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchDepartDetail(params.id));
-  }, [dispatch, params.id]);
+    dispatch(fetchDepartDetail(state.id));
+  }, [dispatch, state.id]);
   useEffect(() => {
     setArrayImage(depart?.photo);
   }, [depart]);
@@ -360,40 +364,24 @@ const DepartDetail = () => {
                 </Grid>
               </Grid>
 
-              <Divider className="my-4" />
-              {depart?.isDelete === true ? (
-                <Button
-                  sx={{
-                    display: "block",
-                    margin: "auto",
-                    width: 250,
-                    height: 70,
-                    marginBottom: 2,
-                  }}
-                  className="
-                   text-slate-50 bg-slate-500 font-bold  "
-                >
-                  Căn hộ đã được thuê
-                </Button>
-              ) : (
-                <Button
-                  sx={{
-                    display: "block",
-                    margin: "auto",
-                    width: 250,
-                    height: 70,
-                    marginBottom: 2,
-                  }}
-                  className="
+              <Divider className="mt-4 mb-8" />
+
+              <Button
+                sx={{
+                  display: "block",
+                  margin: "auto",
+                  width: 250,
+                  height: 50,
+                }}
+                className="
                  text-slate-50 bg-sky-500 font-bold  hover:bg-sky-700 flex gap-6"
-                  onClick={() => {
-                    handleClickOpenDialogForm();
-                  }}
-                >
-                  <MailIcon></MailIcon>
-                  Đăng ký tư vấn
-                </Button>
-              )}
+                onClick={() => {
+                  handleClickOpenDialogForm();
+                }}
+              >
+                <MailIcon></MailIcon>
+                Đăng ký tư vấn
+              </Button>
             </Paper>
           </Stack>
         </Paper>

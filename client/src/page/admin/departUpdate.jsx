@@ -5,6 +5,7 @@ import { selectStatusAuth } from "../../redux/auth/authSelector";
 import { PageForbidden } from "../../page/admin/pageForbidden";
 import {  useSelector } from "react-redux";
 import React from "react";
+import Footer from "../../component/user/footer";
 
 
 const DepartUpdatePage = () =>{
@@ -15,9 +16,10 @@ const DepartUpdatePage = () =>{
         {auth === false?(
                 <PageForbidden></PageForbidden>
         ):(
-            <div>
+            <div >
             <Menu></Menu>
-            <DepartUpdate></DepartUpdate>
+            <DepartUpdate ></DepartUpdate>
+            <Footer></Footer>
         </div>
         )}
     </React.Fragment>

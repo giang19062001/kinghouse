@@ -83,7 +83,7 @@ export default function ListDepart() {
   };
 
   return (
-    <Container sx={{ marginY: 10 }}>
+    <Container sx={{ marginY: 10 ,marginLeft: { xs: 0, md: 35 }}}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -117,7 +117,9 @@ export default function ListDepart() {
             {listDepart?.map((row, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell align="center">
-                  <Link to={`/admin/depart/` + row?._id}>
+                  <Link 
+                    to={`/admin/depart/` + row?.name.replace(/\s+/g, '-')} state={{ id: row?._id }}
+                  >
                     <Avatar
                       variant="square"
                       className="w-48 h-48 rounded transition duration-300 ease-in-out hover:scale-110"
@@ -131,7 +133,7 @@ export default function ListDepart() {
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <Link
-                    to={`/admin/depart/` + row?._id}
+                to={`/admin/depart/` + row?.name.replace(/\s+/g, '-')} state={{ id: row?._id }}
                     className="hover:text-sky-500"
                   >
                     {" "}

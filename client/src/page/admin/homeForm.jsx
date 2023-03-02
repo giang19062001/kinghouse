@@ -4,6 +4,7 @@ import { selectStatusAuth } from "../../redux/auth/authSelector";
 import { PageForbidden } from "../../page/admin/pageForbidden";
 import {  useSelector } from "react-redux";
 import React from "react";
+import Footer from "../../component/user/footer";
 
 const HomeForm = () =>{
     const auth = useSelector(selectStatusAuth);
@@ -16,6 +17,7 @@ const HomeForm = () =>{
             <div>
             <Menu></Menu>
             <ListForm></ListForm>
+            <Footer></Footer>
                </div>
         )}
     </React.Fragment>

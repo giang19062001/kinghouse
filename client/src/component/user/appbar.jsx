@@ -75,6 +75,10 @@ const Appbar = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    document.title = "King house";
+  }, []);
+
+  React.useEffect(() => {
     dispatch(fetchDeparts());
   }, [dispatch]);
 
@@ -184,8 +188,7 @@ const Appbar = () => {
                 ) : (
                   dataSearch?.map((data, index) => (
                     <Link
-                      to={`/depart/` + data?._id}
-                      key={data}
+                        to={`/depart/` + data?.name.replace(/\s+/g, '-')} state={{ id: data?._id }}                      key={data}
                       onClick={() => setOpenBoxSearch(false)}
                     >
                       <Box id="idBoxDataSearch">
@@ -377,8 +380,7 @@ const Appbar = () => {
             ) : (
               dataSearch?.map((data, index) => (
                 <Link
-                  to={`/depart/` + data?._id}
-                  key={data}
+                    to={`/depart/` + data?.name.replace(/\s+/g, '-')} state={{ id: data?._id }}                  key={data}
                   onClick={() => {
                     setOpenSearchMobile(false);
                     setOpen(false);

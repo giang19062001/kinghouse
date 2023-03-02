@@ -93,7 +93,7 @@ const UlHomeComponent = () => {
   };
 
   return (
-    <Container sx={{ marginY: 20 }}>
+    <Container sx={{ marginY: 20,marginLeft: { xs: 0, md: 35 } }}>
       <Paper className="mb-6" elevation={2}>
         <Stack className="p-6">
           <Typography

@@ -197,9 +197,8 @@ const DepartUpdate = () => {
     });
   };
 
-  console.log(departUpdate);
   return (
-    <Container sx={{ marginY: 20 }}>
+    <Container sx={{ marginY: 20 ,marginLeft: { xs: 0, md: 35 }}}>
       <Box>
         <Paper elevation={6} className=" p-12">
           <p className="p">
@@ -245,25 +244,25 @@ const DepartUpdate = () => {
                       onChange={handleChange}
                     ></CssTextField>
                   ) : null}
-                    <CssTextField
-                  type="text"
-                  name="depositMoney"
-                  defaultValue={departUpdate?.depositMoney}
-                  label="Đặt cọc "
-                  placeholder="VD: 01 tháng tiền phòng - Hợp đồng thuê 06 tháng"
-                  fullWidth
-                  onChange={handleChange}
-                ></CssTextField>
-                <CssTextField
-                  type="text"
-                  name="anotherMoney"
-                  defaultValue={departUpdate?.anotherMoney}
-                  label="Chi phí khác "
-                  placeholder="VD: Truyền hình cap, xe máy, wifi miễn phí "
-                  fullWidth
-                  onChange={handleChange}
-                ></CssTextField>
-                    <Stack direction="row">
+                  <CssTextField
+                    type="text"
+                    name="depositMoney"
+                    defaultValue={departUpdate?.depositMoney}
+                    label="Đặt cọc "
+                    placeholder="VD: 01 tháng tiền phòng - Hợp đồng thuê 06 tháng"
+                    fullWidth
+                    onChange={handleChange}
+                  ></CssTextField>
+                  <CssTextField
+                    type="text"
+                    name="anotherMoney"
+                    defaultValue={departUpdate?.anotherMoney}
+                    label="Chi phí khác "
+                    placeholder="VD: Truyền hình cap, xe máy, wifi miễn phí "
+                    fullWidth
+                    onChange={handleChange}
+                  ></CssTextField>
+                  <Stack direction="row">
                     <CssTextField
                       type="text"
                       name="electricMoney"
@@ -304,27 +303,25 @@ const DepartUpdate = () => {
                     ></CssTextField>
                   </Stack>
                   <Stack direction="row">
-                  <CssTextField
-                    type="number"
-                    name="bedroom"
-                    fullWidth
-                    defaultValue={departUpdate?.bedroom}
-
-                    placeholder="VD: 3"
-                    label="Số phòng tắm (m2)"
-                    onChange={handleChange}
-                  ></CssTextField>
-                  <CssTextField
-                    type="number"
-                    name="bathroom"
-                    fullWidth
-                    defaultValue={departUpdate?.bathroom}
-                    placeholder="VD: 2"
-                    label="Số phòng vệ sinh"
-                    onChange={handleChange}
-                  ></CssTextField>
-                </Stack>
-              
+                    <CssTextField
+                      type="number"
+                      name="bedroom"
+                      fullWidth
+                      defaultValue={departUpdate?.bedroom}
+                      placeholder="VD: 3"
+                      label="Số phòng tắm (m2)"
+                      onChange={handleChange}
+                    ></CssTextField>
+                    <CssTextField
+                      type="number"
+                      name="bathroom"
+                      fullWidth
+                      defaultValue={departUpdate?.bathroom}
+                      placeholder="VD: 2"
+                      label="Số phòng vệ sinh"
+                      onChange={handleChange}
+                    ></CssTextField>
+                  </Stack>
 
                   <FormControl fullWidth>
                     <CssInputLabel>Loại căn hộ</CssInputLabel>
@@ -402,8 +399,6 @@ const DepartUpdate = () => {
                     accept="image/png, image/jpg, image/jpeg"
                     multiple
                   />
-                 
-               
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6} lg={6} xl={6}>
@@ -452,7 +447,7 @@ const DepartUpdate = () => {
                     rows={4}
                     onChange={handleChange}
                   ></CssTextField>
- <label>Những dịch vụ đã bao gồm giá thuê: </label>
+                  <label>Những dịch vụ đã bao gồm giá thuê: </label>
                   <FormGroup className="flex flex-row flex-wrap">
                     {service?.map((data, index) =>
                       departUpdate?.service?.includes(data?.name) ? (

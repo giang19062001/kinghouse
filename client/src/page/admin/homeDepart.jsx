@@ -6,6 +6,7 @@ import { selectStatusAuth } from "../../redux/auth/authSelector";
 import { PageForbidden } from "../../page/admin/pageForbidden";
 import {  useSelector } from "react-redux";
 import React from "react";
+import Footer from "../../component/user/footer";
 const HomeDepart = () =>{
     const auth = useSelector(selectStatusAuth);
 
@@ -14,10 +15,11 @@ const HomeDepart = () =>{
         {auth === false?(
                 <PageForbidden></PageForbidden>
         ):(
-            <div>
+            <div >
             <Menu></Menu>
             <Depart></Depart>
             <ListDepart></ListDepart>
+            <Footer></Footer>
                </div>
 )}
     

@@ -18,10 +18,17 @@ import {
   Grid,
   DialogTitle,
   DialogActions,
+  Avatar,
+  Box,
+  TextField,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { deleteForm, fetchForm, fetchFormDetail } from "../../redux/form/formThunk";
+import {
+  deleteForm,
+  fetchForm,
+  fetchFormDetail,
+} from "../../redux/form/formThunk";
 import {
   selectFormDetail,
   selectListForms,
@@ -30,8 +37,9 @@ import {
 import { useState } from "react";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import { selectDepartDetail } from "../../redux/depart/departSelector";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,6 +60,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const CssTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderRadius: "30px",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#e5e7eb",
+    },
+  },
+});
+
 export default function ListForm() {
   const dispatch = useDispatch();
   const [openDialog, setOpenDialog] = useState(false);
@@ -70,35 +89,33 @@ export default function ListForm() {
   }, [dispatch]);
 
   const ListForm = useSelector(selectListForms);
-  const isLoading = useSelector(selectLoadingForm)
+  const isLoading = useSelector(selectLoadingForm);
   const formDetail = useSelector(selectFormDetail);
   const departDetail = useSelector(selectDepartDetail);
 
-  const [openSucces,setOpenSuccess] = useState(false)
-  const [openError,setOpenError] = useState(false)
+  const [openSucces, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
-  
   const handleCloseDialogSuccess = () => {
     dispatch(fetchForm());
-    setOpenSuccess(false)
+    setOpenSuccess(false);
   };
-  const handleCloseDialogError = () =>{
+  const handleCloseDialogError = () => {
     dispatch(fetchForm());
-    setOpenError(false)
-  }
-  const handleDelete = () =>{
-    setOpenDialogDelete(false)
-    dispatch(deleteForm(idDelete)).then((res)=>{
-      if(!res.error){
-        setOpenSuccess(true)
-      }else{
-        setOpenError(true)
+    setOpenError(false);
+  };
+  const handleDelete = () => {
+    setOpenDialogDelete(false);
+    dispatch(deleteForm(idDelete)).then((res) => {
+      if (!res.error) {
+        setOpenSuccess(true);
+      } else {
+        setOpenError(true);
       }
-    })
-  }
-  console.log(ListForm);
+    });
+  };
   return (
-    <Container sx={{ marginY: 20 }}>
+    <Container sx={{ marginY: 20, marginLeft: { xs: 0, md: 35 } }}>
       <p className="p">
         <span className="fancy"> Danh sách đăng ký tư vấn</span>
       </p>
@@ -150,9 +167,21 @@ export default function ListForm() {
                     align="center"
                     className="text-red-500 font-bold"
                   >
-                    {row?.phone}
+                    <a
+                      href={`tel:${row?.phone}`}
+                      style={{ color: "#38bdf8", fontWeight: "bold" }}
+                    >
+                      {row?.phone}
+                    </a>
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row?.email}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <a
+                      href={`mailto:${row?.email}`}
+                      style={{ color: "#38bdf8", fontWeight: "bold" }}
+                    >
+                      {row?.email}
+                    </a>
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     {new Date(row?.createdAt).toLocaleString()}
                   </StyledTableCell>
@@ -167,18 +196,17 @@ export default function ListForm() {
                     >
                       Xem chi tiết
                     </Button>
-                    
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Button
                       className="bg-red-500 text-slate-50  hover:bg-red-700  "
-                      onClick={
-                        ()=>{setOpenDialogDelete(true);setIdDelete(row?._id)}
-                      }
+                      onClick={() => {
+                        setOpenDialogDelete(true);
+                        setIdDelete(row?._id);
+                      }}
                     >
-                     Xóa
+                      Xóa
                     </Button>
-                    
                   </StyledTableCell>
                 </StyledTableRow>
               ))
@@ -188,19 +216,42 @@ export default function ListForm() {
       </TableContainer>
       <Dialog
         open={openDialogDelete}
-        onClose={()=>{setOpenDialogDelete(false);setIdDelete("")}}
+        onClose={() => {
+          setOpenDialogDelete(false);
+          setIdDelete("");
+        }}
         maxWidth="sm"
         fullWidth
-      >        <DialogTitle sx={{backgroundColor:"#dc2626",color:"white",fontWeight:"bold"}}>Cảnh báo</DialogTitle>
-      <Divider/>
-
+      >
+        {" "}
+        <DialogTitle
+          sx={{
+            backgroundColor: "#dc2626",
+            color: "white",
+            fontWeight: "bold",
+          }}
+        >
+          Cảnh báo
+        </DialogTitle>
+        <Divider />
         <DialogContent>
-            <Typography variant="h5" align="center" sx={{fontWeight:"bold",padding:2}}>Bạn có chắc muốn xóa</Typography>
+          <Typography
+            variant="h5"
+            align="center"
+            sx={{ fontWeight: "bold", padding: 2 }}
+          >
+            Bạn có chắc muốn xóa
+          </Typography>
         </DialogContent>
-        <Divider/>
-
+        <Divider />
         <DialogActions>
-          <Button onClick={handleDelete} sx={{display:"block",margin:"auto" }}  variant="outlined">Xác nhận</Button>
+          <Button
+            onClick={handleDelete}
+            sx={{ display: "block", margin: "auto" }}
+            variant="outlined"
+          >
+            Xác nhận
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog
@@ -235,19 +286,39 @@ export default function ListForm() {
               xl={6}
               sx={{ border: "1px solid #404040", padding: 2, borderRadius: 2 }}
             >
-              <Stack spacing={2} sx={{ paddingY: 2, overflow: "auto" }}>
+              <Stack spacing={2} sx={{ paddingY: 2 }} justifyContent="center">
                 <Typography>
                   Họ tên: <b>{formDetail?.name}</b>
                 </Typography>
                 <Typography>
-                  SĐT: <b>{formDetail?.phone}</b>
+                  SĐT:{" "}
+                  <a
+                    href={`tel:${formDetail?.phone}`}
+                    style={{ color: "#38bdf8", fontWeight: "bold" }}
+                  >
+                    {formDetail?.phone}
+                  </a>
                 </Typography>
                 <Typography>
-                  Email: <b>{formDetail?.email}</b>
+                  Email:{" "}
+                  <a
+                    href={`mailto:${formDetail?.email}`}
+                    style={{ color: "#38bdf8", fontWeight: "bold" }}
+                  >
+                    {formDetail?.email}
+                  </a>
                 </Typography>
                 <Typography>
-                  Nội dung tư vấn: <b>{formDetail?.note}</b>
+                  Thời gian đăng ký tư vấn:{" "}
+                  <b> {new Date(formDetail?.createdAt).toLocaleString()}</b>
                 </Typography>
+                <Typography sx={{fontWeight:"bold"}}> <u>Nội dung tư vấn:</u></Typography>
+                <CssTextField
+                  inputProps={{ readOnly: true }}
+                  multiline
+                  rows={6}
+                  defaultValue={` ${formDetail?.note}`}
+                ></CssTextField>
               </Stack>
             </Grid>
             <Grid
@@ -260,36 +331,74 @@ export default function ListForm() {
               sx={{ border: "1px solid #404040", padding: 2, borderRadius: 2 }}
             >
               <Stack spacing={2} sx={{ paddingY: 2, overflow: "auto" }}>
-                {departDetail?.isDelete === true ? (
-                  <Typography sx={{ color: "red"}}>
-                    <b>
-                      <p>
-                        {departDetail?.name} ({" "}
-                        <small>Căn hộ này đã được xóa</small>)
-                      </p>
-                    </b>
-                  </Typography>
-                ) : (
-                  <Typography sx={{ color: "#38bdf8", cursor: "pointer" }}>
-                    <b>
-                      <a href={`/admin/depart/${departDetail?._id}`}>
-                        {departDetail?.name}
-                      </a>
-                    </b>
-                  </Typography>
-                )}
+                <Stack
+                  direction={"row"}
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={2}
+                >
+                  <Link
+                    to={
+                      `/admin/depart/` + departDetail?.name.replace(/\s+/g, "-")
+                    }
+                    state={{ id: departDetail?._id }}
+                  >
+                    <Avatar
+                      variant="square"
+                      sx={{ width: 100, height: 100, borderRadius: 5 }}
+                      src={
+                        process.env.REACT_APP_API_URL +
+                        "/departs/" +
+                        departDetail?.photo?.[0]
+                      }
+                    />
+                  </Link>
+                  <Link
+                    to={
+                      `/admin/depart/` + departDetail?.name.replace(/\s+/g, "-")
+                    }
+                    state={{ id: departDetail?._id }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#38bdf8",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {departDetail?.name}
+                    </Typography>
+                  </Link>
+                </Stack>
+
+                <Typography>
+                  Tình trạng căn hộ:{" "}
+                  {departDetail?.isDelete === true ? (
+                    <b>Đã thuê</b>
+                  ) : (
+                    <b>Còn trống</b>
+                  )}
+                </Typography>
 
                 <Typography>
                   Loại căn hộ: <b>{departDetail?.type}</b>
                 </Typography>
                 <Typography>
-                  Gía thuê: <b>{departDetail?.price} VNĐ </b>
+                  Gía thuê:{" "}
+                  {departDetail?.status === "Đang khuyến mãi" ? (
+                    <b style={{ color: "red" }}>
+                      {" "}
+                      {departDetail?.pricePromotion} VNĐ{" "}
+                    </b>
+                  ) : (
+                    <b style={{ color: "red" }}>{departDetail?.price} VNĐ </b>
+                  )}
                 </Typography>
                 <Typography>
-                  Tiền điện: <b>{departDetail?.electricMoney}/kw </b>
+                  Số phòng ngủ: <b>{departDetail?.bedroom} phòng </b>
                 </Typography>
                 <Typography>
-                  Tiền nước: <b>{departDetail?.waterMoney}/người </b>
+                  Số phòng vệ sinh: <b>{departDetail?.bathroom} phòng </b>
                 </Typography>
                 <Typography>
                   Địa chỉ: <b>{departDetail?.addressHouse} </b>
@@ -299,15 +408,15 @@ export default function ListForm() {
           </Grid>
         </DialogContent>
       </Dialog>
-      {isLoading === true ?(
-           <Backdrop
-           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-           open={isLoading}
-         >
-           <CircularProgress color="inherit" />
-         </Backdrop>
-      ):null}
-        <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
+      {isLoading === true ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
+      <Dialog open={openSucces} onClose={handleCloseDialogSuccess}>
         <DialogContent>
           <img
             src={require("../../assets/tick-xanh.png")}
@@ -315,9 +424,7 @@ export default function ListForm() {
             width={200}
             style={{ display: "block", margin: "auto" }}
           ></img>
-          <Typography align="center">
-            Xóa  thành công
-          </Typography>
+          <Typography align="center">Xóa thành công</Typography>
         </DialogContent>
       </Dialog>
       <Dialog open={openError} onClose={handleCloseDialogError}>

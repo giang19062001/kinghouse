@@ -6,19 +6,17 @@ import {
   Stack,
   Paper,
   Dialog,
-  Backdrop,
-  CircularProgress,
-  Button,
+
   Grid,
+  Button,
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import {
   selectDepartDetail,
-  selectStatusDepart,
 } from "../../redux/depart/departSelector";
 
 import { fetchServices } from "../../redux/service/serviceThunk";
@@ -52,15 +50,15 @@ const DepartDetailAdmin = () => {
   const [value, setValue] = useState(0);
   const [arrayImage, setArrayImage] = useState([]);
   const [indexCurrent, setIndexCurrent] = useState(0);
-  const params = useParams();
-  const dispatch = useDispatch();
+  const { state } = useLocation() 
+   const dispatch = useDispatch();
   const [imageDialog, setImageDialog] = useState({
     open: false,
     value: "",
   });
   useEffect(() => {
-    dispatch(fetchDepartDetail(params.id));
-  }, [dispatch, params.id]);
+    dispatch(fetchDepartDetail(state.id));
+  }, [dispatch, state.id]);
   useEffect(() => {
     setArrayImage(depart?.photo);
   }, [depart]);
@@ -205,7 +203,7 @@ const DepartDetailAdmin = () => {
   // swipe
 
   return (
-    <Container sx={{ marginY: 20 }}>
+    <Container sx={{ marginY: 20,marginLeft: { xs: 0, md: 35 } }}>
     <Stack>
       <Paper sx={{ padding: 1 }} elevation={2}>
         <Stack
@@ -341,7 +339,7 @@ const DepartDetailAdmin = () => {
               </Grid>
             </Grid>
 
-            
+            <Button sx={{width:250}}></Button>
           </Paper>
         </Stack>
       </Paper>

@@ -4,6 +4,7 @@ import { selectStatusAuth } from "../../redux/auth/authSelector";
 import { PageForbidden } from "../../page/admin/pageForbidden";
 import {  useSelector } from "react-redux";
 import React from "react";
+import Footer from "../../component/user/footer";
 
 
 const DepartDetailAdminPage = () =>{
@@ -17,6 +18,7 @@ const DepartDetailAdminPage = () =>{
             <div>
             <Menu></Menu>
             <DepartDetailAdmin ></DepartDetailAdmin>
+            <Footer></Footer>
                </div>
         )}
     </React.Fragment>

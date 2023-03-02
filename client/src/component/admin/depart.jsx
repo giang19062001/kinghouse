@@ -206,7 +206,7 @@ const Depart = () => {
   };
 
   return (
-    <Container sx={{ marginTop: 20 }}>
+    <Container sx={{ marginTop: 20,marginLeft: { xs: 0, md: 35 } }}>
       <Box>
         <Paper elevation={6} className=" p-12">
           <p className="p">
