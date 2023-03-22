@@ -1,4 +1,4 @@
-import { BrowserRouter,Routes,Route, Navigate} from "react-router-dom"
+import { BrowserRouter,Routes,Route} from "react-router-dom"
 import HomePage from "./page/user/homePage";
 import './App.scss'
 import HomeDepart from "./page/admin/homeDepart";
@@ -26,7 +26,6 @@ function App() {
       <Route path="/admin/depart/:id" element={<DepartDetailAdminPage/>}> </Route>
       <Route path="/admin/departUpdate/:id" element={<DepartUpdatePage/>}> </Route>
 
-      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
     </BrowserRouter>
       
