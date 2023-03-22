@@ -188,7 +188,8 @@ const Appbar = () => {
                 ) : (
                   dataSearch?.map((data, index) => (
                     <Link
-                        to={`/depart/` + data?.name.replace(/\s+/g, '-')} state={{ id: data?._id }}                      key={data}
+                    to={`/depart/`+data?._id}   
+                      key={data}
                       onClick={() => setOpenBoxSearch(false)}
                     >
                       <Box id="idBoxDataSearch">
@@ -239,7 +240,7 @@ const Appbar = () => {
                 mr: 1,
               }}
             >
-              <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`} >
+              <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`}>
                 {" "}
                 <Typography id="idHover">LIÊN HỆ</Typography>
               </a>
@@ -286,7 +287,6 @@ const Appbar = () => {
               display: "block",
               margin: "auto",
               fontWeight: "bold",
-              padding: 4.5,
             }}
           >
             MENU
@@ -380,7 +380,8 @@ const Appbar = () => {
             ) : (
               dataSearch?.map((data, index) => (
                 <Link
-                    to={`/depart/` + data?.name.replace(/\s+/g, '-')} state={{ id: data?._id }}                  key={data}
+                  to={`/depart/` + data?._id}
+                  key={data}
                   onClick={() => {
                     setOpenSearchMobile(false);
                     setOpen(false);

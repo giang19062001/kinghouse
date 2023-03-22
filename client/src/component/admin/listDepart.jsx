@@ -118,8 +118,8 @@ export default function ListDepart() {
               <StyledTableRow key={index}>
                 <StyledTableCell align="center">
                   <Link 
-                    to={`/admin/depart/` + row?.name.replace(/\s+/g, '-')} state={{ id: row?._id }}
-                  >
+                to={`/depart/`+row?._id}   
+                >
                     <Avatar
                       variant="square"
                       className="w-48 h-48 rounded transition duration-300 ease-in-out hover:scale-110"
@@ -133,8 +133,8 @@ export default function ListDepart() {
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   <Link
-                to={`/admin/depart/` + row?.name.replace(/\s+/g, '-')} state={{ id: row?._id }}
-                    className="hover:text-sky-500"
+                to={`/depart/`+row?._id}   
+                className="hover:text-sky-500"
                   >
                     {" "}
                     {row?.name}

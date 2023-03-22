@@ -363,8 +363,7 @@ const Search = () => {
                       className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3  rounded-lg relative "
                     >
                       <Link
-                        to={`/depart/` + data?.name}
-                        state={{ id: data?._id }}
+                to={`/depart/`+data?._id}   
                       >
                         <Avatar
                           variant="square"
@@ -377,11 +376,11 @@ const Search = () => {
                         />
                         {data.status === "Đang khuyến mãi" ? (
                           <p className="absolute top-5 right-6 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md line-through ">
-                            {data?.price} đ
+                            {data?.price} VNĐ
                           </p>
                         ) : (
                           <p className="absolute top-5 right-6 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
-                            {data?.price} đ
+                            {data?.price} VNĐ
                           </p>
                         )}
                          {data?.isDelete === true ? (

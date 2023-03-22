@@ -36,17 +36,17 @@ const Footer = () => {
               <Typography className="text-neutral-900 font-bold pb-3">
                 HOTLINE
               </Typography>
-              <Typography className="bg-slate-50 rounded-full text-sky-400  font-bold p-2">
+              <Typography className="bg-slate-50 rounded-full text-sky-400  p-2">
                 &emsp; <PhoneIcon></PhoneIcon> &emsp;
-                <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`} style={{color:"#38bdf8",fontWeight:"bold"}}>{process.env.REACT_APP_AUTH_PHONE}</a>
+                <a href={`tel:${process.env.REACT_APP_AUTH_PHONE}`} style={{color:"#38bdf8"}}>{process.env.REACT_APP_AUTH_PHONE}</a>
 
               </Typography>
               <Typography className="text-neutral-900 font-bold pb-3 pt-8">
                 EMAIL
               </Typography>
-              <Typography className="bg-slate-50 rounded-full text-sky-400 font-bold p-2">
+              <Typography className="bg-slate-50 rounded-full text-sky-400  p-2">
                 &emsp; <EmailIcon></EmailIcon> &emsp;{" "}
-                <a href={`mailto:${process.env.REACT_APP_EMAIL}`} style={{color:"#38bdf8",fontWeight:"bold"}}>{process.env.REACT_APP_EMAIL}</a>
+                <a href={`mailto:${process.env.REACT_APP_EMAIL}`} style={{color:"#38bdf8"}}>{process.env.REACT_APP_EMAIL}</a>
               </Typography>
             </Grid>
             <Grid item md={4}>
@@ -55,7 +55,7 @@ const Footer = () => {
               </Typography>
             <Typography
                 align="center"
-                className="bg-slate-50 rounded-full text-sky-500 font-bold p-2"
+                className="bg-slate-50 rounded-full text-sky-500  p-2"
               >
                 <a href={process.env.REACT_APP_FB}>
                   <FacebookIcon></FacebookIcon>
@@ -67,7 +67,7 @@ const Footer = () => {
               </Typography>
               <Typography
                 align="center"
-                className="bg-slate-50 rounded-full  text-sky-500 font-bold p-2 "
+                className="bg-slate-50 rounded-full  text-sky-500  p-2 "
               >
                 <PlaceIcon></PlaceIcon>
                 <a href="https://goo.gl/maps/NhMzEVbPaBccLLBj8">

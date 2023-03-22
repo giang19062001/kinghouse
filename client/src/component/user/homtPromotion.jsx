@@ -91,12 +91,13 @@ const HomePromotion = () => {
                   className="ease-in duration-75 hover:shadow hover:shadow-slate-500 py-3 hover:scale-105 rounded-lg relative"
                 >
                   <Link 
-                 to={`/depart/` + data?.name.replace(/\s+/g, '-')} state={{ id: data?._id }}                >
+                to={`/depart/`+data?._id}   
+                >
                   <p
                     className="absolute top-5 left-6 md:left-5 lg:left-5 xl:left-5 z-50 bg-yellow-400 text-slate-50 p-1 rounded-sm text-xs md:text-sm lg:text-md xl:text-md"
                   >Sale</p> 
                     <p className="absolute top-5 right-6 md:right-5 lg:right-5 xl:right-5 z-50 text-red-600 font-bold line-through  bg-slate-50 rounded-full p-1 text-xs md:text-sm lg:text-md xl:text-md">
-                      {data?.price} đ
+                      {data?.price} VNĐ
                     </p>
                     {data?.isDelete === true ? (
                       <p className="absolute top-32  md:top-52 lg:top-52 xl:top-52 left-6 md:left-5 lg:left-5 xl:left-5 z-50 bg-sky-500 text-slate-50 p-1 rounded-sm  text-xs md:text-sm lg:text-md xl:text-md ">

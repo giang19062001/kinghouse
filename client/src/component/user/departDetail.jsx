@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import { useState, useEffect } from "react";
-import {  useLocation } from "react-router-dom";
+import {  useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartDetail } from "../../redux/depart/departThunk";
 import {
@@ -43,7 +43,8 @@ import { Form } from "./form";
 
 const DepartDetail = () => {
   // window.scrollTo({ top: 5, behavior: "auto" });
-  const { state } = useLocation()
+  // const { state } = useLocation()
+  const params = useParams()
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,8 +75,8 @@ const DepartDetail = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchDepartDetail(state.id));
-  }, [dispatch, state.id]);
+    dispatch(fetchDepartDetail(params.id));
+  }, [dispatch, params.id]);
   useEffect(() => {
     setArrayImage(depart?.photo);
   }, [depart]);
@@ -312,54 +313,54 @@ const DepartDetail = () => {
                 {depart?.status === "Đang khuyến mãi" ? (
                   <Typography
                     align="center"
-                    className=" my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl rounded-sm p-2"
+                    className=" my-2  font-bold text-lg md:text-xl lg:text-xl xl:text-xl rounded-sm p-2"
                   >
-                    <b style={{ color: "#FF1E1E" }}>
+                    <span style={{ color: "#FF1E1E" }}>
                       {" "}
                       {depart?.pricePromotion} VNĐ
-                    </b>
+                    </span>
                   </Typography>
                 ) : (
                   <Typography
                     align="center"
-                    className="  my-2  font-bold text-lg md:text-lg lg:text-xl xl:text-xl  rounded-sm p-2"
+                    className="  my-2  font-bold text-lg md:text-xl lg:text-xl xl:text-xl  rounded-sm p-2"
                   >
-                    <b style={{ color: "#FF1E1E" }}> {depart?.price} VNĐ</b>
+                    <span style={{ color: "#FF1E1E" }}> {depart?.price} VNĐ</span>
                   </Typography>
                 )}
               </Box>
               <Grid container className="mt-2">
                 <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
                   <Typography className="my-2 ">
-                    <b>
+                    <span>
                       {" "}
                       <HouseIcon className="text-sky-600 "></HouseIcon>{" "}
                       {depart?.isDelete === false ? "Còn trống" : "Đã thuê"}
-                    </b>
+                    </span>
                   </Typography>
 
                   <Typography className="my-2  ">
-                    <b>
+                    <span>
                       {" "}
                       <CropSquareIcon className="text-sky-600"></CropSquareIcon>{" "}
                       {depart?.length} * {depart?.width} m2
-                    </b>
+                    </span>
                   </Typography>
                 </Grid>
                 <Grid item xs={6} sm={6} md={12} lg={12} xl={12}>
                   <Typography className="my-2  ">
-                    <b>
+                    <span>
                       {" "}
                       <HotelIcon className="text-sky-600"></HotelIcon>{" "}
                       {depart?.bedroom} phòng ngủ
-                    </b>
+                    </span>
                   </Typography>
                   <Typography className="my-2  ">
-                    <b>
+                    <span>
                       {" "}
                       <BathtubIcon className="text-sky-600"></BathtubIcon>{" "}
                       {depart?.bathroom} phòng WC
-                    </b>
+                    </span>
                   </Typography>
                 </Grid>
               </Grid>
@@ -391,74 +392,74 @@ const DepartDetail = () => {
             THÔNG TIN CHI TIẾT
           </Typography>
           <Typography>
-            Tên căn hộ: <b> {depart?.name}</b>
+            Tên căn hộ: <span> {depart?.name}</span>
           </Typography>
           <Typography>
-            Loại căn hộ: <b> {depart?.type}</b>
+            Loại căn hộ: <span> {depart?.type}</span>
           </Typography>
           <Typography>
             Diện tích (dài * rộng):{" "}
-            <b>
+            <span>
               {" "}
               {depart?.length} * {depart?.width} m2
-            </b>{" "}
+            </span>{" "}
           </Typography>
           <Typography>
-            Số phòng ngủ: <b> {depart?.bedroom} phòng</b>
+            Số phòng ngủ: <span> {depart?.bedroom} phòng</span>
           </Typography>
           <Typography>
-            Số phòng vệ sinh: <b> {depart?.bathroom} phòng</b>
+            Số phòng vệ sinh: <span> {depart?.bathroom} phòng</span>
           </Typography>
           {depart?.status === "Đang khuyến mãi" ? (
             <Box>
               <Typography>
                 Gía gốc:{" "}
-                <b className="text-red-500 line-through ">
+                <span className="text-red-500 line-through text-lg">
                   {" "}
                   {depart?.price} VNĐ
-                </b>
+                </span>
               </Typography>
               <Typography>
                 Gía Khuyến mãi:{" "}
-                <b className="text-red-500"> {depart?.pricePromotion} VNĐ</b>
+                <span className="text-red-500 text-lg"> {depart?.pricePromotion} VNĐ</span>
               </Typography>
             </Box>
           ) : (
             <Typography>
               Gía thuê căn hộ:{" "}
-              <b className="text-red-500"> {depart?.price} VNĐ</b>
+              <span className="text-red-500 text-lg"> {depart?.price} VNĐ</span>
             </Typography>
           )}
           <Typography>
-            Đặt cọc: <b> {depart?.depositMoney}</b>
+            Đặt cọc: <span> {depart?.depositMoney}</span>
           </Typography>
 
           <Typography>
-            Mô tả về căn hộ: <i>{depart?.description}</i>{" "}
+            Mô tả về căn hộ:  <span  style={{whiteSpace: 'pre'}}>{(depart?.description)?.replace(/-/g, '\n- ')}</span>{" "}
           </Typography>
           <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
             CHI PHÍ
           </Typography>
           <Typography>
-            Tiền điện: <b> {depart?.electricMoney} đ/kw</b>{" "}
+            Tiền điện: <span className="text-red-500"> {depart?.electricMoney} VNĐ/kw</span>{" "}
           </Typography>
           <Typography>
-            Tiền nước: <b> {depart?.waterMoney} đ/người</b>
+            Tiền nước: <span className="text-red-500"> {depart?.waterMoney} VNĐ/người</span>
           </Typography>
           <Typography>
-            Chi phí khác: <b> {depart?.anotherMoney}</b>
+            Chi phí khác: <span> {depart?.anotherMoney}</span>
           </Typography>
           <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">
             THÔNG TIN TÒA NHÀ SỞ HỮU
           </Typography>
           <Typography>
-            Tên tòa nhà sở hữu: <b>{depart?.nameHouse}</b>
+            Tên tòa nhà sở hữu: <span>{depart?.nameHouse}</span>
           </Typography>
           <Typography>
-            Địa chỉ tòa nhà: <b> {depart?.addressHouse}</b>
+            Địa chỉ tòa nhà: <span> {depart?.addressHouse}</span>
           </Typography>
           <Typography>
-            Mô tả tiện ích xung quanh tòa nhà: <i>{depart?.descriptionHouse}</i>
+            Mô tả tiện ích xung quanh tòa nhà: <span>{depart?.descriptionHouse}</span>
           </Typography>
 
           <Typography className="  text-sky-400 font-semibold mb-6  bg-slate-50 shadow  p-2 mt-6  font-sans">

@@ -4,5 +4,5 @@ export const district = ["Quận 1","Quận 2","Quận 3","Quận 4","Quận 5",
 export const status = ["Đang Hot","Đang khuyến mãi"]
 
 
-export const type = ["Studio","Gác lửng","Duplex","Penthouse","Sky Villa"]
+export const type = ["Studio","Gác lửng","Duplex","1 phòng ngủ","2 phòng ngủ","3 phòng ngủ"]
 
