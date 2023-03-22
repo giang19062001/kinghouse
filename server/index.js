@@ -19,7 +19,7 @@ app.use(morgan("common"))
 
 app.use(express.static('images')); //anh cho fontend
 console.log(path.join(__dirname, '../client/public/index.html'))
-app.get('*', (req, res)=> {
+app.get('/', (req, res)=> {
     const index = path.join(__dirname, '../client/public/index.html')
     res.sendFile(index);
   });
