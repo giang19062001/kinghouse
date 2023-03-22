@@ -19,10 +19,10 @@ app.use(morgan("common"))
 
 app.use(express.static('images')); //anh cho fontend
 console.log(path.join(__dirname, '../client/public/index.html'))
-// app.get('*', (req, res)=> {
-//     const index = path.join(__dirname, '../client/public/index.html')
-//     res.sendFile(index);
-//   });
+app.get('/', (request, response) => {
+    response.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
 
 //router
 const departRouter = require("./router/depart")
