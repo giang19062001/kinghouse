@@ -18,11 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true,limit:'100mb',parameterLimit: 100
 app.use(morgan("common"))
 
 app.use(express.static('images')); //anh cho fontend
-console.log(path.join(__dirname, '../client/public/index.html'))
-app.get('/', (req, res)=> {
-    const index = path.join(__dirname, '../client/public/index.html')
-    res.sendFile(index);
-  });
+
 
 //router
 const departRouter = require("./router/depart")
